@@ -49,11 +49,15 @@ def handler(event, context):
         with app.app_context():
             try:
                 init_db()
+                print(f"Database initialized successfully")
             except Exception as db_error:
                 print(f"Database init error: {str(db_error)}")
                 # Continue anyway for testing
         
         # Create a mock request context
+        print(f"Handling request: {http_method} {path}")
+        print(f"Body: {body}")
+        
         with app.test_request_context(
             path=path,
             method=http_method,
@@ -63,6 +67,7 @@ def handler(event, context):
         ):
             # Handle the request
             response = app.full_dispatch_request()
+            print(f"Response status: {response.status_code}")
             
             # Extract response data
             response_data = response.get_data(as_text=True)
