@@ -25,21 +25,30 @@ def build_static_site():
     static_dst = dist_dir / 'static'
     if static_src.exists():
         shutil.copytree(static_src, static_dst)
-        print(f"✓ Copied static files to {static_dst}")
+        print(f"[OK] Copied static files to {static_dst}")
     
     # Copy templates
     templates_src = Path('templates')
     templates_dst = dist_dir / 'templates'
     if templates_src.exists():
         shutil.copytree(templates_src, templates_dst)
-        print(f"✓ Copied templates to {templates_dst}")
+        print(f"[OK] Copied templates to {templates_dst}")
     
     # Copy main HTML file as index.html
     index_src = templates_dst / 'index.html'
     index_dst = dist_dir / 'index.html'
     if index_src.exists():
         shutil.copy2(index_src, index_dst)
-        print(f"✓ Created index.html")
+        print(f"[OK] Created index.html")
+    
+    # Copy database file
+    db_src = Path('instance/wearhouse.db')
+    db_dst = dist_dir / 'wearhouse.db'
+    if db_src.exists():
+        shutil.copy2(db_src, db_dst)
+        print(f"[OK] Copied database to {db_dst}")
+    else:
+        print("[WARNING] Database file not found at instance/wearhouse.db")
     
     # Create netlify directory structure
     netlify_dir = dist_dir / '.netlify'
@@ -53,21 +62,21 @@ def build_static_site():
     api_dst = functions_dir / 'api.py'
     if api_src.exists():
         shutil.copy2(api_src, api_dst)
-        print(f"✓ Copied API function to {api_dst}")
+        print(f"[OK] Copied API function to {api_dst}")
     
     # Copy requirements.txt
     req_src = Path('requirements.txt')
     req_dst = dist_dir / 'requirements.txt'
     if req_src.exists():
         shutil.copy2(req_src, req_dst)
-        print(f"✓ Copied requirements.txt")
+        print(f"[OK] Copied requirements.txt")
     
     # Copy app.py
     app_src = Path('app.py')
     app_dst = dist_dir / 'app.py'
     if app_src.exists():
         shutil.copy2(app_src, app_dst)
-        print(f"✓ Copied app.py")
+        print(f"[OK] Copied app.py")
     
     # Create a simple _redirects file for SPA routing
     redirects_file = dist_dir / '_redirects'
@@ -78,7 +87,7 @@ def build_static_site():
 # SPA routes - redirect everything else to index.html
 /* /index.html 200
 """)
-    print(f"✓ Created _redirects file")
+    print(f"[OK] Created _redirects file")
     
     # Create a simple _headers file for caching
     headers_file = dist_dir / '_headers'
@@ -95,11 +104,11 @@ def build_static_site():
 /*.html
   Cache-Control: no-cache
 """)
-    print(f"✓ Created _headers file")
+    print(f"[OK] Created _headers file")
     
-    print("\n✅ Static site build completed!")
-    print(f"📁 Output directory: {dist_dir.absolute()}")
-    print("\n🚀 Ready for Netlify deployment!")
+    print("\n[SUCCESS] Static site build completed!")
+    print(f"[INFO] Output directory: {dist_dir.absolute()}")
+    print("\n[READY] Ready for Netlify deployment!")
 
 if __name__ == '__main__':
     build_static_site()

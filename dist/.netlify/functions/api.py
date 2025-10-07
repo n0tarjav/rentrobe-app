@@ -1,0 +1,72 @@
+import json
+import os
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+# Import Flask app
+from app import app, db, init_db
+
+def handler(event, context):
+    """
+    Netlify serverless function handler for Flask API
+    """
+    try:
+        # Initialize database if needed
+        with app.app_context():
+            init_db()
+        
+        # Parse the event
+        path = event.get('path', '')
+        http_method = event.get('httpMethod', 'GET')
+        headers = event.get('headers', {})
+        body = event.get('body', '')
+        query_string = event.get('queryStringParameters', {}) or {}
+        
+        # Create a mock request context
+        with app.test_request_context(
+            path=path,
+            method=http_method,
+            headers=headers,
+            data=body,
+            query_string=query_string
+        ):
+            # Handle the request
+            response = app.full_dispatch_request()
+            
+            # Extract response data
+            response_data = response.get_data(as_text=True)
+            status_code = response.status_code
+            response_headers = dict(response.headers)
+            
+            # Handle JSON responses
+            if response_headers.get('Content-Type', '').startswith('application/json'):
+                try:
+                    response_data = json.loads(response_data)
+                except json.JSONDecodeError:
+                    pass
+            
+            return {
+                'statusCode': status_code,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+                },
+                'body': json.dumps(response_data)
+            }
+    
+    except Exception as e:
+        print(f"Error in API handler: {str(e)}")
+        return {
+            'statusCode': 500,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({'error': 'Internal server error'})
+        }
