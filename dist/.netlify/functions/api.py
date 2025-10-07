@@ -27,6 +27,12 @@ def handler(event, context):
         body = event.get('body', '')
         query_string = event.get('queryStringParameters', {}) or {}
         
+        # Remove /api prefix from path for Flask routing
+        if path.startswith('/api'):
+            path = path[4:]  # Remove '/api' prefix
+        if not path:
+            path = '/'
+        
         # Handle CORS preflight
         if http_method == 'OPTIONS':
             return {

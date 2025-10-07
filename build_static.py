@@ -89,7 +89,7 @@ def build_static_site():
     redirects_file = dist_dir / '_redirects'
     with open(redirects_file, 'w') as f:
         f.write("""# API routes
-/api/* /.netlify/functions/api 200
+/api/* /.netlify/functions/api 200!
 
 # SPA routes - redirect everything else to index.html
 /* /index.html 200
