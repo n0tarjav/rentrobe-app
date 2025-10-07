@@ -20,16 +20,32 @@ def handler(event, context):
     Netlify serverless function handler for Flask API
     """
     try:
-        # Initialize database if needed
-        with app.app_context():
-            init_db()
-        
         # Parse the event
         path = event.get('path', '')
         http_method = event.get('httpMethod', 'GET')
         headers = event.get('headers', {})
         body = event.get('body', '')
         query_string = event.get('queryStringParameters', {}) or {}
+        
+        # Handle CORS preflight
+        if http_method == 'OPTIONS':
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+                },
+                'body': ''
+            }
+        
+        # Initialize database if needed
+        with app.app_context():
+            try:
+                init_db()
+            except Exception as db_error:
+                print(f"Database init error: {str(db_error)}")
+                # Continue anyway for testing
         
         # Create a mock request context
         with app.test_request_context(
@@ -67,11 +83,13 @@ def handler(event, context):
     
     except Exception as e:
         print(f"Error in API handler: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return {
             'statusCode': 500,
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
-            'body': json.dumps({'error': 'Internal server error'})
+            'body': json.dumps({'error': f'Internal server error: {str(e)}'})
         }
