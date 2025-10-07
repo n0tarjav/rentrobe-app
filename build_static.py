@@ -50,21 +50,15 @@ def build_static_site():
     else:
         print("[WARNING] Database file not found at instance/wearhouse.db")
     
-    # Create netlify directory structure
-    netlify_dir = dist_dir / '.netlify'
-    netlify_dir.mkdir()
-    
-    functions_dir = netlify_dir / 'functions'
-    functions_dir.mkdir()
-    
-    # Copy API function
-    api_src = Path('netlify/functions/api.py')
-    api_dst = functions_dir / 'api.py'
-    if api_src.exists():
-        shutil.copy2(api_src, api_dst)
-        print(f"[OK] Copied API function to {api_dst}")
+    # Copy netlify functions directory to dist
+    netlify_src = Path('netlify')
+    netlify_dst = dist_dir / 'netlify'
+    if netlify_src.exists():
+        shutil.copytree(netlify_src, netlify_dst)
+        print(f"[OK] Copied netlify functions to {netlify_dst}")
     
     # Copy database to functions directory
+    functions_dir = netlify_dst / 'functions'
     db_src = Path('instance/wearhouse.db')
     db_dst = functions_dir / 'wearhouse.db'
     if db_src.exists():
