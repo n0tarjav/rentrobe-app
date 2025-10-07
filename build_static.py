@@ -64,6 +64,13 @@ def build_static_site():
         shutil.copy2(api_src, api_dst)
         print(f"[OK] Copied API function to {api_dst}")
     
+    # Copy database to functions directory
+    db_src = Path('instance/wearhouse.db')
+    db_dst = functions_dir / 'wearhouse.db'
+    if db_src.exists():
+        shutil.copy2(db_src, db_dst)
+        print(f"[OK] Copied database to functions directory")
+    
     # Copy requirements.txt
     req_src = Path('requirements.txt')
     req_dst = dist_dir / 'requirements.txt'

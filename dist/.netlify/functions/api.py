@@ -7,6 +7,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
+# Set up database path for Netlify
+# Database will be in the same directory as the function
+db_path = os.path.join(os.path.dirname(__file__), 'wearhouse.db')
+os.environ['DATABASE_URL'] = f'sqlite:///{db_path}'
+
 # Import Flask app
 from app import app, db, init_db
 
