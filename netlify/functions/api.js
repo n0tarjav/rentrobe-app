@@ -1,4 +1,19 @@
 // Simple JavaScript function for Netlify
+// Simple in-memory storage for demo purposes
+let users = [
+  {
+    id: 1,
+    name: 'Demo User',
+    email: 'demo@wearhouse.com',
+    password: 'password123', // In real app, this would be hashed
+    phone: '+91 9876543210',
+    city: 'Mumbai',
+    address: '123 Fashion Street, Mumbai',
+    rating: 5.0,
+    reviews_count: 10
+  }
+];
+
 exports.handler = async (event, context) => {
   // Handle CORS
   const headers = {
@@ -41,18 +56,12 @@ exports.handler = async (event, context) => {
       
       console.log('Login attempt:', { email, password, path: event.path, method: event.httpMethod });
       
-      // Simple demo login check
-      if (email === 'demo@wearhouse.com' && password === 'password123') {
-        const user = {
-          id: 1,
-          name: 'Demo User',
-          email: 'demo@wearhouse.com',
-          phone: '+91 9876543210',
-          city: 'Mumbai',
-          address: '123 Fashion Street, Mumbai',
-          rating: 5.0,
-          reviews_count: 10
-        };
+      // Find user in our users array
+      const user = users.find(u => u.email === email && u.password === password);
+      
+      if (user) {
+        // Return user without password
+        const { password: _, ...userWithoutPassword } = user;
         
         return {
           statusCode: 200,
@@ -62,7 +71,7 @@ exports.handler = async (event, context) => {
           },
           body: JSON.stringify({
             message: 'Login successful',
-            user: user
+            user: userWithoutPassword
           })
         };
       } else {
@@ -113,8 +122,9 @@ exports.handler = async (event, context) => {
         };
       }
       
-      // Check if email already exists (simple check)
-      if (email === 'demo@wearhouse.com') {
+      // Check if email already exists
+      const existingUser = users.find(u => u.email === email);
+      if (existingUser) {
         return {
           statusCode: 400,
           headers: {
@@ -132,12 +142,19 @@ exports.handler = async (event, context) => {
         id: Date.now(), // Simple ID generation
         name: name,
         email: email,
+        password: password, // In real app, this would be hashed
         phone: phone,
         city: city,
         address: '',
         rating: 0.0,
         reviews_count: 0
       };
+      
+      // Add user to our users array
+      users.push(user);
+      
+      // Return user without password
+      const { password: _, ...userWithoutPassword } = user;
       
       return {
         statusCode: 201,
@@ -147,7 +164,7 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           message: 'Registration successful',
-          user: user
+          user: userWithoutPassword
         })
       };
     } catch (error) {
