@@ -200,6 +200,230 @@ exports.handler = async (event, context) => {
           },
           is_available: true,
           date_added: "2024-01-10"
+        },
+        {
+          id: 7,
+          title: "Red Party Dress",
+          description: "Bold red dress perfect for parties and celebrations. Eye-catching design.",
+          price_per_day: 2200,
+          size: "S",
+          category: "Dresses",
+          image_url: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=600&fit=crop",
+          owner: {
+            name: "Anita Singh",
+            city: "Delhi",
+            rating: 4.8
+          },
+          is_available: true,
+          date_added: "2024-01-09"
+        },
+        {
+          id: 8,
+          title: "Leather Bomber Jacket",
+          description: "Stylish leather bomber jacket for a cool, edgy look.",
+          price_per_day: 2800,
+          size: "M",
+          category: "Jackets",
+          image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=600&fit=crop",
+          owner: {
+            name: "Rohit Verma",
+            city: "Mumbai",
+            rating: 4.7
+          },
+          is_available: true,
+          date_added: "2024-01-08"
+        },
+        {
+          id: 9,
+          title: "Business Suit",
+          description: "Complete business suit for important meetings and corporate events.",
+          price_per_day: 3500,
+          size: "L",
+          category: "Suits",
+          image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop",
+          owner: {
+            name: "Arjun Mehta",
+            city: "Bangalore",
+            rating: 4.9
+          },
+          is_available: true,
+          date_added: "2024-01-07"
+        },
+        {
+          id: 10,
+          title: "Floral Summer Dress",
+          description: "Light and breezy floral dress perfect for summer outings.",
+          price_per_day: 1500,
+          size: "M",
+          category: "Dresses",
+          image_url: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=600&fit=crop",
+          owner: {
+            name: "Kavya Reddy",
+            city: "Hyderabad",
+            rating: 4.6
+          },
+          is_available: true,
+          date_added: "2024-01-06"
+        },
+        {
+          id: 11,
+          title: "Casual Jeans",
+          description: "Comfortable and stylish jeans for everyday wear.",
+          price_per_day: 900,
+          size: "30",
+          category: "Jeans",
+          image_url: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=600&fit=crop",
+          owner: {
+            name: "Vikram Joshi",
+            city: "Pune",
+            rating: 4.4
+          },
+          is_available: true,
+          date_added: "2024-01-05"
+        },
+        {
+          id: 12,
+          title: "Silk Scarf",
+          description: "Elegant silk scarf to add a touch of sophistication to any outfit.",
+          price_per_day: 500,
+          size: "One Size",
+          category: "Accessories",
+          image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=600&fit=crop",
+          owner: {
+            name: "Meera Iyer",
+            city: "Chennai",
+            rating: 4.8
+          },
+          is_available: true,
+          date_added: "2024-01-04"
+        },
+        {
+          id: 13,
+          title: "Wedding Saree",
+          description: "Traditional wedding saree with intricate embroidery and gold work.",
+          price_per_day: 4500,
+          size: "Free Size",
+          category: "Sarees",
+          image_url: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=600&fit=crop",
+          owner: {
+            name: "Deepika Nair",
+            city: "Kochi",
+            rating: 4.9
+          },
+          is_available: true,
+          date_added: "2024-01-03"
+        },
+        {
+          id: 14,
+          title: "Sports Tracksuit",
+          description: "Comfortable tracksuit for workouts and casual sports activities.",
+          price_per_day: 1200,
+          size: "L",
+          category: "Sportswear",
+          image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=600&fit=crop",
+          owner: {
+            name: "Suresh Kumar",
+            city: "Delhi",
+            rating: 4.5
+          },
+          is_available: true,
+          date_added: "2024-01-02"
+        },
+        {
+          id: 15,
+          title: "Designer Handbag",
+          description: "Luxury designer handbag to complete your elegant look.",
+          price_per_day: 800,
+          size: "One Size",
+          category: "Accessories",
+          image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=600&fit=crop",
+          owner: {
+            name: "Pooja Agarwal",
+            city: "Mumbai",
+            rating: 4.7
+          },
+          is_available: true,
+          date_added: "2024-01-01"
+        },
+        {
+          id: 16,
+          title: "Kurta Set",
+          description: "Traditional Indian kurta set perfect for festivals and cultural events.",
+          price_per_day: 1800,
+          size: "M",
+          category: "Ethnic Wear",
+          image_url: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=600&fit=crop",
+          owner: {
+            name: "Ravi Shankar",
+            city: "Jaipur",
+            rating: 4.6
+          },
+          is_available: true,
+          date_added: "2023-12-31"
+        },
+        {
+          id: 17,
+          title: "Winter Coat",
+          description: "Warm and stylish winter coat for cold weather protection.",
+          price_per_day: 2000,
+          size: "L",
+          category: "Coats",
+          image_url: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=600&fit=crop",
+          owner: {
+            name: "Neha Gupta",
+            city: "Chandigarh",
+            rating: 4.8
+          },
+          is_available: true,
+          date_added: "2023-12-30"
+        },
+        {
+          id: 18,
+          title: "Formal Shoes",
+          description: "Polished leather shoes perfect for business and formal occasions.",
+          price_per_day: 600,
+          size: "9",
+          category: "Shoes",
+          image_url: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=600&fit=crop",
+          owner: {
+            name: "Amit Desai",
+            city: "Ahmedabad",
+            rating: 4.5
+          },
+          is_available: true,
+          date_added: "2023-12-29"
+        },
+        {
+          id: 19,
+          title: "Cocktail Ring",
+          description: "Statement cocktail ring to add glamour to your evening look.",
+          price_per_day: 300,
+          size: "7",
+          category: "Jewelry",
+          image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=600&fit=crop",
+          owner: {
+            name: "Shruti Patel",
+            city: "Surat",
+            rating: 4.9
+          },
+          is_available: true,
+          date_added: "2023-12-28"
+        },
+        {
+          id: 20,
+          title: "Designer Watch",
+          description: "Luxury designer watch to complete your sophisticated look.",
+          price_per_day: 1000,
+          size: "One Size",
+          category: "Accessories",
+          image_url: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=600&fit=crop",
+          owner: {
+            name: "Karan Malhotra",
+            city: "Gurgaon",
+            rating: 4.7
+          },
+          is_available: true,
+          date_added: "2023-12-27"
         }
       ];
 
