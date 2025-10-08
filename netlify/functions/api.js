@@ -33,13 +33,13 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // Handle login endpoint
-  if (event.path === '/api/auth/login' && event.httpMethod === 'POST') {
+  // Handle login endpoint - check both possible paths
+  if ((event.path === '/api/auth/login' || event.path === '/.netlify/functions/api/auth/login') && event.httpMethod === 'POST') {
     try {
       const body = JSON.parse(event.body || '{}');
       const { email, password } = body;
       
-      console.log('Login attempt:', { email, password });
+      console.log('Login attempt:', { email, password, path: event.path, method: event.httpMethod });
       
       // Simple demo login check
       if (email === 'demo@wearhouse.com' && password === 'password123') {
