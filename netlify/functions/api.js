@@ -91,6 +91,79 @@ exports.handler = async (event, context) => {
     }
   }
 
+  // Handle signup endpoint
+  if (event.path === '/api/auth/register' && event.httpMethod === 'POST') {
+    try {
+      const body = JSON.parse(event.body || '{}');
+      const { name, email, password, phone, city } = body;
+      
+      console.log('Signup attempt:', { name, email, phone, city });
+      
+      // Validate required fields
+      if (!name || !email || !password || !phone || !city) {
+        return {
+          statusCode: 400,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            error: 'All fields are required'
+          })
+        };
+      }
+      
+      // Check if email already exists (simple check)
+      if (email === 'demo@wearhouse.com') {
+        return {
+          statusCode: 400,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            error: 'Email already registered'
+          })
+        };
+      }
+      
+      // Create new user
+      const user = {
+        id: Date.now(), // Simple ID generation
+        name: name,
+        email: email,
+        phone: phone,
+        city: city,
+        address: '',
+        rating: 0.0,
+        reviews_count: 0
+      };
+      
+      return {
+        statusCode: 201,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Registration successful',
+          user: user
+        })
+      };
+    } catch (error) {
+      return {
+        statusCode: 400,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          error: 'Invalid request data'
+        })
+      };
+    }
+  }
+
   // Default response
   return {
     statusCode: 200,

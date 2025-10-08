@@ -4205,6 +4205,15 @@
                 document.getElementById('loginPassword').value = '';
             }
             
+            // Clear form fields for signup modal
+            if (modalId === 'signupModal') {
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupPhone').value = '';
+                document.getElementById('signupCity').value = '';
+            }
+            
             // Restore scroll position after a brief delay
             setTimeout(() => {
                 window.scrollTo(0, scrollY);
@@ -4291,13 +4300,18 @@
 
         async function handleSignup(e) {
             e.preventDefault();
+            console.log('Signup form submitted');
+            
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             const phone = document.getElementById('signupPhone').value;
             const city = document.getElementById('signupCity').value;
 
+            console.log('Signup data:', { name, email, phone, city });
+
             if (!name || !email || !password || !phone || !city) {
+                console.log('Missing required fields');
                 showAlert('signupError');
                 return;
             }
@@ -4315,10 +4329,14 @@
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Signup response data:', data);
                     currentUser = data.user;
+                    console.log('Current user set to:', currentUser);
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                     updateAuthUI();
+                    console.log('Auth UI updated');
                     hideModal('signupModal');
+                    hideSpinner('signupSpinner');
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     showAlert('signupError');
