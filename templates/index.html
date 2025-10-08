@@ -4250,9 +4250,12 @@
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Login response data:', data);
                     currentUser = data.user;
+                    console.log('Current user set to:', currentUser);
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                     updateAuthUI();
+                    console.log('Auth UI updated');
                     hideModal('loginModal');
                     hideSpinner('loginSpinner');
                 } else {
@@ -4329,14 +4332,23 @@
         }
 
         function updateAuthUI() {
+            console.log('updateAuthUI called, currentUser:', currentUser);
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
+            
+            console.log('authButtons element:', authButtons);
+            console.log('userMenu element:', userMenu);
 
             if (currentUser) {
+                console.log('Setting logged in state');
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'block';
-                document.getElementById('userInitial').textContent = currentUser.name.charAt(0).toUpperCase();
+                const userInitial = document.getElementById('userInitial');
+                if (userInitial && currentUser.name) {
+                    userInitial.textContent = currentUser.name.charAt(0).toUpperCase();
+                }
             } else {
+                console.log('Setting logged out state');
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
             }

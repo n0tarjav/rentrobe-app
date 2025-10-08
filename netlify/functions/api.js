@@ -33,6 +33,64 @@ exports.handler = async (event, context) => {
     };
   }
 
+  // Handle login endpoint
+  if (event.path === '/api/auth/login' && event.httpMethod === 'POST') {
+    try {
+      const body = JSON.parse(event.body || '{}');
+      const { email, password } = body;
+      
+      console.log('Login attempt:', { email, password });
+      
+      // Simple demo login check
+      if (email === 'demo@wearhouse.com' && password === 'password123') {
+        const user = {
+          id: 1,
+          name: 'Demo User',
+          email: 'demo@wearhouse.com',
+          phone: '+91 9876543210',
+          city: 'Mumbai',
+          address: '123 Fashion Street, Mumbai',
+          rating: 5.0,
+          reviews_count: 10
+        };
+        
+        return {
+          statusCode: 200,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'Login successful',
+            user: user
+          })
+        };
+      } else {
+        return {
+          statusCode: 401,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            error: 'Invalid email or password'
+          })
+        };
+      }
+    } catch (error) {
+      return {
+        statusCode: 400,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          error: 'Invalid request data'
+        })
+      };
+    }
+  }
+
   // Default response
   return {
     statusCode: 200,
