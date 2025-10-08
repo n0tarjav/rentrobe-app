@@ -22,6 +22,9 @@ def handler(event, context):
     """
     Netlify serverless function handler for Flask API
     """
+    print(f"Function called with event: {event}")
+    print(f"Context: {context}")
+    
     try:
         # Parse the event
         path = event.get('path', '')
