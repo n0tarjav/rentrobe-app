@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deploy to Netlify</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .deploy-btn {
+            display: inline-block;
+            padding: 20px 40px;
+            background: #00ad9f;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        .deploy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 Deploy Your Rentrobe App</h1>
+    
+    <div class="instructions">
+        <h2>⚡ FASTEST METHOD - Drag & Drop</h2>
+        <p>1. Click the button below to go to Netlify</p>
+        <p>2. Sign up/Login with GitHub (1 click)</p>
+        <p>3. Drag your <code>dist</code> folder onto the page</p>
+        <p>4. Your site is live in 30 seconds!</p>
+    </div>
+    
+    <a href="https://app.netlify.com/drop" class="deploy-btn" target="_blank">
+        🚀 DEPLOY TO NETLIFY NOW
+    </a>
+    
+    <div class="instructions">
+        <h3>📁 What to drag:</h3>
+        <p>Drag the entire <code>dist</code> folder from your project directory</p>
+        <p><strong>Location:</strong> <code>E:\Personal files\Yapperrr\Wearhouse\cursor\dist</code></p>
+    </div>
+    
+    <script>
+        // Auto-open Netlify in new tab
+        window.open('https://app.netlify.com/drop', '_blank');
+    </script>
+</body>
+</html>
