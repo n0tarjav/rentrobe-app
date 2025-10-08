@@ -135,13 +135,6 @@
         footer a:hover { color: var(--theme-surface); }
 
         .mobile-menu-toggle { color: var(--theme-accent); }
-        .mobile-nav {
-            background: rgba(233, 233, 227, 0.98);
-            border-top: 1px solid var(--theme-stroke);
-        }
-        .mobile-nav-links a { color: var(--theme-accent); border-bottom-color: var(--theme-surface); }
-        .mobile-nav-links a:hover,
-        .mobile-nav-links a.active { background: var(--theme-surface); color: var(--theme-accent); }
 
         :root {
             --black: #464F50; /* primary text/accents */
@@ -1649,10 +1642,12 @@
             color: var(--black);
             padding: 8px;
             z-index: 1001;
+            position: relative;
+            min-width: 40px;
+            min-height: 40px;
         }
 
         .mobile-nav {
-            display: none;
             position: fixed;
             top: 50px;
             left: 0;
@@ -1667,12 +1662,13 @@
             transform: translateY(-100%);
             transition: transform 0.3s ease, opacity 0.3s ease;
             opacity: 0;
+            visibility: hidden;
         }
 
         .mobile-nav.active {
-            display: block !important;
             transform: translateY(0);
             opacity: 1;
+            visibility: visible;
         }
 
         .mobile-nav-links {
@@ -4438,9 +4434,17 @@
         // Mobile menu functions
         function toggleMobileMenu() {
             const mobileNav = document.getElementById('mobileNav');
-            console.log('Toggle mobile menu clicked, current state:', mobileNav.classList.contains('active'));
+            console.log('Toggle mobile menu clicked');
+            console.log('Mobile nav element:', mobileNav);
+            console.log('Current classes:', mobileNav.className);
+            console.log('Current state:', mobileNav.classList.contains('active'));
+            
             mobileNav.classList.toggle('active');
-            console.log('After toggle, state:', mobileNav.classList.contains('active'));
+            
+            console.log('After toggle - classes:', mobileNav.className);
+            console.log('After toggle - state:', mobileNav.classList.contains('active'));
+            console.log('Mobile nav display:', window.getComputedStyle(mobileNav).display);
+            console.log('Mobile nav transform:', window.getComputedStyle(mobileNav).transform);
         }
 
         function closeMobileMenu() {
