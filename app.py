@@ -865,6 +865,33 @@ def api_create_review():
         logger.error(f"Review creation error: {e}")
         return jsonify({'error': 'Failed to create review'}), 500
 
+@app.route('/api/test')
+def api_test():
+    """Test endpoint to verify database and user creation"""
+    try:
+        with app.app_context():
+            # Check if demo user exists
+            demo_user = User.query.filter_by(email='demo@wearhouse.com').first()
+            if demo_user:
+                return jsonify({
+                    'status': 'success',
+                    'demo_user_exists': True,
+                    'user_name': demo_user.name,
+                    'user_email': demo_user.email,
+                    'total_users': User.query.count()
+                })
+            else:
+                return jsonify({
+                    'status': 'error',
+                    'demo_user_exists': False,
+                    'total_users': User.query.count()
+                })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        })
+
 @app.route('/api/search')
 def api_search():
     """Advanced search with suggestions"""

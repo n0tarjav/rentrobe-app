@@ -60,20 +60,42 @@ def handler(event, context):
         # Initialize database if needed
         with app.app_context():
             try:
-                # Check if database file exists
-                if not os.path.exists(db_path):
-                    print(f"Database file not found at {db_path}, initializing...")
-                    init_db()
-                    print(f"Database initialized successfully")
+                # Always try to initialize database to ensure demo user exists
+                print(f"Initializing database at {db_path}")
+                init_db()
+                print(f"Database initialized successfully")
+                
+                # Check if demo user exists, create if not
+                from app import User, bcrypt
+                demo_user = User.query.filter_by(email='demo@wearhouse.com').first()
+                if not demo_user:
+                    print("Creating demo user...")
+                    demo_user = User(
+                        name='Demo User',
+                        email='demo@wearhouse.com',
+                        password_hash=bcrypt.generate_password_hash('password123').decode('utf-8'),
+                        phone='+91 9876543210',
+                        city='Mumbai',
+                        address='123 Fashion Street, Mumbai',
+                        is_verified=True
+                    )
+                    db.session.add(demo_user)
+                    db.session.commit()
+                    print("Demo user created successfully")
                 else:
-                    print(f"Database found at {db_path}")
+                    print("Demo user already exists")
+                    
             except Exception as db_error:
                 print(f"Database init error: {str(db_error)}")
+                import traceback
+                traceback.print_exc()
                 # Continue anyway for testing
         
         # Create a mock request context
         print(f"Handling request: {http_method} {path}")
         print(f"Body: {body}")
+        print(f"Headers: {headers}")
+        print(f"Query string: {query_string}")
         
         with app.test_request_context(
             path=path,
