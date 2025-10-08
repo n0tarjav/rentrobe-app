@@ -12,6 +12,9 @@ sys.path.insert(0, str(project_root))
 db_path = os.path.join(os.path.dirname(__file__), 'wearhouse.db')
 os.environ['DATABASE_URL'] = f'sqlite:///{db_path}'
 
+# Set secret key for Netlify
+os.environ['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'wearhouse-netlify-secret-key')
+
 # Import Flask app
 from app import app, db, init_db
 
@@ -27,11 +30,20 @@ def handler(event, context):
         body = event.get('body', '')
         query_string = event.get('queryStringParameters', {}) or {}
         
+        # Convert headers to lowercase for Flask compatibility
+        headers = {k.lower(): v for k, v in headers.items()}
+        
         # Remove /api prefix from path for Flask routing
         if path.startswith('/api'):
             path = path[4:]  # Remove '/api' prefix
         if not path:
             path = '/'
+        
+        # Handle query string parameters
+        if query_string:
+            query_string = '&'.join([f"{k}={v}" for k, v in query_string.items()])
+        else:
+            query_string = ''
         
         # Handle CORS preflight
         if http_method == 'OPTIONS':
@@ -48,8 +60,13 @@ def handler(event, context):
         # Initialize database if needed
         with app.app_context():
             try:
-                init_db()
-                print(f"Database initialized successfully")
+                # Check if database file exists
+                if not os.path.exists(db_path):
+                    print(f"Database file not found at {db_path}, initializing...")
+                    init_db()
+                    print(f"Database initialized successfully")
+                else:
+                    print(f"Database found at {db_path}")
             except Exception as db_error:
                 print(f"Database init error: {str(db_error)}")
                 # Continue anyway for testing

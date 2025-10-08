@@ -4063,7 +4063,14 @@
             document.getElementById('browseSearchInput').addEventListener('input', performBrowseSearch);
 
             // Forms
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                console.log('Login form found, adding event listener');
+                loginForm.addEventListener('submit', handleLogin);
+            } else {
+                console.error('Login form not found!');
+            }
+            
             document.getElementById('signupForm').addEventListener('submit', handleSignup);
             document.getElementById('listForm').addEventListener('submit', handleListItem);
             document.getElementById('profileForm').addEventListener('submit', handleProfileUpdate);
@@ -4169,6 +4176,17 @@
             // Prevent body scrolling when modal is open
             document.body.style.overflow = 'hidden';
             
+            // Clear any existing alerts in the modal
+            const modal = document.getElementById(modalId);
+            const alerts = modal.querySelectorAll('.alert');
+            alerts.forEach(alert => alert.style.display = 'none');
+            
+            // Clear form fields for login modal
+            if (modalId === 'loginModal') {
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+            }
+            
             // Restore scroll position after a brief delay
             setTimeout(() => {
                 window.scrollTo(0, scrollY);
@@ -4212,8 +4230,12 @@
         // Auth functions
         async function handleLogin(e) {
             e.preventDefault();
+            console.log('Login form submitted');
+            
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            
+            console.log('Login attempt:', { email, password });
 
             showSpinner('loginSpinner');
 
@@ -4232,17 +4254,18 @@
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                     updateAuthUI();
                     hideModal('loginModal');
+                    hideSpinner('loginSpinner');
                 } else {
+                    const errorData = await response.json();
+                    console.error('Login error:', errorData);
                     showAlert('loginError');
                     hideSpinner('loginSpinner');
-                    return;
                 }
             } catch (error) {
+                console.error('Login error:', error);
                 showAlert('loginError');
                 hideSpinner('loginSpinner');
-                return;
             }
-            hideSpinner('loginSpinner');
         }
 
         async function handleSignup(e) {
