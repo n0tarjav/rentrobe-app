@@ -3821,6 +3821,9 @@
                 localStorage.removeItem('rentrobe_user');
             }
             
+            // Clear localStorage completely for fresh start (remove this after testing)
+            // localStorage.clear();
+            
             loadUserFromStorage();
             initializeItems();
             setupEventListeners();
@@ -3968,7 +3971,16 @@
             const savedUser = localStorage.getItem('rentrobe_user');
             if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
                 try {
-                    currentUser = JSON.parse(savedUser);
+                    const user = JSON.parse(savedUser);
+                    // Validate that user has required fields
+                    if (user && user.id && user.name && user.email) {
+                        currentUser = user;
+                        console.log('Loaded user from storage:', user);
+                    } else {
+                        console.log('Invalid user data in storage, clearing...');
+                        localStorage.removeItem('rentrobe_user');
+                        currentUser = null;
+                    }
                 } catch (error) {
                     console.error('Error parsing saved user:', error);
                     localStorage.removeItem('rentrobe_user');
@@ -4375,7 +4387,8 @@
             console.log('authButtons element:', authButtons);
             console.log('userMenu element:', userMenu);
 
-            if (currentUser) {
+            // Check if user has valid data
+            if (currentUser && currentUser.id && currentUser.name && currentUser.email) {
                 console.log('Setting logged in state');
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'block';
@@ -4384,7 +4397,13 @@
                     userInitial.textContent = currentUser.name.charAt(0).toUpperCase();
                 }
             } else {
-                console.log('Setting logged out state');
+                console.log('Setting logged out state - invalid or missing user data');
+                // Clear invalid user data
+                if (currentUser && (!currentUser.id || !currentUser.name || !currentUser.email)) {
+                    console.log('Clearing invalid user data');
+                    currentUser = null;
+                    localStorage.removeItem('rentrobe_user');
+                }
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
             }
