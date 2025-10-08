@@ -1,18 +1,47 @@
 // Simple JavaScript function for Netlify
-// Simple in-memory storage for demo purposes
-let users = [
-  {
-    id: 1,
-    name: 'Demo User',
-    email: 'demo@wearhouse.com',
-    password: 'password123', // In real app, this would be hashed
-    phone: '+91 9876543210',
-    city: 'Mumbai',
-    address: '123 Fashion Street, Mumbai',
-    rating: 5.0,
-    reviews_count: 10
+const fs = require('fs');
+const path = require('path');
+
+// File path for persistent storage
+const USERS_FILE = '/tmp/users.json';
+
+// Initialize users data
+function initializeUsers() {
+  try {
+    if (fs.existsSync(USERS_FILE)) {
+      const data = fs.readFileSync(USERS_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.log('Error reading users file:', error);
   }
-];
+  
+  // Default users if file doesn't exist
+  return [
+    {
+      id: 1,
+      name: 'Demo User',
+      email: 'demo@wearhouse.com',
+      password: 'password123', // In real app, this would be hashed
+      phone: '+91 9876543210',
+      city: 'Mumbai',
+      address: '123 Fashion Street, Mumbai',
+      rating: 5.0,
+      reviews_count: 10
+    }
+  ];
+}
+
+// Save users data
+function saveUsers(users) {
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+    return true;
+  } catch (error) {
+    console.log('Error saving users file:', error);
+    return false;
+  }
+}
 
 exports.handler = async (event, context) => {
   // Handle CORS
@@ -55,6 +84,9 @@ exports.handler = async (event, context) => {
       const { email, password } = body;
       
       console.log('Login attempt:', { email, password, path: event.path, method: event.httpMethod });
+      
+      // Load users from persistent storage
+      const users = initializeUsers();
       
       // Find user in our users array
       const user = users.find(u => u.email === email && u.password === password);
@@ -809,6 +841,9 @@ exports.handler = async (event, context) => {
         };
       }
       
+      // Load users from persistent storage
+      const users = initializeUsers();
+      
       // Check if email already exists
       const existingUser = users.find(u => u.email === email);
       if (existingUser) {
@@ -839,6 +874,12 @@ exports.handler = async (event, context) => {
       
       // Add user to our users array
       users.push(user);
+      
+      // Save users to persistent storage
+      const saved = saveUsers(users);
+      if (!saved) {
+        console.log('Warning: Could not save user data to file');
+      }
       
       // Return user without password
       const { password: _, ...userWithoutPassword } = user;
