@@ -13,7 +13,12 @@ db_path = os.path.join(os.path.dirname(__file__), 'wearhouse.db')
 os.environ['DATABASE_URL'] = f'sqlite:///{db_path}'
 
 # Set secret key for Netlify
-os.environ['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'wearhouse-netlify-secret-key')
+os.environ['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'wearhouse-netlify-secret-key-change-in-production')
+
+# Set session configuration for Netlify
+os.environ['SESSION_COOKIE_SECURE'] = 'False'  # Netlify handles HTTPS
+os.environ['SESSION_COOKIE_HTTPONLY'] = 'True'
+os.environ['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Import Flask app
 from app import app, db, init_db
@@ -54,8 +59,9 @@ def handler(event, context):
                 'statusCode': 200,
                 'headers': {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                    'Access-Control-Allow-Credentials': 'true'
                 },
                 'body': ''
             }
@@ -128,8 +134,9 @@ def handler(event, context):
                 'headers': {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                    'Access-Control-Allow-Credentials': 'true'
                 },
                 'body': json.dumps(response_data)
             }

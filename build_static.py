@@ -15,8 +15,11 @@ def build_static_site():
     # Create dist directory
     dist_dir = Path('dist')
     if dist_dir.exists():
-        shutil.rmtree(dist_dir)
-    dist_dir.mkdir()
+        try:
+            shutil.rmtree(dist_dir)
+        except PermissionError:
+            print("[WARNING] Could not remove dist directory, trying to continue...")
+    dist_dir.mkdir(exist_ok=True)
     
     print("Building static site...")
     

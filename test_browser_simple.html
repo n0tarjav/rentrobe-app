@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Browser Test</title>
+</head>
+<body>
+    <h1>Simple Browser Test</h1>
+    
+    <div>
+        <button onclick="testRegistration()">Test Registration</button>
+        <button onclick="testProfile()">Test Profile</button>
+        <button onclick="clearStorage()">Clear Storage</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        function log(message) {
+            const div = document.getElementById('results');
+            div.innerHTML += '<p>' + message + '</p>';
+            console.log(message);
+        }
+        
+        async function testRegistration() {
+            log('=== TESTING REGISTRATION ===');
+            
+            const userData = {
+                name: 'Simple Test User',
+                email: 'simpletest@example.com',
+                password: 'password123',
+                phone: '+91 9876543210',
+                city: 'Mumbai'
+            };
+            
+            try {
+                log('Sending registration request...');
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData),
+                    credentials: 'include'
+                });
+                
+                log('Registration response status: ' + response.status);
+                const data = await response.json();
+                log('Registration response: ' + JSON.stringify(data));
+                
+                if (response.ok) {
+                    log('Registration successful!');
+                    localStorage.setItem('rentrobe_user', JSON.stringify(data.user));
+                    
+                    // Immediately test profile access
+                    log('Testing profile access immediately after registration...');
+                    await testProfile();
+                } else {
+                    log('Registration failed: ' + data.error);
+                }
+            } catch (error) {
+                log('Registration error: ' + error.message);
+            }
+        }
+        
+        async function testProfile() {
+            log('=== TESTING PROFILE ===');
+            
+            try {
+                log('Sending profile request...');
+                const response = await fetch('/api/profile', { 
+                    credentials: 'include' 
+                });
+                
+                log('Profile response status: ' + response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log('Profile response: ' + JSON.stringify(data));
+                    log('Profile access successful!');
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    log('Profile access failed: ' + (errorData.error || 'Unknown error'));
+                }
+            } catch (error) {
+                log('Profile error: ' + error.message);
+            }
+        }
+        
+        function clearStorage() {
+            localStorage.clear();
+            log('Storage cleared');
+        }
+        
+        // Test on page load
+        window.onload = function() {
+            log('Page loaded. Testing profile access...');
+            testProfile();
+        };
+    </script>
+</body>
+</html>

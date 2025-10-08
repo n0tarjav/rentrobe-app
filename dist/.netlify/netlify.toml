@@ -1,0 +1,86 @@
+functionsDirectory = "E:\\Personal files\\Yapperrr\\Wearhouse\\cursor\\dist\\netlify\\functions"
+functionsDirectoryOrigin = "config"
+headersOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+
+[build]
+publish = "E:\\Personal files\\Yapperrr\\Wearhouse\\cursor\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "E:\\Personal files\\Yapperrr\\Wearhouse\\cursor\\dist"
+command = "echo 'Build already completed'"
+functions = "E:\\Personal files\\Yapperrr\\Wearhouse\\cursor\\dist\\netlify\\functions"
+
+[build.environment]
+PYTHON_VERSION = "3.11"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[functions]
+
+[functions."*"]
+
+[[headers]]
+for = "/api/*"
+
+[headers.values]
+Cache-Control = "no-cache"
+
+[[headers]]
+for = "/*.html"
+
+[headers.values]
+Cache-Control = "no-cache"
+
+[[headers]]
+for = "/static/*"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+for = "/*.js"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+for = "/*.css"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/api"
+status = 200.0
+force = true
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

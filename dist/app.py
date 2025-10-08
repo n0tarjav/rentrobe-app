@@ -40,6 +40,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
+# Session configuration
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() == 'true'
+app.config['SESSION_COOKIE_HTTPONLY'] = os.environ.get('SESSION_COOKIE_HTTPONLY', 'True').lower() == 'true'
+app.config['SESSION_COOKIE_SAMESITE'] = os.environ.get('SESSION_COOKIE_SAMESITE', 'Lax')
+
 # Ensure upload directory exists
 Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
 
@@ -229,7 +234,10 @@ class Review(db.Model):
 # Login manager
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    logger.info(f"Loading user with ID: {user_id}")
+    user = User.query.get(int(user_id))
+    logger.info(f"Loaded user: {user.email if user else 'None'}")
+    return user
 
 # Utility functions
 def allowed_file(filename):
@@ -446,7 +454,7 @@ def api_register():
         
         login_user(user)
         
-        logger.info(f"New user registered: {email}")
+        logger.info(f"New user registered: {email}, session: {session}")
         return jsonify({
             'message': 'Registration successful',
             'user': user.to_dict()
@@ -474,7 +482,7 @@ def api_login():
         
         if user and bcrypt.check_password_hash(user.password_hash, data['password']):
             login_user(user, remember=True)
-            logger.info(f"User logged in: {email}")
+            logger.info(f"User logged in: {email}, session: {session}")
             return jsonify({
                 'message': 'Login successful',
                 'user': user.to_dict()
@@ -504,6 +512,8 @@ def api_profile():
     """Get or update user profile"""
     try:
         if request.method == 'GET':
+            logger.info(f"Profile request for user: {current_user.email if current_user else 'None'}")
+            logger.info(f"Session data: {dict(session)}")
             return jsonify(current_user.to_dict())
         
         elif request.method == 'PUT':
@@ -864,6 +874,33 @@ def api_create_review():
         db.session.rollback()
         logger.error(f"Review creation error: {e}")
         return jsonify({'error': 'Failed to create review'}), 500
+
+@app.route('/api/test')
+def api_test():
+    """Test endpoint to verify database and user creation"""
+    try:
+        with app.app_context():
+            # Check if demo user exists
+            demo_user = User.query.filter_by(email='demo@wearhouse.com').first()
+            if demo_user:
+                return jsonify({
+                    'status': 'success',
+                    'demo_user_exists': True,
+                    'user_name': demo_user.name,
+                    'user_email': demo_user.email,
+                    'total_users': User.query.count()
+                })
+            else:
+                return jsonify({
+                    'status': 'error',
+                    'demo_user_exists': False,
+                    'total_users': User.query.count()
+                })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        })
 
 @app.route('/api/search')
 def api_search():

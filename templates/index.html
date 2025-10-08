@@ -4038,16 +4038,26 @@
 
         async function fetchCurrentUser() {
             try {
+                console.log('Fetching current user from server...');
                 const response = await fetch('/api/profile', { credentials: 'include' });
+                console.log('Profile response status:', response.status);
+                
                 if (response.ok) {
                     const user = await response.json();
+                    console.log('Profile response data:', user);
                     currentUser = user;
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                 } else if (response.status === 401) {
+                    console.log('Not authenticated (401)');
                     currentUser = null;
                     localStorage.removeItem('rentrobe_user');
+                } else {
+                    console.log('Profile fetch failed with status:', response.status);
+                    const errorData = await response.json().catch(() => ({}));
+                    console.log('Profile error data:', errorData);
                 }
             } catch (e) {
+                console.error('Profile fetch error:', e);
                 // Network error: keep local state
             }
         }
@@ -4639,6 +4649,14 @@
                         hideModal('loginModal');
                         hideSpinner('loginSpinner');
                         console.log('Login successful - modal closed');
+                        
+                        // For Netlify deployment, we need to check session after a delay
+                        // instead of refreshing the page
+                        setTimeout(async () => {
+                            console.log('Checking session after login...');
+                            await fetchCurrentUser();
+                            updateAuthUI();
+                        }, 1000);
                     } else {
                         console.error('No user data in response:', data);
                         showAlert('loginError');
@@ -4692,10 +4710,20 @@
                     currentUser = data.user;
                     console.log('Current user set to:', currentUser);
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                    console.log('User saved to localStorage');
                     updateAuthUI();
                     console.log('Auth UI updated');
                     hideModal('signupModal');
                     hideSpinner('signupSpinner');
+                    console.log('Registration completed successfully');
+                    
+                    // For Netlify deployment, we need to check session after a delay
+                    // instead of refreshing the page
+                    setTimeout(async () => {
+                        console.log('Checking session after registration...');
+                        await fetchCurrentUser();
+                        updateAuthUI();
+                    }, 1000);
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     showAlert('signupError');

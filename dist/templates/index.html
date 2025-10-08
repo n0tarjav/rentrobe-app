@@ -135,13 +135,6 @@
         footer a:hover { color: var(--theme-surface); }
 
         .mobile-menu-toggle { color: var(--theme-accent); }
-        .mobile-nav {
-            background: rgba(233, 233, 227, 0.98);
-            border-top: 1px solid var(--theme-stroke);
-        }
-        .mobile-nav-links a { color: var(--theme-accent); border-bottom-color: var(--theme-surface); }
-        .mobile-nav-links a:hover,
-        .mobile-nav-links a.active { background: var(--theme-surface); color: var(--theme-accent); }
 
         :root {
             --black: #464F50; /* primary text/accents */
@@ -1313,6 +1306,57 @@
             margin-right: 8px;
         }
 
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-input-wrapper .form-input {
+            padding-right: 45px;
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--gray-500);
+        }
+
+        .password-toggle:hover {
+            color: var(--black);
+            background: var(--gray-100);
+        }
+
+        .password-toggle:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .eye-icon {
+            width: 20px;
+            height: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .password-toggle:hover .eye-icon {
+            transform: scale(1.1);
+        }
+
+        .password-toggle.visible .eye-icon {
+            color: var(--black);
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -1597,23 +1641,43 @@
             cursor: pointer;
             color: var(--black);
             padding: 8px;
+            z-index: 1001;
+            position: relative;
+            min-width: 40px;
+            min-height: 40px;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--gray-100);
+            border-radius: 4px;
         }
 
         .mobile-nav {
-            display: none;
-            position: absolute;
-            top: 100%;
+            position: fixed;
+            top: 0;
             left: 0;
             right: 0;
+            bottom: 0;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(15px);
             border-top: 1px solid var(--gray-200);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            z-index: 999;
+            z-index: 1000;
+            overflow-y: auto;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            padding-top: 50px;
         }
 
         .mobile-nav.active {
-            display: block;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
         }
 
         .mobile-nav-links {
@@ -1648,6 +1712,69 @@
             font-weight: 600;
         }
 
+
+        .mobile-user-section {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-100);
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .mobile-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-600);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .mobile-user-details {
+            flex: 1;
+        }
+
+        .mobile-user-name {
+            font-weight: 600;
+            color: var(--black);
+            font-size: 16px;
+        }
+
+        .mobile-user-email {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .mobile-user-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-user-menu a {
+            display: block;
+            padding: 12px 16px;
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-user-menu a:hover {
+            background: var(--gray-100);
+            color: var(--black);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -1658,13 +1785,52 @@
                 display: block;
             }
             
-            .auth-buttons {
-                gap: 8px;
+            .user-menu {
+                display: none;
             }
             
             .btn {
-                padding: 10px 16px;
-                font-size: 14px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            nav {
+                padding: 8px 0;
+                min-height: 50px;
+                position: relative;
+                z-index: 1002;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1003;
+            }
+
+            .logo img {
+                height: 30px;
+            }
+
+            .auth-buttons {
+                display: flex;
+                gap: 8px;
+                position: absolute;
+                left: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1004;
+            }
+
+            .mobile-menu-toggle {
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1005;
             }
             
             .hero-content {
@@ -2315,19 +2481,29 @@
         
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobileNav">
+            <!-- User Section -->
+            <div class="mobile-user-section" id="mobileUserSection" style="display: none;">
+                <div class="mobile-user-info">
+                    <div class="mobile-user-avatar">
+                        <span id="mobileUserInitial">U</span>
+                    </div>
+                    <div class="mobile-user-details">
+                        <div class="mobile-user-name" id="mobileUserName">User Name</div>
+                        <div class="mobile-user-email" id="mobileUserEmail">user@example.com</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation Links -->
             <ul class="mobile-nav-links">
                 <li><a href="#" onclick="showPage('home'); closeMobileMenu();" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse'); closeMobileMenu();">Browse</a></li>
                 <li><a href="#" onclick="showPage('list'); closeMobileMenu();">List Item</a></li>
                 <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();">My Items</a></li>
                 <li><a href="#" onclick="showPage('rentals'); closeMobileMenu();">Requests</a></li>
+                <li><a href="#" onclick="showPage('profile'); closeMobileMenu();" id="mobileProfileLink" style="display: none;">Profile</a></li>
+                <li><a href="#" onclick="logout(); closeMobileMenu();" id="mobileLogoutLink" style="display: none;">Sign Out</a></li>
             </ul>
-            <div style="padding: 0 24px 20px;">
-                <div class="auth-buttons" id="mobileAuthButtons" style="flex-direction: column; gap: 12px;">
-                    <a href="#" class="btn" onclick="showModal('loginModal'); closeMobileMenu();">Sign In</a>
-                    <a href="#" class="btn btn-primary" onclick="showModal('signupModal'); closeMobileMenu();">Join</a>
-                </div>
-            </div>
         </div>
     </header>
 
@@ -3024,7 +3200,15 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" required>
+                    <div class="password-input-wrapper">
+                        <input type="password" class="form-input" id="loginPassword" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span class="spinner" id="loginSpinner"></span>Sign In
@@ -3049,7 +3233,15 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" required minlength="6">
+                    <div class="password-input-wrapper">
+                        <input type="password" class="form-input" id="signupPassword" required minlength="6">
+                        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">
+                            <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone</label>
@@ -3811,6 +4003,19 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
+            // Clear any corrupted localStorage data
+            try {
+                const testData = localStorage.getItem('rentrobe_user');
+                if (testData === 'undefined' || testData === 'null') {
+                    localStorage.removeItem('rentrobe_user');
+                }
+            } catch (e) {
+                localStorage.removeItem('rentrobe_user');
+            }
+            
+            // Clear localStorage completely for fresh start (remove this after testing)
+            // localStorage.clear();
+            
             loadUserFromStorage();
             initializeItems();
             setupEventListeners();
@@ -3833,16 +4038,26 @@
 
         async function fetchCurrentUser() {
             try {
+                console.log('Fetching current user from server...');
                 const response = await fetch('/api/profile', { credentials: 'include' });
+                console.log('Profile response status:', response.status);
+                
                 if (response.ok) {
                     const user = await response.json();
+                    console.log('Profile response data:', user);
                     currentUser = user;
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                 } else if (response.status === 401) {
+                    console.log('Not authenticated (401)');
                     currentUser = null;
                     localStorage.removeItem('rentrobe_user');
+                } else {
+                    console.log('Profile fetch failed with status:', response.status);
+                    const errorData = await response.json().catch(() => ({}));
+                    console.log('Profile error data:', errorData);
                 }
             } catch (e) {
+                console.error('Profile fetch error:', e);
                 // Network error: keep local state
             }
         }
@@ -3956,8 +4171,25 @@
 
         function loadUserFromStorage() {
             const savedUser = localStorage.getItem('rentrobe_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
+            if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
+                try {
+                    const user = JSON.parse(savedUser);
+                    // Validate that user has required fields
+                    if (user && user.id && user.name && user.email) {
+                        currentUser = user;
+                        console.log('Loaded user from storage:', user);
+                    } else {
+                        console.log('Invalid user data in storage, clearing...');
+                        localStorage.removeItem('rentrobe_user');
+                        currentUser = null;
+                    }
+                } catch (error) {
+                    console.error('Error parsing saved user:', error);
+                    localStorage.removeItem('rentrobe_user');
+                    currentUser = null;
+                }
+            } else {
+                currentUser = null;
             }
         }
 
@@ -4187,6 +4419,15 @@
                 document.getElementById('loginPassword').value = '';
             }
             
+            // Clear form fields for signup modal
+            if (modalId === 'signupModal') {
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupPhone').value = '';
+                document.getElementById('signupCity').value = '';
+            }
+            
             // Restore scroll position after a brief delay
             setTimeout(() => {
                 window.scrollTo(0, scrollY);
@@ -4211,14 +4452,148 @@
 
         // Mobile menu functions
         function toggleMobileMenu() {
+            console.log('=== MOBILE MENU TOGGLE CALLED ===');
             const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
+            
+            if (!mobileNav) {
+                console.error('Mobile nav element not found!');
+                return;
+            }
+            
+            console.log('Mobile nav element found:', mobileNav);
+            console.log('Current classes:', mobileNav.className);
+            console.log('Current state:', mobileNav.classList.contains('active'));
+            
+            // Force toggle
+            if (mobileNav.classList.contains('active')) {
+                mobileNav.classList.remove('active');
+                console.log('Removed active class');
+            } else {
+                mobileNav.classList.add('active');
+                console.log('Added active class');
+            }
+            
+            console.log('After toggle - classes:', mobileNav.className);
+            console.log('After toggle - state:', mobileNav.classList.contains('active'));
+            
+            // Check computed styles
+            const computedStyle = window.getComputedStyle(mobileNav);
+            console.log('Mobile nav computed styles:', {
+                display: computedStyle.display,
+                visibility: computedStyle.visibility,
+                opacity: computedStyle.opacity,
+                transform: computedStyle.transform,
+                position: computedStyle.position,
+                top: computedStyle.top,
+                left: computedStyle.left,
+                right: computedStyle.right,
+                bottom: computedStyle.bottom,
+                zIndex: computedStyle.zIndex
+            });
         }
 
         function closeMobileMenu() {
             const mobileNav = document.getElementById('mobileNav');
             mobileNav.classList.remove('active');
         }
+
+        // Test function for debugging
+        window.testMobileMenu = function() {
+            console.log('=== TESTING MOBILE MENU ===');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            console.log('Mobile nav element:', mobileNav);
+            console.log('Mobile menu toggle element:', mobileMenuToggle);
+            console.log('Mobile nav classes:', mobileNav ? mobileNav.className : 'NOT FOUND');
+            console.log('Mobile menu toggle classes:', mobileMenuToggle ? mobileMenuToggle.className : 'NOT FOUND');
+            
+            if (mobileNav) {
+                // Force show the mobile nav for testing
+                mobileNav.style.display = 'block';
+                mobileNav.style.visibility = 'visible';
+                mobileNav.style.opacity = '1';
+                mobileNav.style.transform = 'translateY(0)';
+                mobileNav.classList.add('active');
+                console.log('Force showed mobile nav for testing');
+                console.log('Mobile nav computed styles:', {
+                    display: window.getComputedStyle(mobileNav).display,
+                    visibility: window.getComputedStyle(mobileNav).visibility,
+                    opacity: window.getComputedStyle(mobileNav).opacity,
+                    transform: window.getComputedStyle(mobileNav).transform
+                });
+                
+                setTimeout(() => {
+                    mobileNav.classList.remove('active');
+                    mobileNav.style.display = '';
+                    mobileNav.style.visibility = '';
+                    mobileNav.style.opacity = '';
+                    mobileNav.style.transform = '';
+                    console.log('Reset mobile nav');
+                }, 3000);
+            }
+        };
+
+        // Test function for login API
+        window.testLogin = async function(email = 'demo@wearhouse.com', password = 'password123') {
+            console.log('=== TESTING LOGIN API ===');
+            console.log('Testing with:', { email, password: password ? '***' : 'empty' });
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include'
+                });
+                
+                console.log('Login test response status:', response.status);
+                console.log('Login test response ok:', response.ok);
+                
+                const data = await response.json();
+                console.log('Login test response data:', data);
+                
+                if (response.ok && data.user) {
+                    console.log('Login test successful!');
+                    return data;
+                } else {
+                    console.log('Login test failed:', data);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Login test error:', error);
+                return null;
+            }
+        };
+
+        // Add event listener for mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded - Setting up mobile menu');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                console.log('Mobile menu toggle button found:', mobileMenuToggle);
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile menu toggle clicked via event listener');
+                    toggleMobileMenu();
+                });
+            } else {
+                console.error('Mobile menu toggle button not found!');
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (mobileNav && mobileNav.classList.contains('active')) {
+                if (!mobileNav.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
+                    mobileNav.classList.remove('active');
+                }
+            }
+        });
 
         // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
@@ -4230,16 +4605,23 @@
         // Auth functions
         async function handleLogin(e) {
             e.preventDefault();
-            console.log('Login form submitted');
+            console.log('=== LOGIN ATTEMPT STARTED ===');
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            console.log('Login attempt:', { email, password });
+            console.log('Login credentials:', { email, password: password ? '***' : 'empty' });
+
+            if (!email || !password) {
+                console.error('Missing email or password');
+                showAlert('loginError');
+                return;
+            }
 
             showSpinner('loginSpinner');
 
             try {
+                console.log('Attempting login API call...');
                 // Try API first
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
@@ -4248,21 +4630,46 @@
                     credentials: 'include'
                 });
 
+                console.log('Login response status:', response.status);
+                console.log('Login response ok:', response.ok);
+
                 if (response.ok) {
                     const data = await response.json();
-                    currentUser = data.user;
-                    localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
-                    updateAuthUI();
-                    hideModal('loginModal');
-                    hideSpinner('loginSpinner');
+                    console.log('Login response data:', data);
+                    
+                    if (data.user) {
+                        currentUser = data.user;
+                        console.log('Current user set to:', currentUser);
+                        localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                        console.log('User saved to localStorage');
+                        
+                        updateAuthUI();
+                        console.log('Auth UI updated');
+                        
+                        hideModal('loginModal');
+                        hideSpinner('loginSpinner');
+                        console.log('Login successful - modal closed');
+                        
+                        // For Netlify deployment, we need to check session after a delay
+                        // instead of refreshing the page
+                        setTimeout(async () => {
+                            console.log('Checking session after login...');
+                            await fetchCurrentUser();
+                            updateAuthUI();
+                        }, 1000);
+                    } else {
+                        console.error('No user data in response:', data);
+                        showAlert('loginError');
+                        hideSpinner('loginSpinner');
+                    }
                 } else {
                     const errorData = await response.json();
-                    console.error('Login error:', errorData);
+                    console.error('Login API error:', errorData);
                     showAlert('loginError');
                     hideSpinner('loginSpinner');
                 }
             } catch (error) {
-                console.error('Login error:', error);
+                console.error('Login network error:', error);
                 showAlert('loginError');
                 hideSpinner('loginSpinner');
             }
@@ -4270,13 +4677,18 @@
 
         async function handleSignup(e) {
             e.preventDefault();
+            console.log('Signup form submitted');
+            
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
             const phone = document.getElementById('signupPhone').value;
             const city = document.getElementById('signupCity').value;
 
+            console.log('Signup data:', { name, email, phone, city });
+
             if (!name || !email || !password || !phone || !city) {
+                console.log('Missing required fields');
                 showAlert('signupError');
                 return;
             }
@@ -4294,10 +4706,24 @@
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Signup response data:', data);
                     currentUser = data.user;
+                    console.log('Current user set to:', currentUser);
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                    console.log('User saved to localStorage');
                     updateAuthUI();
+                    console.log('Auth UI updated');
                     hideModal('signupModal');
+                    hideSpinner('signupSpinner');
+                    console.log('Registration completed successfully');
+                    
+                    // For Netlify deployment, we need to check session after a delay
+                    // instead of refreshing the page
+                    setTimeout(async () => {
+                        console.log('Checking session after registration...');
+                        await fetchCurrentUser();
+                        updateAuthUI();
+                    }, 1000);
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     showAlert('signupError');
@@ -4329,16 +4755,57 @@
         }
 
         function updateAuthUI() {
+            console.log('updateAuthUI called, currentUser:', currentUser);
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
+            const mobileUserSection = document.getElementById('mobileUserSection');
+            const mobileProfileLink = document.getElementById('mobileProfileLink');
+            const mobileLogoutLink = document.getElementById('mobileLogoutLink');
+            
+            console.log('authButtons element:', authButtons);
+            console.log('userMenu element:', userMenu);
 
-            if (currentUser) {
+            // Check if user has valid data
+            if (currentUser && currentUser.id && currentUser.name && currentUser.email) {
+                console.log('Setting logged in state');
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'block';
-                document.getElementById('userInitial').textContent = currentUser.name.charAt(0).toUpperCase();
+                if (mobileUserSection) mobileUserSection.style.display = 'block';
+                if (mobileProfileLink) mobileProfileLink.style.display = 'block';
+                if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
+                
+                const userInitial = document.getElementById('userInitial');
+                if (userInitial && currentUser.name) {
+                    userInitial.textContent = currentUser.name.charAt(0).toUpperCase();
+                }
+                
+                // Update mobile user info
+                const mobileUserInitial = document.getElementById('mobileUserInitial');
+                const mobileUserName = document.getElementById('mobileUserName');
+                const mobileUserEmail = document.getElementById('mobileUserEmail');
+                
+                if (mobileUserInitial && currentUser.name) {
+                    mobileUserInitial.textContent = currentUser.name.charAt(0).toUpperCase();
+                }
+                if (mobileUserName) {
+                    mobileUserName.textContent = currentUser.name;
+                }
+                if (mobileUserEmail) {
+                    mobileUserEmail.textContent = currentUser.email;
+                }
             } else {
+                console.log('Setting logged out state - invalid or missing user data');
+                // Clear invalid user data
+                if (currentUser && (!currentUser.id || !currentUser.name || !currentUser.email)) {
+                    console.log('Clearing invalid user data');
+                    currentUser = null;
+                    localStorage.removeItem('rentrobe_user');
+                }
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
+                if (mobileUserSection) mobileUserSection.style.display = 'none';
+                if (mobileProfileLink) mobileProfileLink.style.display = 'none';
+                if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
             }
         }
 
@@ -5254,6 +5721,31 @@
             initializeFAQ();
             initializeContactForm();
         });
+
+        // Password toggle function
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggle = input.parentElement.querySelector('.password-toggle');
+            const eyeIcon = toggle.querySelector('.eye-icon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.classList.add('visible');
+                // Change to eye-slash icon
+                eyeIcon.innerHTML = `
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                `;
+            } else {
+                input.type = 'password';
+                toggle.classList.remove('visible');
+                // Change back to eye icon
+                eyeIcon.innerHTML = `
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                `;
+            }
+        }
 
         // Export for debugging
         window.RentrobeApp = {
