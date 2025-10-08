@@ -1313,6 +1313,14 @@
             margin-right: 8px;
         }
 
+        .password-toggle {
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: #333 !important;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -3024,7 +3032,10 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="loginPassword" required>
+                    <div style="position: relative;">
+                        <input type="password" class="form-input" id="loginPassword" required style="padding-right: 40px;">
+                        <span class="password-toggle" onclick="togglePassword('loginPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; color: #666;">👁️</span>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <span class="spinner" id="loginSpinner"></span>Sign In
@@ -3049,7 +3060,10 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="signupPassword" required minlength="6">
+                    <div style="position: relative;">
+                        <input type="password" class="form-input" id="signupPassword" required minlength="6" style="padding-right: 40px;">
+                        <span class="password-toggle" onclick="togglePassword('signupPassword')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; color: #666;">👁️</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone</label>
@@ -5321,6 +5335,20 @@
             initializeFAQ();
             initializeContactForm();
         });
+
+        // Password toggle function
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggle = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                toggle.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                toggle.textContent = '👁️';
+            }
+        }
 
         // Export for debugging
         window.RentrobeApp = {
