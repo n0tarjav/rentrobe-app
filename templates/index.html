@@ -1707,23 +1707,6 @@
             font-weight: 600;
         }
 
-        .mobile-auth-section {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--gray-200);
-            background: var(--gray-100);
-        }
-
-        .mobile-auth-section .auth-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .mobile-auth-section .btn {
-            width: 100%;
-            text-align: center;
-            justify-content: center;
-        }
 
         .mobile-user-section {
             padding: 20px 24px;
@@ -1797,17 +1780,13 @@
                 display: block;
             }
             
-            .auth-buttons {
-                display: none;
-            }
-            
             .user-menu {
                 display: none;
             }
             
             .btn {
-                padding: 10px 16px;
-                font-size: 14px;
+                padding: 8px 12px;
+                font-size: 12px;
             }
 
             nav {
@@ -1815,6 +1794,9 @@
                 min-height: 50px;
                 position: relative;
                 z-index: 1002;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
             }
 
             .logo {
@@ -1828,12 +1810,22 @@
                 height: 30px;
             }
 
+            .auth-buttons {
+                display: flex;
+                gap: 8px;
+                position: absolute;
+                left: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1004;
+            }
+
             .mobile-menu-toggle {
                 position: absolute;
                 right: 16px;
                 top: 50%;
                 transform: translateY(-50%);
-                z-index: 1004;
+                z-index: 1005;
             }
             
             .hero-content {
@@ -2484,14 +2476,6 @@
         
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobileNav">
-            <!-- Auth Buttons Section -->
-            <div class="mobile-auth-section" id="mobileAuthSection">
-                <div class="auth-buttons" id="mobileAuthButtons">
-                    <a href="#" class="btn" onclick="showModal('loginModal'); closeMobileMenu();">Sign In</a>
-                    <a href="#" class="btn btn-primary" onclick="showModal('signupModal'); closeMobileMenu();">Join</a>
-                </div>
-            </div>
-            
             <!-- User Section -->
             <div class="mobile-user-section" id="mobileUserSection" style="display: none;">
                 <div class="mobile-user-info">
@@ -4600,7 +4584,6 @@
             console.log('updateAuthUI called, currentUser:', currentUser);
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
-            const mobileAuthSection = document.getElementById('mobileAuthSection');
             const mobileUserSection = document.getElementById('mobileUserSection');
             const mobileProfileLink = document.getElementById('mobileProfileLink');
             const mobileLogoutLink = document.getElementById('mobileLogoutLink');
@@ -4613,7 +4596,6 @@
                 console.log('Setting logged in state');
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'block';
-                if (mobileAuthSection) mobileAuthSection.style.display = 'none';
                 if (mobileUserSection) mobileUserSection.style.display = 'block';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
@@ -4647,7 +4629,6 @@
                 }
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
-                if (mobileAuthSection) mobileAuthSection.style.display = 'block';
                 if (mobileUserSection) mobileUserSection.style.display = 'none';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
