@@ -1656,7 +1656,7 @@
 
         .mobile-nav {
             position: fixed;
-            top: 50px;
+            top: 0;
             left: 0;
             right: 0;
             bottom: 0;
@@ -1670,12 +1670,14 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
             opacity: 0;
             visibility: hidden;
+            padding-top: 50px;
         }
 
         .mobile-nav.active {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
+            transform: translateY(0) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
         }
 
         .mobile-nav-links {
@@ -4463,9 +4465,21 @@
             
             console.log('After toggle - classes:', mobileNav.className);
             console.log('After toggle - state:', mobileNav.classList.contains('active'));
-            console.log('Mobile nav visibility:', window.getComputedStyle(mobileNav).visibility);
-            console.log('Mobile nav transform:', window.getComputedStyle(mobileNav).transform);
-            console.log('Mobile nav opacity:', window.getComputedStyle(mobileNav).opacity);
+            
+            // Check computed styles
+            const computedStyle = window.getComputedStyle(mobileNav);
+            console.log('Mobile nav computed styles:', {
+                display: computedStyle.display,
+                visibility: computedStyle.visibility,
+                opacity: computedStyle.opacity,
+                transform: computedStyle.transform,
+                position: computedStyle.position,
+                top: computedStyle.top,
+                left: computedStyle.left,
+                right: computedStyle.right,
+                bottom: computedStyle.bottom,
+                zIndex: computedStyle.zIndex
+            });
         }
 
         function closeMobileMenu() {
@@ -4485,12 +4499,28 @@
             console.log('Mobile menu toggle classes:', mobileMenuToggle ? mobileMenuToggle.className : 'NOT FOUND');
             
             if (mobileNav) {
+                // Force show the mobile nav for testing
+                mobileNav.style.display = 'block';
+                mobileNav.style.visibility = 'visible';
+                mobileNav.style.opacity = '1';
+                mobileNav.style.transform = 'translateY(0)';
                 mobileNav.classList.add('active');
-                console.log('Added active class to mobile nav');
+                console.log('Force showed mobile nav for testing');
+                console.log('Mobile nav computed styles:', {
+                    display: window.getComputedStyle(mobileNav).display,
+                    visibility: window.getComputedStyle(mobileNav).visibility,
+                    opacity: window.getComputedStyle(mobileNav).opacity,
+                    transform: window.getComputedStyle(mobileNav).transform
+                });
+                
                 setTimeout(() => {
                     mobileNav.classList.remove('active');
-                    console.log('Removed active class from mobile nav');
-                }, 2000);
+                    mobileNav.style.display = '';
+                    mobileNav.style.visibility = '';
+                    mobileNav.style.opacity = '';
+                    mobileNav.style.transform = '';
+                    console.log('Reset mobile nav');
+                }, 3000);
             }
         };
 
