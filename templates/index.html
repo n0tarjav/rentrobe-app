@@ -4524,6 +4524,38 @@
             }
         };
 
+        // Test function for login API
+        window.testLogin = async function(email = 'demo@wearhouse.com', password = 'password123') {
+            console.log('=== TESTING LOGIN API ===');
+            console.log('Testing with:', { email, password: password ? '***' : 'empty' });
+            
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include'
+                });
+                
+                console.log('Login test response status:', response.status);
+                console.log('Login test response ok:', response.ok);
+                
+                const data = await response.json();
+                console.log('Login test response data:', data);
+                
+                if (response.ok && data.user) {
+                    console.log('Login test successful!');
+                    return data;
+                } else {
+                    console.log('Login test failed:', data);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Login test error:', error);
+                return null;
+            }
+        };
+
         // Add event listener for mobile menu toggle
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM Content Loaded - Setting up mobile menu');
@@ -4563,16 +4595,23 @@
         // Auth functions
         async function handleLogin(e) {
             e.preventDefault();
-            console.log('Login form submitted');
+            console.log('=== LOGIN ATTEMPT STARTED ===');
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            console.log('Login attempt:', { email, password });
+            console.log('Login credentials:', { email, password: password ? '***' : 'empty' });
+
+            if (!email || !password) {
+                console.error('Missing email or password');
+                showAlert('loginError');
+                return;
+            }
 
             showSpinner('loginSpinner');
 
             try {
+                console.log('Attempting login API call...');
                 // Try API first
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
@@ -4581,24 +4620,38 @@
                     credentials: 'include'
                 });
 
+                console.log('Login response status:', response.status);
+                console.log('Login response ok:', response.ok);
+
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Login response data:', data);
-                    currentUser = data.user;
-                    console.log('Current user set to:', currentUser);
-                    localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
-                    updateAuthUI();
-                    console.log('Auth UI updated');
-                    hideModal('loginModal');
-                    hideSpinner('loginSpinner');
+                    
+                    if (data.user) {
+                        currentUser = data.user;
+                        console.log('Current user set to:', currentUser);
+                        localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                        console.log('User saved to localStorage');
+                        
+                        updateAuthUI();
+                        console.log('Auth UI updated');
+                        
+                        hideModal('loginModal');
+                        hideSpinner('loginSpinner');
+                        console.log('Login successful - modal closed');
+                    } else {
+                        console.error('No user data in response:', data);
+                        showAlert('loginError');
+                        hideSpinner('loginSpinner');
+                    }
                 } else {
                     const errorData = await response.json();
-                    console.error('Login error:', errorData);
+                    console.error('Login API error:', errorData);
                     showAlert('loginError');
                     hideSpinner('loginSpinner');
                 }
             } catch (error) {
-                console.error('Login error:', error);
+                console.error('Login network error:', error);
                 showAlert('loginError');
                 hideSpinner('loginSpinner');
             }
