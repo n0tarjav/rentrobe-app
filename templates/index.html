@@ -1645,6 +1645,13 @@
             position: relative;
             min-width: 40px;
             min-height: 40px;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--gray-100);
+            border-radius: 4px;
         }
 
         .mobile-nav {
@@ -4433,24 +4440,76 @@
 
         // Mobile menu functions
         function toggleMobileMenu() {
+            console.log('=== MOBILE MENU TOGGLE CALLED ===');
             const mobileNav = document.getElementById('mobileNav');
-            console.log('Toggle mobile menu clicked');
-            console.log('Mobile nav element:', mobileNav);
+            
+            if (!mobileNav) {
+                console.error('Mobile nav element not found!');
+                return;
+            }
+            
+            console.log('Mobile nav element found:', mobileNav);
             console.log('Current classes:', mobileNav.className);
             console.log('Current state:', mobileNav.classList.contains('active'));
             
-            mobileNav.classList.toggle('active');
+            // Force toggle
+            if (mobileNav.classList.contains('active')) {
+                mobileNav.classList.remove('active');
+                console.log('Removed active class');
+            } else {
+                mobileNav.classList.add('active');
+                console.log('Added active class');
+            }
             
             console.log('After toggle - classes:', mobileNav.className);
             console.log('After toggle - state:', mobileNav.classList.contains('active'));
-            console.log('Mobile nav display:', window.getComputedStyle(mobileNav).display);
+            console.log('Mobile nav visibility:', window.getComputedStyle(mobileNav).visibility);
             console.log('Mobile nav transform:', window.getComputedStyle(mobileNav).transform);
+            console.log('Mobile nav opacity:', window.getComputedStyle(mobileNav).opacity);
         }
 
         function closeMobileMenu() {
             const mobileNav = document.getElementById('mobileNav');
             mobileNav.classList.remove('active');
         }
+
+        // Test function for debugging
+        window.testMobileMenu = function() {
+            console.log('=== TESTING MOBILE MENU ===');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            console.log('Mobile nav element:', mobileNav);
+            console.log('Mobile menu toggle element:', mobileMenuToggle);
+            console.log('Mobile nav classes:', mobileNav ? mobileNav.className : 'NOT FOUND');
+            console.log('Mobile menu toggle classes:', mobileMenuToggle ? mobileMenuToggle.className : 'NOT FOUND');
+            
+            if (mobileNav) {
+                mobileNav.classList.add('active');
+                console.log('Added active class to mobile nav');
+                setTimeout(() => {
+                    mobileNav.classList.remove('active');
+                    console.log('Removed active class from mobile nav');
+                }, 2000);
+            }
+        };
+
+        // Add event listener for mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded - Setting up mobile menu');
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            if (mobileMenuToggle) {
+                console.log('Mobile menu toggle button found:', mobileMenuToggle);
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile menu toggle clicked via event listener');
+                    toggleMobileMenu();
+                });
+            } else {
+                console.error('Mobile menu toggle button not found!');
+            }
+        });
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
