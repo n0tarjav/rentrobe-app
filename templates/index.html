@@ -1706,8 +1706,8 @@
 
         .mobile-auth-section {
             padding: 20px 24px;
-            border-top: 1px solid var(--gray-200);
-            margin-top: 20px;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-100);
         }
 
         .mobile-auth-section .auth-buttons {
@@ -1724,8 +1724,8 @@
 
         .mobile-user-section {
             padding: 20px 24px;
-            border-top: 1px solid var(--gray-200);
-            margin-top: 20px;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-100);
         }
 
         .mobile-user-info {
@@ -1810,10 +1810,24 @@
             nav {
                 padding: 8px 0;
                 min-height: 50px;
+                position: relative;
+            }
+
+            .logo {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
             .logo img {
                 height: 30px;
+            }
+
+            .mobile-menu-toggle {
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
             }
             
             .hero-content {
@@ -2464,19 +2478,15 @@
         
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobileNav">
-            <ul class="mobile-nav-links">
-                <li><a href="#" onclick="showPage('home'); closeMobileMenu();" class="active">Home</a></li>
-                <li><a href="#" onclick="showPage('browse'); closeMobileMenu();">Browse</a></li>
-                <li><a href="#" onclick="showPage('list'); closeMobileMenu();">List Item</a></li>
-                <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();">My Items</a></li>
-                <li><a href="#" onclick="showPage('rentals'); closeMobileMenu();">Requests</a></li>
-            </ul>
+            <!-- Auth Buttons Section -->
             <div class="mobile-auth-section" id="mobileAuthSection">
                 <div class="auth-buttons" id="mobileAuthButtons">
                     <a href="#" class="btn" onclick="showModal('loginModal'); closeMobileMenu();">Sign In</a>
                     <a href="#" class="btn btn-primary" onclick="showModal('signupModal'); closeMobileMenu();">Join</a>
                 </div>
             </div>
+            
+            <!-- User Section -->
             <div class="mobile-user-section" id="mobileUserSection" style="display: none;">
                 <div class="mobile-user-info">
                     <div class="mobile-user-avatar">
@@ -2487,13 +2497,18 @@
                         <div class="mobile-user-email" id="mobileUserEmail">user@example.com</div>
                     </div>
                 </div>
-                <div class="mobile-user-menu">
-                    <a href="#" onclick="showPage('profile'); closeMobileMenu();">Profile</a>
-                    <a href="#" onclick="showPage('my-items'); closeMobileMenu();">My Items</a>
-                    <a href="#" onclick="showPage('rentals'); closeMobileMenu();">Requests</a>
-                    <a href="#" onclick="logout(); closeMobileMenu();">Sign Out</a>
-                </div>
             </div>
+            
+            <!-- Navigation Links -->
+            <ul class="mobile-nav-links">
+                <li><a href="#" onclick="showPage('home'); closeMobileMenu();" class="active">Home</a></li>
+                <li><a href="#" onclick="showPage('browse'); closeMobileMenu();">Browse</a></li>
+                <li><a href="#" onclick="showPage('list'); closeMobileMenu();">List Item</a></li>
+                <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();">My Items</a></li>
+                <li><a href="#" onclick="showPage('rentals'); closeMobileMenu();">Requests</a></li>
+                <li><a href="#" onclick="showPage('profile'); closeMobileMenu();" id="mobileProfileLink" style="display: none;">Profile</a></li>
+                <li><a href="#" onclick="logout(); closeMobileMenu();" id="mobileLogoutLink" style="display: none;">Sign Out</a></li>
+            </ul>
         </div>
     </header>
 
@@ -4567,6 +4582,8 @@
             const userMenu = document.getElementById('userMenu');
             const mobileAuthSection = document.getElementById('mobileAuthSection');
             const mobileUserSection = document.getElementById('mobileUserSection');
+            const mobileProfileLink = document.getElementById('mobileProfileLink');
+            const mobileLogoutLink = document.getElementById('mobileLogoutLink');
             
             console.log('authButtons element:', authButtons);
             console.log('userMenu element:', userMenu);
@@ -4578,6 +4595,8 @@
                 userMenu.style.display = 'block';
                 if (mobileAuthSection) mobileAuthSection.style.display = 'none';
                 if (mobileUserSection) mobileUserSection.style.display = 'block';
+                if (mobileProfileLink) mobileProfileLink.style.display = 'block';
+                if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
                 
                 const userInitial = document.getElementById('userInitial');
                 if (userInitial && currentUser.name) {
@@ -4610,6 +4629,8 @@
                 userMenu.style.display = 'none';
                 if (mobileAuthSection) mobileAuthSection.style.display = 'block';
                 if (mobileUserSection) mobileUserSection.style.display = 'none';
+                if (mobileProfileLink) mobileProfileLink.style.display = 'none';
+                if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
             }
         }
 
