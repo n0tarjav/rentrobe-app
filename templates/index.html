@@ -3811,6 +3811,16 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
+            // Clear any corrupted localStorage data
+            try {
+                const testData = localStorage.getItem('rentrobe_user');
+                if (testData === 'undefined' || testData === 'null') {
+                    localStorage.removeItem('rentrobe_user');
+                }
+            } catch (e) {
+                localStorage.removeItem('rentrobe_user');
+            }
+            
             loadUserFromStorage();
             initializeItems();
             setupEventListeners();
@@ -3956,8 +3966,16 @@
 
         function loadUserFromStorage() {
             const savedUser = localStorage.getItem('rentrobe_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
+            if (savedUser && savedUser !== 'undefined' && savedUser !== 'null') {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                } catch (error) {
+                    console.error('Error parsing saved user:', error);
+                    localStorage.removeItem('rentrobe_user');
+                    currentUser = null;
+                }
+            } else {
+                currentUser = null;
             }
         }
 
