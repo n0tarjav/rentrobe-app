@@ -3884,13 +3884,22 @@
             // Clear localStorage completely for fresh start (remove this after testing)
             // localStorage.clear();
             
-            loadUserFromStorage();
+            const hasValidUserFromStorage = loadUserFromStorage();
             initializeItems();
             setupEventListeners();
-            // Check server session and then update UI
-            fetchCurrentUser().finally(() => {
+            
+            // Only fetch from server if we don't have a valid user from localStorage
+            // For Netlify deployment, we rely primarily on localStorage
+            if (!hasValidUserFromStorage) {
+                console.log('No valid user from storage, checking server...');
+                fetchCurrentUser().finally(() => {
+                    updateAuthUI();
+                });
+            } else {
+                console.log('Using user from localStorage, skipping server fetch');
                 updateAuthUI();
-            });
+            }
+            
             initializeCarousel();
             initializeHeaderScroll();
             // Rental form listeners
@@ -4086,6 +4095,9 @@
                     if (user && user.id && user.name && user.email) {
                         currentUser = user;
                         console.log('Loaded user from storage:', user);
+                        // For Netlify deployment, we rely on localStorage primarily
+                        // Don't overwrite with server data unless necessary
+                        return true; // Indicate we have a valid user from storage
                     } else {
                         console.log('Invalid user data in storage, clearing...');
                         localStorage.removeItem('rentrobe_user');
@@ -4099,6 +4111,7 @@
             } else {
                 currentUser = null;
             }
+            return false; // No valid user from storage
         }
 
         function initializeItems() {
