@@ -28,6 +28,28 @@ function initializeUsers() {
       address: '123 Fashion Street, Mumbai',
       rating: 5.0,
       reviews_count: 10
+    },
+    {
+      id: 2,
+      name: 'Arjav',
+      email: 'arjav@rentrobe.com',
+      password: 'arjav0302', // In real app, this would be hashed
+      phone: '+91 8319337033',
+      city: 'Bhilai',
+      address: 'Bhilai, Chhattisgarh',
+      rating: 4.8,
+      reviews_count: 15
+    },
+    {
+      id: 3,
+      name: 'Ankita',
+      email: 'ankita@rentrobe.com',
+      password: 'ankita1001', // In real app, this would be hashed
+      phone: '+91 9876543211',
+      city: 'Delhi',
+      address: 'Delhi, India',
+      rating: 4.9,
+      reviews_count: 12
     }
   ];
 }

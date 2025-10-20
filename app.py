@@ -970,18 +970,46 @@ def init_db():
                 category = Category(**cat_data)
                 db.session.add(category)
         
-        # Create demo user if it doesn't exist
-        if not User.query.filter_by(email='demo@wearhouse.com').first():
-            demo_user = User(
-                name='Demo User',
-                email='demo@wearhouse.com',
-                password_hash=bcrypt.generate_password_hash('password123').decode('utf-8'),
-                phone='+91 9876543210',
-                city='Mumbai',
-                address='123 Fashion Street, Mumbai',
-                is_verified=True
-            )
-            db.session.add(demo_user)
+        # Create demo users if they don't exist
+        demo_users = [
+            {
+                'name': 'Demo User',
+                'email': 'demo@wearhouse.com',
+                'password': 'password123',
+                'phone': '+91 9876543210',
+                'city': 'Mumbai',
+                'address': '123 Fashion Street, Mumbai'
+            },
+            {
+                'name': 'Arjav',
+                'email': 'arjav@rentrobe.com',
+                'password': 'arjav0302',
+                'phone': '+91 8319337033',
+                'city': 'Bhilai',
+                'address': 'Bhilai, Chhattisgarh'
+            },
+            {
+                'name': 'Ankita',
+                'email': 'ankita@rentrobe.com',
+                'password': 'ankita1001',
+                'phone': '+91 9876543211',
+                'city': 'Delhi',
+                'address': 'Delhi, India'
+            }
+        ]
+        
+        for user_data in demo_users:
+            if not User.query.filter_by(email=user_data['email']).first():
+                demo_user = User(
+                    name=user_data['name'],
+                    email=user_data['email'],
+                    password_hash=bcrypt.generate_password_hash(user_data['password']).decode('utf-8'),
+                    phone=user_data['phone'],
+                    city=user_data['city'],
+                    address=user_data['address'],
+                    is_verified=True
+                )
+                db.session.add(demo_user)
         
         db.session.commit()
         logger.info("Database initialized successfully!")

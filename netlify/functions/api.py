@@ -75,25 +75,54 @@ def handler(event, context):
                 init_db()
                 print(f"Database initialized successfully")
                 
-                # Check if demo user exists, create if not
+                # Check if demo users exist, create if not
                 from app import User, bcrypt
-                demo_user = User.query.filter_by(email='demo@wearhouse.com').first()
-                if not demo_user:
-                    print("Creating demo user...")
-                    demo_user = User(
-                        name='Demo User',
-                        email='demo@wearhouse.com',
-                        password_hash=bcrypt.generate_password_hash('password123').decode('utf-8'),
-                        phone='+91 9876543210',
-                        city='Mumbai',
-                        address='123 Fashion Street, Mumbai',
-                        is_verified=True
-                    )
-                    db.session.add(demo_user)
-                    db.session.commit()
-                    print("Demo user created successfully")
-                else:
-                    print("Demo user already exists")
+                demo_users_data = [
+                    {
+                        'name': 'Demo User',
+                        'email': 'demo@wearhouse.com',
+                        'password': 'password123',
+                        'phone': '+91 9876543210',
+                        'city': 'Mumbai',
+                        'address': '123 Fashion Street, Mumbai'
+                    },
+                    {
+                        'name': 'Arjav',
+                        'email': 'arjav@rentrobe.com',
+                        'password': 'arjav0302',
+                        'phone': '+91 8319337033',
+                        'city': 'Bhilai',
+                        'address': 'Bhilai, Chhattisgarh'
+                    },
+                    {
+                        'name': 'Ankita',
+                        'email': 'ankita@rentrobe.com',
+                        'password': 'ankita1001',
+                        'phone': '+91 9876543211',
+                        'city': 'Delhi',
+                        'address': 'Delhi, India'
+                    }
+                ]
+                
+                for user_data in demo_users_data:
+                    existing_user = User.query.filter_by(email=user_data['email']).first()
+                    if not existing_user:
+                        print(f"Creating demo user: {user_data['email']}")
+                        demo_user = User(
+                            name=user_data['name'],
+                            email=user_data['email'],
+                            password_hash=bcrypt.generate_password_hash(user_data['password']).decode('utf-8'),
+                            phone=user_data['phone'],
+                            city=user_data['city'],
+                            address=user_data['address'],
+                            is_verified=True
+                        )
+                        db.session.add(demo_user)
+                        print(f"Demo user {user_data['email']} created successfully")
+                    else:
+                        print(f"Demo user {user_data['email']} already exists")
+                
+                db.session.commit()
                     
             except Exception as db_error:
                 print(f"Database init error: {str(db_error)}")
