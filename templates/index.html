@@ -3906,7 +3906,23 @@
 
         async function fetchCurrentUser() {
             try {
-                console.log('Fetching current user from server...');
+                console.log('Checking user authentication...');
+                
+                // For Netlify deployment, we rely primarily on localStorage
+                // since serverless functions don't maintain sessions
+                const savedUser = localStorage.getItem('rentrobe_user');
+                if (savedUser) {
+                    try {
+                        currentUser = JSON.parse(savedUser);
+                        console.log('User loaded from localStorage:', currentUser);
+                        return;
+                    } catch (e) {
+                        console.error('Error parsing saved user:', e);
+                        localStorage.removeItem('rentrobe_user');
+                    }
+                }
+                
+                // If no saved user, try to fetch from server (for development)
                 const response = await fetch('/api/profile', { credentials: 'include' });
                 console.log('Profile response status:', response.status);
                 
@@ -3927,6 +3943,17 @@
             } catch (e) {
                 console.error('Profile fetch error:', e);
                 // Network error: keep local state
+                const savedUser = localStorage.getItem('rentrobe_user');
+                if (savedUser) {
+                    try {
+                        currentUser = JSON.parse(savedUser);
+                        console.log('Using cached user due to network error');
+                    } catch (parseError) {
+                        console.error('Error parsing cached user:', parseError);
+                        localStorage.removeItem('rentrobe_user');
+                        currentUser = null;
+                    }
+                }
             }
         }
 
@@ -4496,13 +4523,8 @@
                         hideSpinner('loginSpinner');
                         console.log('Login successful - modal closed');
                         
-                        // For Netlify deployment, we need to check session after a delay
-                        // instead of refreshing the page
-                        setTimeout(async () => {
-                            console.log('Checking session after login...');
-                            await fetchCurrentUser();
-                            updateAuthUI();
-                        }, 1000);
+                        // Update UI immediately since we're using localStorage
+                        updateAuthUI();
                     } else {
                         console.error('No user data in response:', data);
                         showAlert('loginError');
@@ -4563,13 +4585,8 @@
                     hideSpinner('signupSpinner');
                     console.log('Registration completed successfully');
                     
-                    // For Netlify deployment, we need to check session after a delay
-                    // instead of refreshing the page
-                    setTimeout(async () => {
-                        console.log('Checking session after registration...');
-                        await fetchCurrentUser();
-                        updateAuthUI();
-                    }, 1000);
+                    // Update UI immediately since we're using localStorage
+                    updateAuthUI();
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     showAlert('signupError');

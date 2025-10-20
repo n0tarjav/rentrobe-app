@@ -83,7 +83,7 @@ exports.handler = async (event, context) => {
       const body = JSON.parse(event.body || '{}');
       const { email, password } = body;
       
-      console.log('Login attempt:', { email, password, path: event.path, method: event.httpMethod });
+      console.log('Login attempt:', { email, password: password ? '***' : 'empty', path: event.path, method: event.httpMethod });
       
       // Load users from persistent storage
       const users = initializeUsers();
@@ -119,6 +119,7 @@ exports.handler = async (event, context) => {
         };
       }
     } catch (error) {
+      console.error('Login error:', error);
       return {
         statusCode: 400,
         headers: {
@@ -127,6 +128,67 @@ exports.handler = async (event, context) => {
         },
         body: JSON.stringify({
           error: 'Invalid request data'
+        })
+      };
+    }
+  }
+
+  // Handle profile endpoint
+  if ((event.path === '/api/profile' || event.path === '/.netlify/functions/api/profile') && event.httpMethod === 'GET') {
+    try {
+      console.log('Profile request:', { path: event.path, method: event.httpMethod });
+      
+      // For now, return a simple response since we're using localStorage for auth
+      return {
+        statusCode: 200,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Profile endpoint - use localStorage for authentication'
+        })
+      };
+    } catch (error) {
+      console.error('Profile error:', error);
+      return {
+        statusCode: 500,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          error: 'Profile request failed'
+        })
+      };
+    }
+  }
+
+  // Handle logout endpoint
+  if ((event.path === '/api/auth/logout' || event.path === '/.netlify/functions/api/auth/logout') && event.httpMethod === 'POST') {
+    try {
+      console.log('Logout request:', { path: event.path, method: event.httpMethod });
+      
+      return {
+        statusCode: 200,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Logout successful'
+        })
+      };
+    } catch (error) {
+      console.error('Logout error:', error);
+      return {
+        statusCode: 500,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          error: 'Logout failed'
         })
       };
     }

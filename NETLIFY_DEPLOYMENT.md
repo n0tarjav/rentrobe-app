@@ -102,3 +102,4 @@ If you need help:
 3. Check browser console for errors
 
 Your app is now ready for production! 🎉
+

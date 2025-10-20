@@ -113,3 +113,4 @@ if __name__ == "__main__":
     print(f"Registration: {'PASS' if register_success else 'FAIL'}")
     print(f"Demo Login: {'PASS' if login_success else 'FAIL'}")
     print(f"New User Login: {'PASS' if new_user_login_success else 'FAIL'}")
+

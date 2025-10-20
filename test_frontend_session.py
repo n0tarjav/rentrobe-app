@@ -116,3 +116,4 @@ if __name__ == "__main__":
     print(f"\n=== RESULTS ===")
     print(f"Registration Flow: {'PASS' if reg_success else 'FAIL'}")
     print(f"Login Flow: {'PASS' if login_success else 'FAIL'}")
+

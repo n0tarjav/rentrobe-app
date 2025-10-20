@@ -16,9 +16,10 @@ os.environ['DATABASE_URL'] = f'sqlite:///{db_path}'
 os.environ['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'wearhouse-netlify-secret-key-change-in-production')
 
 # Set session configuration for Netlify
-os.environ['SESSION_COOKIE_SECURE'] = 'False'  # Netlify handles HTTPS
+os.environ['SESSION_COOKIE_SECURE'] = 'True'  # Use HTTPS for production
 os.environ['SESSION_COOKIE_HTTPONLY'] = 'True'
 os.environ['SESSION_COOKIE_SAMESITE'] = 'Lax'
+os.environ['SESSION_COOKIE_DOMAIN'] = '.netlify.app'  # Allow subdomain cookies
 
 # Import Flask app
 from app import app, db, init_db
@@ -59,7 +60,7 @@ def handler(event, context):
                 'statusCode': 200,
                 'headers': {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie, Set-Cookie',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
                     'Access-Control-Allow-Credentials': 'true'
                 },
@@ -129,15 +130,22 @@ def handler(event, context):
                 except json.JSONDecodeError:
                     pass
             
+            # Prepare response headers
+            netlify_headers = {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie, Set-Cookie',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Credentials': 'true'
+            }
+            
+            # Pass through any Set-Cookie headers from Flask
+            if 'Set-Cookie' in response_headers:
+                netlify_headers['Set-Cookie'] = response_headers['Set-Cookie']
+            
             return {
                 'statusCode': status_code,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
+                'headers': netlify_headers,
                 'body': json.dumps(response_data)
             }
     

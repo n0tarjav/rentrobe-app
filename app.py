@@ -44,6 +44,9 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() == 'true'
 app.config['SESSION_COOKIE_HTTPONLY'] = os.environ.get('SESSION_COOKIE_HTTPONLY', 'True').lower() == 'true'
 app.config['SESSION_COOKIE_SAMESITE'] = os.environ.get('SESSION_COOKIE_SAMESITE', 'Lax')
+app.config['SESSION_COOKIE_DOMAIN'] = os.environ.get('SESSION_COOKIE_DOMAIN', None)
+app.config['SESSION_PERMANENT'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
 # Ensure upload directory exists
 Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
@@ -453,6 +456,7 @@ def api_register():
         db.session.commit()
         
         login_user(user)
+        session.permanent = True
         
         logger.info(f"New user registered: {email}, session: {session}")
         return jsonify({
@@ -482,6 +486,7 @@ def api_login():
         
         if user and bcrypt.check_password_hash(user.password_hash, data['password']):
             login_user(user, remember=True)
+            session.permanent = True
             logger.info(f"User logged in: {email}, session: {session}")
             return jsonify({
                 'message': 'Login successful',
