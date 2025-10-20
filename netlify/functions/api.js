@@ -194,21 +194,63 @@ exports.handler = async (event, context) => {
       
       console.log('Profile update request:', { name, phone, city, path: event.path, method: event.httpMethod });
       
-      // For Netlify deployment, we rely on localStorage for profile updates
-      // This endpoint just returns success to acknowledge the update
-      return {
-        statusCode: 200,
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: 'Profile update acknowledged',
-          name: name,
-          phone: phone,
-          city: city
-        })
-      };
+      // Load users from persistent storage
+      const users = initializeUsers();
+      
+      // For now, we need to identify which user to update
+      // Since we don't have user authentication in the request, we'll update based on the most recent user
+      // In a real app, you'd get the user ID from the session or JWT token
+      
+      // For demo purposes, update the last registered user or the first demo user
+      let userToUpdate = users[users.length - 1]; // Most recently added user
+      
+      if (userToUpdate) {
+        // Update user data
+        userToUpdate.name = name || userToUpdate.name;
+        userToUpdate.phone = phone || userToUpdate.phone;
+        userToUpdate.city = city || userToUpdate.city;
+        
+        // Save updated users list
+        const saved = saveUsers(users);
+        
+        if (saved) {
+          console.log('Profile updated successfully in persistent storage');
+          return {
+            statusCode: 200,
+            headers: {
+              ...headers,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: 'Profile updated successfully',
+              user: userToUpdate
+            })
+          };
+        } else {
+          console.log('Failed to save profile update to persistent storage');
+          return {
+            statusCode: 500,
+            headers: {
+              ...headers,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              error: 'Failed to save profile update'
+            })
+          };
+        }
+      } else {
+        return {
+          statusCode: 404,
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            error: 'User not found'
+          })
+        };
+      }
     } catch (error) {
       console.error('Profile update error:', error);
       return {

@@ -3929,7 +3929,33 @@
                 if (response.ok) {
                     const user = await response.json();
                     console.log('Profile response data:', user);
-                    currentUser = user;
+                    
+                    // Check if we have updated profile data in localStorage
+                    const savedUser = localStorage.getItem('rentrobe_user');
+                    if (savedUser) {
+                        try {
+                            const localUser = JSON.parse(savedUser);
+                            // If the email matches, merge the data (localStorage has priority for profile fields)
+                            if (localUser.email === user.email) {
+                                console.log('Merging user data from localStorage with server data in fetchCurrentUser');
+                                currentUser = {
+                                    ...user, // Server data (has correct ID, password, etc.)
+                                    name: localUser.name, // Local profile updates take priority
+                                    phone: localUser.phone,
+                                    city: localUser.city
+                                };
+                                console.log('Merged user data in fetchCurrentUser:', currentUser);
+                            } else {
+                                currentUser = user;
+                            }
+                        } catch (e) {
+                            console.error('Error parsing saved user in fetchCurrentUser:', e);
+                            currentUser = user;
+                        }
+                    } else {
+                        currentUser = user;
+                    }
+                    
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                 } else if (response.status === 401) {
                     console.log('Not authenticated (401)');
@@ -4511,7 +4537,32 @@
                     console.log('Login response data:', data);
                     
                     if (data.user) {
-                        currentUser = data.user;
+                        // Check if we have updated profile data in localStorage
+                        const savedUser = localStorage.getItem('rentrobe_user');
+                        if (savedUser) {
+                            try {
+                                const localUser = JSON.parse(savedUser);
+                                // If the email matches, merge the data (localStorage has priority for profile fields)
+                                if (localUser.email === data.user.email) {
+                                    console.log('Merging user data from localStorage with server data');
+                                    currentUser = {
+                                        ...data.user, // Server data (has correct ID, password, etc.)
+                                        name: localUser.name, // Local profile updates take priority
+                                        phone: localUser.phone,
+                                        city: localUser.city
+                                    };
+                                    console.log('Merged user data:', currentUser);
+                                } else {
+                                    currentUser = data.user;
+                                }
+                            } catch (e) {
+                                console.error('Error parsing saved user during login:', e);
+                                currentUser = data.user;
+                            }
+                        } else {
+                            currentUser = data.user;
+                        }
+                        
                         console.log('Current user set to:', currentUser);
                         localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                         console.log('User saved to localStorage');
