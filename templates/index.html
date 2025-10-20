@@ -3082,6 +3082,15 @@
                     <span class="spinner" id="loginSpinner"></span>Sign In
                 </button>
             </form>
+            <div style="text-align: center; margin-top: 16px;">
+                <p style="color: var(--text-secondary); font-size: 14px;">
+                    Don't have an account? 
+                    <a href="#" onclick="hideModal('loginModal'); showModal('signupModal');" 
+                       style="color: var(--theme-accent); text-decoration: none; font-weight: 500;">
+                        Create Account
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 
@@ -3123,6 +3132,15 @@
                     <span class="spinner" id="signupSpinner"></span>Create Account
                 </button>
             </form>
+            <div style="text-align: center; margin-top: 16px;">
+                <p style="color: var(--text-secondary); font-size: 14px;">
+                    Already have an account? 
+                    <a href="#" onclick="hideModal('signupModal'); showModal('loginModal');" 
+                       style="color: var(--theme-accent); text-decoration: none; font-weight: 500;">
+                        Sign In
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 
