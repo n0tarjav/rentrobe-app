@@ -47,7 +47,7 @@
 
         .nav-links a:hover {
             color: var(--theme-accent);
-            background: rgba(70, 79, 80, 0.05);
+            background: transparent;
         }
 
         .nav-links a::after,
@@ -165,7 +165,6 @@
         /* Header */
         header {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             position: fixed;
             top: 0;
@@ -175,63 +174,6 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        header.hero-glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        header.hero-glass .logo {
-            color: white;
-        }
-
-        header.hero-glass .logo img {
-            content: url('static/LOGO_W.png');
-        }
-
-        header.hero-glass .nav-links a {
-            color: white;
-        }
-
-        header.hero-glass .nav-links a:hover {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        header.hero-glass .nav-links a::after {
-            background-color: white;
-        }
-
-        header.hero-glass .auth-buttons .btn {
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        header.hero-glass .auth-buttons .btn::before {
-            background: white !important;
-        }
-
-        header.hero-glass .auth-buttons .btn:hover {
-            background: transparent !important;
-            border-color: white !important;
-            color: var(--black) !important;
-        }
-
-        header.hero-glass .auth-buttons .btn-primary {
-            background: transparent;
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        header.hero-glass .auth-buttons .btn-primary::before {
-            background: white !important;
-        }
-
-        header.hero-glass .auth-buttons .btn-primary:hover {
-            background: transparent !important;
-            border-color: white !important;
-            color: var(--black) !important;
-        }
 
         header.scrolled {
             background: rgba(255, 255, 255, 0.98);
@@ -289,7 +231,7 @@
 
         .nav-links a:hover {
             color: var(--black);
-            background: rgba(0, 0, 0, 0.05);
+            background: transparent;
             transform: translateY(-2px);
         }
 
@@ -298,14 +240,18 @@
             position: absolute;
             bottom: -4px;
             left: 0;
-            width: 0;
             height: 2px;
+            width: 100%;
             background: var(--black);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: right center; /* collapse toward right by default */
+            transition: transform 0.3s ease;
+            will-change: transform;
         }
 
         .nav-links a:hover::after {
-            width: 100%;
+            transform: scaleX(1);
+            transform-origin: left center; /* expand from left on hover */
         }
 
         .nav-links a.active {
@@ -314,7 +260,8 @@
         }
 
         .nav-links a.active::after {
-            width: 100%;
+            transform: scaleX(1);
+            transform-origin: left center;
         }
 
         .btn {
@@ -346,7 +293,7 @@
         }
 
         .btn:hover {
-            color: var(--white);
+            color: var(--white) !important;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
@@ -378,10 +325,13 @@
             align-items: center;
         }
 
+
         /* User Menu */
         .user-menu {
             position: relative;
-            display: none;
+            display: none; /* shown as flex when logged in */
+            align-items: center;
+            gap: 12px;
         }
 
         .user-avatar {
@@ -677,73 +627,6 @@
             }
         }
 
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 18px 24px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-weight: 400;
-            backdrop-filter: blur(10px);
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-input:focus {
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .search-input:focus + .search-btn {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transform-origin: center;
-            right: 0;
-        }
-
-        .search-input:hover {
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 4px;
-            top: 4px;
-            bottom: 4px;
-            background: white;
-            color: #464F50;
-            border: none;
-            padding: 0 28px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 14px;
-            border-radius: 50px;
-        }
-
-        .search-btn:hover {
-            background: #464F50;
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .search-btn:active {
-            transform: scale(0.95);
-        }
 
         /* Sections */
         .section {
@@ -1064,6 +947,8 @@
             object-fit: cover;
             transition: transform 0.3s ease;
         }
+
+        /* (removed) compact add-to-cart control */
 
         .image-fallback {
             display: flex;
@@ -1856,20 +1741,6 @@
                 display: none;
             }
             
-            .search-container {
-                max-width: 350px;
-                margin: 0 auto;
-            }
-            
-            .search-input {
-                padding: 14px 18px;
-                font-size: 15px;
-            }
-            
-            .search-btn {
-                padding: 0 20px;
-                font-size: 13px;
-            }
             
             .carousel-nav {
                 padding: 0 10px;
@@ -1930,19 +1801,6 @@
                 gap: 8px;
             }
             
-            .search-container {
-                max-width: 300px;
-            }
-            
-            .search-input {
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-            
-            .search-btn {
-                padding: 0 16px;
-                font-size: 12px;
-            }
             
             .categories-grid {
                 grid-template-columns: 1fr;
@@ -2460,8 +2318,7 @@
                 <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse')">Browse</a></li>
                 <li><a href="#" onclick="showPage('list')">List Item</a></li>
-                <li><a href="#" onclick="showPage('my-items')">My Items</a></li>
-                <li><a href="#" onclick="showPage('rentals')">Requests</a></li>
+                <li><a href="#" onclick="showPage('cart')" id="cartLink">My Cart</a></li>
             </ul>
             <div class="auth-buttons" id="authButtons">
                 <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
@@ -2474,7 +2331,6 @@
                 <div class="dropdown" id="userDropdown">
                     <a href="#" onclick="showPage('profile')">Profile</a>
                     <a href="#" onclick="showPage('my-items')">My Items</a>
-                    <a href="#" onclick="showPage('rentals')">Requests</a>
                     <a href="#" onclick="logout()">Sign Out</a>
                 </div>
             </div>
@@ -2501,9 +2357,9 @@
                 <li><a href="#" onclick="showPage('home'); closeMobileMenu();" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse'); closeMobileMenu();">Browse</a></li>
                 <li><a href="#" onclick="showPage('list'); closeMobileMenu();">List Item</a></li>
-                <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();">My Items</a></li>
-                <li><a href="#" onclick="showPage('rentals'); closeMobileMenu();">Requests</a></li>
+                <li><a href="#" onclick="showPage('cart'); closeMobileMenu();" id="mobileCartLink">My Cart</a></li>
                 <li><a href="#" onclick="showPage('profile'); closeMobileMenu();" id="mobileProfileLink" style="display: none;">Profile</a></li>
+                <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();" id="mobileMyItemsLink" style="display: none;">My Items</a></li>
                 <li><a href="#" onclick="logout(); closeMobileMenu();" id="mobileLogoutLink" style="display: none;">Sign Out</a></li>
             </ul>
         </div>
@@ -2536,11 +2392,6 @@
                     <div class="hero-text">
                         <h1>Fashion Rental</h1>
                         <p>Discover designer pieces from your community. Sustainable, affordable, and effortlessly stylish.</p>
-                        
-                        <div class="search-container">
-                            <input type="text" class="search-input" id="searchInput" placeholder="Search designer pieces...">
-                            <button class="search-btn" onclick="performSearch()">Search</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2548,32 +2399,32 @@
             <div class="container section">
                 <h2 class="section-title">Categories</h2>
                 <div class="categories-grid" id="categoriesGrid">
-                    <div class="category-card" onclick="filterByCategory('formal')">
+                    <div class="category-card">
                         <div class="category-icon">👔</div>
                         <h3>Formal Wear</h3>
                         <p>Suits & Evening Dresses</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('casual')">
+                    <div class="category-card">
                         <div class="category-icon">👕</div>
                         <h3>Casual Wear</h3>
                         <p>Everyday Fashion</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('party')">
+                    <div class="category-card">
                         <div class="category-icon">✨</div>
                         <h3>Party Outfits</h3>
                         <p>Cocktail & Party Wear</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('traditional')">
+                    <div class="category-card">
                         <div class="category-icon">👘</div>
                         <h3>Traditional</h3>
                         <p>Ethnic & Cultural</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('accessories')">
+                    <div class="category-card">
                         <div class="category-icon">👜</div>
                         <h3>Accessories</h3>
                         <p>Bags, Jewelry & More</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('designer')">
+                    <div class="category-card">
                         <div class="category-icon">💎</div>
                         <h3>Designer</h3>
                         <p>Luxury Brands</p>
@@ -2793,6 +2644,21 @@
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">Update Profile</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page -->
+        <div id="cart" class="page">
+            <div class="container section">
+                <h2 class="section-title">My Cart</h2>
+                <div id="cartContainer">
+                    <div class="empty-cart" style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                        <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
+                        <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
+                        <a href="#" class="btn btn-primary" onclick="showPage('browse')">Browse Items</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -4128,29 +3994,16 @@
         // Header scroll effect
         function initializeHeaderScroll() {
             const header = document.querySelector('header');
-            const hero = document.querySelector('.hero');
             
             function updateHeaderStyle() {
                 // Remove all classes first
-                header.classList.remove('scrolled', 'hero-glass');
+                header.classList.remove('scrolled');
                 
                 const scrollY = window.scrollY;
-                const currentPage = document.querySelector('.page.active')?.id || 'home';
                 
-                // Only apply hero-glass effect on home page
-                if (currentPage === 'home' && hero) {
-                    if (scrollY < 900) {
-                        // At the very top on home page - apply glass effect
-                        header.classList.add('hero-glass');
-                    } else if (scrollY > 900) {
-                        // Scrolled down on home page - apply scrolled effect
-                        header.classList.add('scrolled');
-                    }
-                } else {
-                    // Not on home page or no hero section - apply scrolled effect if scrolled
-                    if (scrollY > 100) {
-                        header.classList.add('scrolled');
-                    }
+                // Apply scrolled effect if scrolled
+                if (scrollY > 100) {
+                    header.classList.add('scrolled');
                 }
             }
             
@@ -4289,9 +4142,6 @@
 
         function setupEventListeners() {
             // Navigation
-            document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
             
             // Browse search - real-time search as user types
             document.getElementById('browseSearchInput').addEventListener('input', performBrowseSearch);
@@ -4364,38 +4214,32 @@
             // Update header style when switching pages
             setTimeout(() => {
                 const header = document.querySelector('header');
-                const hero = document.querySelector('.hero');
                 
                 // Remove all classes first
-                header.classList.remove('scrolled', 'hero-glass');
+                header.classList.remove('scrolled');
                 
                 const scrollY = window.scrollY;
                 
-                // Only apply hero-glass effect on home page
-                if (pageId === 'home' && hero) {
-                    if (scrollY < 900) {
-                        // At the very top on home page - apply glass effect
-                        header.classList.add('hero-glass');
-                    } else if (scrollY > 900) {
-                        // Scrolled down on home page - apply scrolled effect
-                        header.classList.add('scrolled');
-                    }
-                } else {
-                    // Not on home page or no hero section - apply scrolled effect if scrolled
-                    if (scrollY > 100) {
-                        header.classList.add('scrolled');
-                    }
+                // Apply scrolled effect if scrolled
+                if (scrollY > 100) {
+                    header.classList.add('scrolled');
                 }
             }, 100);
             
             // Update content based on page
             if (pageId === 'browse') {
                 renderAllItems();
+            } else if (pageId === 'cart') {
+                if (!currentUser) {
+                    showModal('loginModal');
+                    return;
+                }
+                renderCart();
             } else if (pageId === 'my-items' && currentUser) {
                 loadMyItems();
             } else if (pageId === 'profile' && currentUser) {
                 loadProfile();
-            } else if ((pageId === 'my-items' || pageId === 'rentals' || pageId === 'profile') && !currentUser) {
+            } else if ((pageId === 'my-items' || pageId === 'rentals' || pageId === 'profile' || pageId === 'cart') && !currentUser) {
                 showModal('loginModal');
                 return;
             }
@@ -4760,9 +4604,12 @@
             console.log('updateAuthUI called, currentUser:', currentUser);
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
+            const cartLink = document.getElementById('cartLink');
             const mobileUserSection = document.getElementById('mobileUserSection');
             const mobileProfileLink = document.getElementById('mobileProfileLink');
             const mobileLogoutLink = document.getElementById('mobileLogoutLink');
+            const mobileCartLink = document.getElementById('mobileCartLink');
+            const mobileMyItemsLink = document.getElementById('mobileMyItemsLink');
             
             console.log('authButtons element:', authButtons);
             console.log('userMenu element:', userMenu);
@@ -4771,10 +4618,11 @@
             if (currentUser && currentUser.id && currentUser.name && currentUser.email) {
                 console.log('Setting logged in state');
                 authButtons.style.display = 'none';
-                userMenu.style.display = 'block';
+                userMenu.style.display = 'flex';
                 if (mobileUserSection) mobileUserSection.style.display = 'block';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
+                if (mobileMyItemsLink) mobileMyItemsLink.style.display = 'block';
                 
                 const userInitial = document.getElementById('userInitial');
                 if (userInitial && currentUser.name) {
@@ -4808,8 +4656,83 @@
                 if (mobileUserSection) mobileUserSection.style.display = 'none';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
+                if (mobileMyItemsLink) mobileMyItemsLink.style.display = 'none';
             }
         }
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('rentrobe_cart') || '[]');
+
+
+        function addToCart(item) {
+            if (!currentUser) {
+                showModal('loginModal');
+                return;
+            }
+            
+            // Check if item is already in cart
+            const existingItem = cart.find(cartItem => cartItem.id === item.id);
+            if (existingItem) {
+                showAlert('Item already in cart');
+                return;
+            }
+            
+            cart.push(item);
+            localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
+            showAlert('Item added to cart');
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartContainer');
+            if (!container) return;
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart" style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                        <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
+                        <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
+                        <a href="#" class="btn btn-primary" onclick="showPage('browse')">Browse Items</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="cart-items">
+                    ${cart.map(item => `
+                        <div class="cart-item" style="display: flex; align-items: center; padding: 20px; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 16px;">
+                            <img src="${item.image}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 8px 0; color: var(--black);">${item.title}</h4>
+                                <p style="margin: 0 0 8px 0; color: var(--gray-600);">${item.description}</p>
+                                <p style="margin: 0; font-weight: 600; color: var(--black);">$${item.price}/day</p>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="btn" style="background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Remove</button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="proceedToCheckout()" style="padding: 12px 24px; font-size: 16px;">Proceed to Checkout</button>
+                </div>
+            `;
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showAlert('Your cart is empty');
+                return;
+            }
+            // For now, just show an alert. In a real app, this would redirect to checkout
+            showAlert('Checkout functionality coming soon!');
+        }
+
 
         // Item management
         async function handleListItem(e) {
@@ -4908,19 +4831,6 @@
         }
 
         // Search and filter
-        function performSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            if (query) {
-                filteredItems = items.filter(item => 
-                    item.title.toLowerCase().includes(query) ||
-                    item.description.toLowerCase().includes(query) ||
-                    item.category.toLowerCase().includes(query)
-                );
-                resetPagination();
-                showPage('browse');
-                renderAllItems();
-            }
-        }
 
         async function performBrowseSearch() {
             resetPagination();
@@ -5366,17 +5276,19 @@
                     <div style="margin-bottom: 20px;"><strong>Owner:</strong> ${item.owner.name} (${item.owner.city})</div>
                     
                     ${item.status === 'available' && currentUser && !isOwner ? `
-                        <button class="btn btn-primary" style="width: 100%;" onclick="openRentalModal(${item.id})">
-                            Request Rental
-                        </button>
+                        <div style=\"display: flex; gap: 12px; margin-bottom: 12px;\">
+                            <button class=\"btn btn-primary\" style=\"flex: 1;\" onclick=\"openRentalModal(${item.id})\">Request Rental</button>
+                            <button class=\"btn\" style=\"flex: 1; border-color: var(--theme-accent); color: var(--theme-accent);\" onclick=\"addToCart(${JSON.stringify(item).replace(/\\\"/g, '&quot;')}); hideModal('itemModal');\">Add to Cart</button>
+                        </div>
                     ` : item.status === 'available' && isOwner ? `
                         <button class="btn" disabled style="width: 100%;">
                             Your Item
                         </button>
                     ` : item.status === 'available' && !currentUser ? `
-                        <button class="btn btn-primary" style="width: 100%;" onclick="hideModal('itemModal'); showModal('loginModal');">
-                            Sign In to Rent
-                        </button>
+                        <div style=\"display: flex; gap: 12px; margin-bottom: 12px;\">
+                            <button class=\"btn btn-primary\" style=\"flex: 1;\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Sign In to Rent</button>
+                            <button class=\"btn\" style=\"flex: 1; border-color: var(--theme-accent); color: var(--theme-accent);\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Add to Cart</button>
+                        </div>
                     ` : `
                         <button class="btn" disabled style="width: 100%;">
                             Currently Rented
