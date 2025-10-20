@@ -186,6 +186,44 @@ exports.handler = async (event, context) => {
     }
   }
 
+  // Handle profile update endpoint (PUT)
+  if ((event.path === '/api/profile' || event.path === '/.netlify/functions/api/profile') && event.httpMethod === 'PUT') {
+    try {
+      const body = JSON.parse(event.body || '{}');
+      const { name, phone, city } = body;
+      
+      console.log('Profile update request:', { name, phone, city, path: event.path, method: event.httpMethod });
+      
+      // For Netlify deployment, we rely on localStorage for profile updates
+      // This endpoint just returns success to acknowledge the update
+      return {
+        statusCode: 200,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Profile update acknowledged',
+          name: name,
+          phone: phone,
+          city: city
+        })
+      };
+    } catch (error) {
+      console.error('Profile update error:', error);
+      return {
+        statusCode: 500,
+        headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          error: 'Profile update failed'
+        })
+      };
+    }
+  }
+
   // Handle logout endpoint
   if ((event.path === '/api/auth/logout' || event.path === '/.netlify/functions/api/auth/logout') && event.httpMethod === 'POST') {
     try {

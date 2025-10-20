@@ -5501,13 +5501,44 @@
             document.getElementById('profileCity').value = currentUser.city || '';
         }
 
-        function handleProfileUpdate(e) {
+        async function handleProfileUpdate(e) {
             e.preventDefault();
             
-            currentUser.name = document.getElementById('profileName').value;
-            currentUser.phone = document.getElementById('profilePhone').value;
-            currentUser.city = document.getElementById('profileCity').value;
+            const updatedData = {
+                name: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                city: document.getElementById('profileCity').value
+            };
             
+            try {
+                // Try to update on server first (for development)
+                const response = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData),
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    console.log('Profile updated on server');
+                    const updatedUser = await response.json();
+                    currentUser = { ...currentUser, ...updatedUser };
+                } else {
+                    console.log('Server update failed, updating locally only');
+                    // Update locally even if server fails
+                    currentUser.name = updatedData.name;
+                    currentUser.phone = updatedData.phone;
+                    currentUser.city = updatedData.city;
+                }
+            } catch (error) {
+                console.error('Profile update error:', error);
+                // Update locally even if server fails
+                currentUser.name = updatedData.name;
+                currentUser.phone = updatedData.phone;
+                currentUser.city = updatedData.city;
+            }
+            
+            // Always update localStorage
             localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
             showAlert('profileSuccess');
             updateAuthUI();
