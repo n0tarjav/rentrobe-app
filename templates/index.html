@@ -2674,6 +2674,36 @@
             text-transform: none !important;
         }
 
+        /* Loading optimization */
+        .items-grid {
+            min-height: 400px;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 18px;
+            color: var(--theme-primary);
+        }
+
+        .loading-spinner::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--theme-primary);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Force Rentrobe hover animation - Highest priority */
         .section-title.rentrobe-text {
             position: relative !important;
@@ -2951,7 +2981,7 @@
                 <div class="browse-main">
                     <h2 class="section-title">Browse All Items</h2>
                     <div class="items-grid" id="allItems">
-                        <!-- Items will be loaded here -->
+                        <div class="loading-spinner">Loading items...</div>
                     </div>
                     
                     <!-- Pagination Controls -->
@@ -3727,7 +3757,7 @@
         
         // Pagination variables
         let currentPage = 1;
-        let itemsPerPage = 15;
+        let itemsPerPage = 12;
         let totalPages = 1;
         
         // Sorting variables
@@ -3754,8 +3784,8 @@
                 reviews: 12,
                 views: 145,
                 images: [
-                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1657023799657-df1cee617db5?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=300&h=400&fit=crop&crop=center&q=80',
+                    'https://images.unsplash.com/photo-1657023799657-df1cee617db5?w=300&h=400&fit=crop&crop=center&q=80'
                 ]
             },
             {
@@ -3772,8 +3802,8 @@
                 reviews: 8,
                 views: 89,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1679440413349-556c1366112f?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1679440413349-556c1366112f?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3790,8 +3820,8 @@
                 reviews: 15,
                 views: 234,
                 images: [
-                    'https://images.unsplash.com/photo-1678831165438-e2bb89db82d9?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1678830795557-d7886693c9ee?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1678831165438-e2bb89db82d9?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1678830795557-d7886693c9ee?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3808,8 +3838,8 @@
                 reviews: 6,
                 views: 67,
                 images: [
-                    'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1585412459212-8def26f7e84c?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1585412459212-8def26f7e84c?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3826,8 +3856,8 @@
                 reviews: 9,
                 views: 78,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1682430740985-acbce7ec295e?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1682430700877-d85b273bc253?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1682430740985-acbce7ec295e?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1682430700877-d85b273bc253?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3844,8 +3874,8 @@
                 reviews: 7,
                 views: 56,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1730828573906-f44ac401de96?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1730828573973-cf4e4ecc2950?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1730828573906-f44ac401de96?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1730828573973-cf4e4ecc2950?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -3864,8 +3894,8 @@
                 reviews: 11,
                 views: 123,
                 images: [
-                    'https://images.unsplash.com/photo-1721182421063-19a6c711b719?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1721182420935-29bfb69dd26c?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1721182421063-19a6c711b719?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1721182420935-29bfb69dd26c?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3882,8 +3912,8 @@
                 reviews: 8,
                 views: 92,
                 images: [
-                    'https://images.unsplash.com/photo-1708121691161-b8b11bebc761?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1708121691158-270470206446?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1708121691161-b8b11bebc761?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1708121691158-270470206446?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3900,7 +3930,7 @@
                 reviews: 5,
                 views: 73,
                 images: [
-                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3917,7 +3947,7 @@
                 reviews: 13,
                 views: 156,
                 images: [
-                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3934,7 +3964,7 @@
                 reviews: 10,
                 views: 134,
                 images: [
-                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3951,7 +3981,7 @@
                 reviews: 9,
                 views: 87,
                 images: [
-                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -3970,8 +4000,8 @@
                 reviews: 14,
                 views: 189,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1682096032284-0b2ab20b65dd?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1682096067532-3e89ab323ebf?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1682096032284-0b2ab20b65dd?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1682096067532-3e89ab323ebf?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3988,7 +4018,7 @@
                 reviews: 11,
                 views: 145,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4005,7 +4035,7 @@
                 reviews: 6,
                 views: 67,
                 images: [
-                    'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4022,7 +4052,7 @@
                 reviews: 8,
                 views: 54,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4039,7 +4069,7 @@
                 reviews: 16,
                 views: 201,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4056,7 +4086,7 @@
                 reviews: 9,
                 views: 98,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -4075,8 +4105,8 @@
                 reviews: 7,
                 views: 76,
                 images: [
-                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1520423465871-0866049020b7?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1520423465871-0866049020b7?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4093,7 +4123,7 @@
                 reviews: 5,
                 views: 45,
                 images: [
-                    'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4110,7 +4140,7 @@
                 reviews: 8,
                 views: 67,
                 images: [
-                    'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4127,7 +4157,7 @@
                 reviews: 6,
                 views: 43,
                 images: [
-                    'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4144,7 +4174,7 @@
                 reviews: 4,
                 views: 32,
                 images: [
-                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4161,7 +4191,7 @@
                 reviews: 9,
                 views: 89,
                 images: [
-                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -4181,7 +4211,7 @@
                 reviews: 18,
                 views: 289,
                 images: [
-                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4198,7 +4228,7 @@
                 reviews: 15,
                 views: 234,
                 images: [
-                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4215,7 +4245,7 @@
                 reviews: 12,
                 views: 178,
                 images: [
-                    'https://images.unsplash.com/photo-1652427019217-3ded1a356f10?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1652427019217-3ded1a356f10?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4232,7 +4262,7 @@
                 reviews: 16,
                 views: 267,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -4249,7 +4279,7 @@
                 reviews: 20,
                 views: 345,
                 images: [
-                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             }
         ];
@@ -5694,8 +5724,8 @@
                 <div class="item-card" onclick="showItemModal(${originalItem.id})">
                     <div class="item-image">
                         ${hasImages ? 
-                            `<img src="${firstImageUrl}" alt="${originalItem.title}" class="default-image" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                             ${secondImageUrl ? `<img src="${secondImageUrl}" alt="${originalItem.title}" class="hover-image" loading="lazy" onerror="this.style.display='none';">` : ''}
+                            `<img src="${firstImageUrl}" alt="${originalItem.title}" class="default-image" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                             ${secondImageUrl ? `<img src="${secondImageUrl}" alt="${originalItem.title}" class="hover-image" loading="lazy" decoding="async" onerror="this.style.display='none';">` : ''}
                              <div class="image-fallback" style="display: none;">👗</div>` : 
                             '<div class="image-fallback">👗</div>'
                         }
