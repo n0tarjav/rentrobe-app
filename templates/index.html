@@ -1389,6 +1389,116 @@
             padding-top: 100px;
         }
 
+        /* How It Works Section */
+        .how-it-works {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .step {
+            text-align: center;
+            position: relativefixed;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-100);
+            border-radius: 50%;
+            font-size: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-icon {
+            background: var(--theme-primary);
+            transform: translateY(-5px);
+        }
+
+        .step h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--black);
+        }
+
+        .step p {
+            color: var(--gray-600);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Progress Indicators */
+        .progress-indicators {
+            position: relative;
+            display: flex;
+            justify-content: normal;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 11%;
+            right: 11%;
+            height: 5px;
+            background: var(--gray-200);
+            z-index: 1;
+        }
+
+        .progress-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2F5249;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            z-index: 2;
+            margin: 0 130px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design for How It Works */
+        @media (max-width: 768px) {
+            .how-it-works {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .progress-dot {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+                margin: 0 10px;
+            }
+            
+            .progress-line {
+                left: 8%;
+                right: 8%;
+            }
+        }
+
         /* Pagination Styles */
         .pagination-container {
             margin-top: 40px;
@@ -2394,6 +2504,45 @@
                         <h1>Fashion Rental</h1>
                         <p>Discover designer pieces from your community. Sustainable, affordable, and effortlessly stylish.</p>
                     </div>
+                </div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="container section">
+                <h2 class="section-title">How Rentrobe Works</h2>
+                <div class="how-it-works">
+                    <div class="step">
+                        <div class="step-icon">👗</div>
+                        <h3>Select a Style</h3>
+                        <p>Pick your perfect style from our collection of designer outfits and accessories.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">📅</div>
+                        <h3>Book your Outfit</h3>
+                        <p>Book your look for 3, 5, 7 or 10 days. Outfit will be altered to your size and dry cleaned before delivery.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">✨</div>
+                        <h3>Flaunt It</h3>
+                        <p>Flaunt your look with that perfect outfit chosen by you and enjoy the compliments</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">📦</div>
+                        <h3>Return It</h3>
+                        <p>Pack the outfit and we'll pick it up a day after your occasion or the dates chosen by you.</p>
+                    </div>
+                </div>
+                
+                <!-- Progress indicators -->
+                <div class="progress-indicators">
+                    <div class="progress-line"></div>
+                    <div class="progress-dot">1</div>
+                    <div class="progress-dot">2</div>
+                    <div class="progress-dot">3</div>
+                    <div class="progress-dot">4</div>
                 </div>
             </div>
 
