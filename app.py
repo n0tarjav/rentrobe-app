@@ -323,6 +323,7 @@ def spa_routes(path):
 
 # API Routes
 @app.route('/api/categories')
+@login_required
 def api_categories():
     """Get all categories"""
     try:
@@ -333,6 +334,7 @@ def api_categories():
         return jsonify({'error': 'Failed to fetch categories'}), 500
 
 @app.route('/api/items')
+@login_required
 def api_items():
     """Get items with filtering"""
     try:
@@ -399,6 +401,7 @@ def api_items():
         return jsonify({'error': 'Failed to fetch items'}), 500
 
 @app.route('/api/items/<int:item_id>')
+@login_required
 def api_item_detail(item_id):
     """Get item details"""
     try:
@@ -908,6 +911,7 @@ def api_test():
         })
 
 @app.route('/api/search')
+@login_required
 def api_search():
     """Advanced search with suggestions"""
     try:

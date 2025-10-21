@@ -1383,6 +1383,7 @@
         /* Add extra space for all main pages */
         #browse .section,
         #list .section,
+        #cart .section,
         #my-items .section,
         #rentals .section {
             padding-top: 100px;
@@ -2317,7 +2318,7 @@
             <ul class="nav-links">
                 <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse')">Browse</a></li>
-                <li><a href="#" onclick="showPage('list')">List Item</a></li>
+                <li><a href="#" onclick="showPage('list')" id="listItemLink">List Item</a></li>
                 <li><a href="#" onclick="showPage('cart')" id="cartLink">My Cart</a></li>
             </ul>
             <div class="auth-buttons" id="authButtons">
@@ -2356,7 +2357,7 @@
             <ul class="mobile-nav-links">
                 <li><a href="#" onclick="showPage('home'); closeMobileMenu();" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse'); closeMobileMenu();">Browse</a></li>
-                <li><a href="#" onclick="showPage('list'); closeMobileMenu();">List Item</a></li>
+                <li><a href="#" onclick="showPage('list'); closeMobileMenu();" id="mobileListItemLink">List Item</a></li>
                 <li><a href="#" onclick="showPage('cart'); closeMobileMenu();" id="mobileCartLink">My Cart</a></li>
                 <li><a href="#" onclick="showPage('profile'); closeMobileMenu();" id="mobileProfileLink" style="display: none;">Profile</a></li>
                 <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();" id="mobileMyItemsLink" style="display: none;">My Items</a></li>
@@ -2536,7 +2537,19 @@
             <div class="container section">
                 <h2 class="section-title">List Your Item</h2>
                 
-                <div style="max-width: 500px; margin: 0 auto;">
+                <!-- Login Prompt for List Item -->
+                <div id="listLoginPrompt" style="display: none; text-align: center; padding: 60px 20px; max-width: 500px; margin: 0 auto;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">📝</div>
+                    <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to List Items</h3>
+                    <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to list your items for rent</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join Now</a>
+                    </div>
+                </div>
+                
+                <!-- List Item Form (shown when logged in) -->
+                <div id="listFormContainer" style="max-width: 500px; margin: 0 auto;">
                     <div class="alert alert-success" id="listSuccess">Item listed successfully!</div>
                     <div class="alert alert-error" id="listError">Please fill all required fields.</div>
 
@@ -2652,6 +2665,19 @@
         <div id="cart" class="page">
             <div class="container section">
                 <h2 class="section-title">My Cart</h2>
+                
+                <!-- Login Prompt for My Cart -->
+                <div id="cartLoginPrompt" style="display: none; text-align: center; padding: 60px 20px; max-width: 500px; margin: 0 auto;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                    <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to View Your Cart</h3>
+                    <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to view and manage your cart</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join Now</a>
+                    </div>
+                </div>
+                
+                <!-- Cart Content (shown when logged in) -->
                 <div id="cartContainer">
                     <div class="empty-cart" style="text-align: center; padding: 60px 20px;">
                         <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
@@ -3242,7 +3268,7 @@
         <div class="footer-bottom">
             <div class="footer-content">
                 <div class="footer-bottom-text">
-                    <p>Made by A Ankita Rao</p>
+                    <p>--------</p>
                     <p>&copy; 2025 Rentrobe. All rights reserved.</p>
                 </div>
             </div>
@@ -3264,6 +3290,9 @@
         
         // Sorting variables
         let currentSort = 'newest';
+        
+        // Track protected page access
+        let attemptedProtectedPage = null;
 
 
         // Enhanced Sample Data - Comprehensive Fashion Rental Items
@@ -4314,16 +4343,15 @@
             if (pageId === 'browse') {
                 renderAllItems();
             } else if (pageId === 'cart') {
-                if (!currentUser) {
-                    showModal('loginModal');
-                    return;
-                }
                 renderCart();
+            } else if (pageId === 'list') {
+                // List item page is always accessible, content will show login prompt if needed
             } else if (pageId === 'my-items' && currentUser) {
                 loadMyItems();
             } else if (pageId === 'profile' && currentUser) {
                 loadProfile();
-            } else if ((pageId === 'my-items' || pageId === 'rentals' || pageId === 'profile' || pageId === 'cart') && !currentUser) {
+            } else if ((pageId === 'my-items' || pageId === 'rentals' || pageId === 'profile') && !currentUser) {
+                attemptedProtectedPage = pageId;
                 showModal('loginModal');
                 return;
             }
@@ -4372,6 +4400,13 @@
             const modal = document.getElementById(modalId);
             const alerts = modal.querySelectorAll('.alert');
             alerts.forEach(alert => alert.style.display = 'none');
+            
+            // If login modal was closed without successful login and user was trying to access protected page
+            if (modalId === 'loginModal' && attemptedProtectedPage && !currentUser) {
+                // Redirect to home page
+                showPage('home');
+                attemptedProtectedPage = null;
+            }
         }
 
         // User menu
@@ -4607,6 +4642,12 @@
                         
                         // Update UI immediately since we're using localStorage
                         updateAuthUI();
+                        
+                        // Redirect to intended page if user was trying to access protected page
+                        if (attemptedProtectedPage) {
+                            showPage(attemptedProtectedPage);
+                            attemptedProtectedPage = null;
+                        }
                     } else {
                         console.error('No user data in response:', data);
                         showAlert('loginError');
@@ -4669,6 +4710,12 @@
                     
                     // Update UI immediately since we're using localStorage
                     updateAuthUI();
+                    
+                    // Redirect to intended page if user was trying to access protected page
+                    if (attemptedProtectedPage) {
+                        showPage(attemptedProtectedPage);
+                        attemptedProtectedPage = null;
+                    }
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     showAlert('signupError');
@@ -4703,12 +4750,16 @@
             console.log('updateAuthUI called, currentUser:', currentUser);
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
-            const cartLink = document.getElementById('cartLink');
             const mobileUserSection = document.getElementById('mobileUserSection');
             const mobileProfileLink = document.getElementById('mobileProfileLink');
             const mobileLogoutLink = document.getElementById('mobileLogoutLink');
-            const mobileCartLink = document.getElementById('mobileCartLink');
             const mobileMyItemsLink = document.getElementById('mobileMyItemsLink');
+            
+            // Login prompts for protected pages
+            const listLoginPrompt = document.getElementById('listLoginPrompt');
+            const listFormContainer = document.getElementById('listFormContainer');
+            const cartLoginPrompt = document.getElementById('cartLoginPrompt');
+            const cartContainer = document.getElementById('cartContainer');
             
             console.log('authButtons element:', authButtons);
             console.log('userMenu element:', userMenu);
@@ -4722,6 +4773,12 @@
                 if (mobileProfileLink) mobileProfileLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
                 if (mobileMyItemsLink) mobileMyItemsLink.style.display = 'block';
+                
+                // Show form content, hide login prompts
+                if (listLoginPrompt) listLoginPrompt.style.display = 'none';
+                if (listFormContainer) listFormContainer.style.display = 'block';
+                if (cartLoginPrompt) cartLoginPrompt.style.display = 'none';
+                if (cartContainer) cartContainer.style.display = 'block';
                 
                 const userInitial = document.getElementById('userInitial');
                 if (userInitial && currentUser.name) {
@@ -4756,6 +4813,12 @@
                 if (mobileProfileLink) mobileProfileLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
                 if (mobileMyItemsLink) mobileMyItemsLink.style.display = 'none';
+                
+                // Show login prompts, hide form content
+                if (listLoginPrompt) listLoginPrompt.style.display = 'block';
+                if (listFormContainer) listFormContainer.style.display = 'none';
+                if (cartLoginPrompt) cartLoginPrompt.style.display = 'block';
+                if (cartContainer) cartContainer.style.display = 'none';
             }
         }
 
@@ -4791,9 +4854,14 @@
             const container = document.getElementById('cartContainer');
             if (!container) return;
             
+            // If user is not logged in, don't render cart content
+            if (!currentUser) {
+                return;
+            }
+            
             if (cart.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-cart" style="text-align: center; padding: 60px 20px;">
+<div class="empty-cart" style="text-align: center; padding: 60px 20px;">
                         <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
                         <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
                         <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
