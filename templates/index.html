@@ -4660,16 +4660,18 @@
                         console.log('Invalid user data in storage, clearing...');
                         localStorage.removeItem('rentrobe_user');
                         currentUser = null;
+                        return false;
                     }
                 } catch (error) {
                     console.error('Error parsing saved user:', error);
                     localStorage.removeItem('rentrobe_user');
                     currentUser = null;
+                    return false;
                 }
             } else {
                 currentUser = null;
+                return false;
             }
-            return false; // No valid user from storage
         }
 
         function initializeItems() {
@@ -6196,12 +6198,30 @@
 
         // Profile functions
         function loadProfile() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                console.log('No current user, cannot load profile');
+                return;
+            }
+            
+            console.log('Loading profile for user:', currentUser);
+            console.log('Profile data:', {
+                name: currentUser.name,
+                email: currentUser.email,
+                phone: currentUser.phone,
+                city: currentUser.city
+            });
             
             document.getElementById('profileName').value = currentUser.name || '';
             document.getElementById('profileEmail').value = currentUser.email || '';
             document.getElementById('profilePhone').value = currentUser.phone || '';
             document.getElementById('profileCity').value = currentUser.city || '';
+            
+            console.log('Profile form populated with values:', {
+                name: document.getElementById('profileName').value,
+                email: document.getElementById('profileEmail').value,
+                phone: document.getElementById('profilePhone').value,
+                city: document.getElementById('profileCity').value
+            });
         }
 
         async function handleProfileUpdate(e) {
@@ -6242,7 +6262,13 @@
             }
             
             // Always update localStorage
+            console.log('Saving updated user to localStorage:', currentUser);
             localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+            
+            // Verify the save worked
+            const savedUser = localStorage.getItem('rentrobe_user');
+            console.log('Verification - saved user:', JSON.parse(savedUser));
+            
             showAlert('profileSuccess');
             updateAuthUI();
         }
