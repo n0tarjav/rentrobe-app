@@ -48,6 +48,11 @@ app.config['SESSION_COOKIE_DOMAIN'] = os.environ.get('SESSION_COOKIE_DOMAIN', No
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
+# For Netlify serverless functions, adjust session settings
+if os.environ.get('NETLIFY') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+
 # Ensure upload directory exists
 Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
 
@@ -489,21 +494,36 @@ def api_login():
             return jsonify({'error': 'Email and password are required'}), 400
         
         email = data['email'].lower().strip()
+        password = data['password']
+        
+        logger.info(f"Login attempt for email: {email}")
+        
+        # Check if user exists
         user = User.query.filter_by(email=email, is_active=True).first()
         
-        if user and bcrypt.check_password_hash(user.password_hash, data['password']):
+        if not user:
+            logger.warning(f"User not found: {email}")
+            return jsonify({'error': 'Invalid credentials'}), 401
+        
+        logger.info(f"User found: {user.name}, checking password...")
+        
+        # Check password
+        if bcrypt.check_password_hash(user.password_hash, password):
             login_user(user, remember=True)
             session.permanent = True
-            logger.info(f"User logged in: {email}, session: {session}")
+            logger.info(f"User logged in successfully: {email}")
             return jsonify({
                 'message': 'Login successful',
                 'user': user.to_dict()
             })
         else:
-            return jsonify({'error': 'Invalid email or password'}), 401
+            logger.warning(f"Invalid password for user: {email}")
+            return jsonify({'error': 'Invalid credentials'}), 401
     
     except Exception as e:
         logger.error(f"Login error: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({'error': 'Login failed'}), 500
 
 @app.route('/api/auth/logout', methods=['POST'])

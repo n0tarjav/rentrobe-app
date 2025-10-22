@@ -16,9 +16,10 @@ os.environ['DATABASE_URL'] = f'sqlite:///{db_path}'
 os.environ['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'wearhouse-netlify-secret-key-change-in-production')
 
 # Set session configuration for Netlify
-os.environ['SESSION_COOKIE_SECURE'] = 'False'  # Netlify handles HTTPS
+os.environ['SESSION_COOKIE_SECURE'] = 'True'  # Netlify uses HTTPS
 os.environ['SESSION_COOKIE_HTTPONLY'] = 'True'
-os.environ['SESSION_COOKIE_SAMESITE'] = 'Lax'
+os.environ['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Changed from None to Lax for better compatibility
+os.environ['SESSION_COOKIE_DOMAIN'] = ''  # Don't set domain for Netlify
 
 # Import Flask app
 from app import app, db, init_db
@@ -59,9 +60,10 @@ def handler(event, context):
                 'statusCode': 200,
                 'headers': {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie, X-Requested-With',
                     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                    'Access-Control-Allow-Credentials': 'true'
+                    'Access-Control-Allow-Credentials': 'true',
+                    'Access-Control-Max-Age': '86400'
                 },
                 'body': ''
             }
@@ -93,6 +95,27 @@ def handler(event, context):
                     print("Demo user created successfully")
                 else:
                     print("Demo user already exists")
+                
+                # Also create other demo users for testing
+                arjav_user = User.query.filter_by(email='arjav@rentrobe.com').first()
+                if not arjav_user:
+                    print("Creating Arjav user...")
+                    arjav_user = User(
+                        name='Arjav',
+                        email='arjav@rentrobe.com',
+                        password_hash=bcrypt.generate_password_hash('arjav0302').decode('utf-8'),
+                        phone='+91 8319337033',
+                        city='Bhilai',
+                        address='Bhilai, Chhattisgarh',
+                        is_verified=True
+                    )
+                    db.session.add(arjav_user)
+                    db.session.commit()
+                    print("Arjav user created successfully")
+                
+                # Test database connection
+                total_users = User.query.count()
+                print(f"Total users in database: {total_users}")
                     
             except Exception as db_error:
                 print(f"Database init error: {str(db_error)}")
@@ -106,12 +129,22 @@ def handler(event, context):
         print(f"Headers: {headers}")
         print(f"Query string: {query_string}")
         
+        # Handle cookies for session management
+        cookies = {}
+        if 'cookie' in headers:
+            cookie_header = headers['cookie']
+            for cookie in cookie_header.split(';'):
+                if '=' in cookie:
+                    key, value = cookie.strip().split('=', 1)
+                    cookies[key] = value
+        
         with app.test_request_context(
             path=path,
             method=http_method,
             headers=headers,
             data=body,
-            query_string=query_string
+            query_string=query_string,
+            cookies=cookies
         ):
             # Handle the request
             response = app.full_dispatch_request()
@@ -129,15 +162,32 @@ def handler(event, context):
                 except json.JSONDecodeError:
                     pass
             
+            # Get response headers from Flask response
+            response_headers = dict(response.headers)
+            
+            # Add CORS headers
+            cors_headers = {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie, X-Requested-With',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Credentials': 'true'
+            }
+            
+            # Merge Flask headers with CORS headers
+            final_headers = {**cors_headers, **response_headers}
+            
+            # Handle Set-Cookie headers for session management
+            set_cookie_headers = []
+            for header_name, header_value in response.headers:
+                if header_name.lower() == 'set-cookie':
+                    set_cookie_headers.append(header_value)
+            
+            if set_cookie_headers:
+                final_headers['Set-Cookie'] = set_cookie_headers
+            
             return {
                 'statusCode': status_code,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie',
-                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                    'Access-Control-Allow-Credentials': 'true'
-                },
+                'headers': final_headers,
                 'body': json.dumps(response_data)
             }
     
