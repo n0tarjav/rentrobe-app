@@ -3088,24 +3088,29 @@
                     <div class="sidebar-section">
                         <div class="form-group">
                             <label class="form-label">Category</label>
-                            <select class="form-input" id="categoryFilter" onchange="applyFilters()">
-                                <option value="">All Categories</option>
-                                <option value="formal">Formal Wear</option>
-                                <option value="casual">Casual Wear</option>
-                                <option value="party">Party Outfits</option>
-                                <option value="traditional">Traditional</option>
-                                <option value="designer">Designer</option>
-                            </select>
+                            <div class="custom-select">
+                                <select class="form-input custom-select-input" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="formal">Formal Wear</option>
+                                    <option value="casual">Casual Wear</option>
+                                    <option value="party">Party Outfits</option>
+                                    <option value="traditional">Traditional</option>
+                                    <option value="designer">Designer</option>
+                                </select>
+                                <div class="custom-select-arrow">▼</div>
+                            </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Sort By Price</label>
-                            <select class="form-input" id="sortFilter" onchange="applySorting()">
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                            </select>
+                            <div class="custom-select">
+                                <select class="form-input custom-select-input" id="sortFilter" onchange="applySorting()">
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                </select>
+                                <div class="custom-select-arrow">▼</div>
+                            </div>
                         </div>
-                        
                     </div>
                     
                     <!-- Action Buttons -->
@@ -4441,11 +4446,6 @@
             initializeItems();
             setupEventListeners();
             
-            // Setup delayed event listeners for browse page elements
-            setTimeout(() => {
-                setupBrowseEventListeners();
-            }, 1000);
-            
             // Only fetch from server if we don't have a valid user from localStorage
             // For Netlify deployment, we rely primarily on localStorage
             if (!hasValidUserFromStorage) {
@@ -4678,8 +4678,7 @@
 
         async function loadItems() {
             try {
-                // Load all items by requesting a large page size
-                const resp = await fetch('/api/items?per_page=100');
+                const resp = await fetch('/api/items');
                 if (resp.ok) {
                     const data = await resp.json();
                     items = data.items || data;
@@ -4769,36 +4768,10 @@
             // Navigation
             
             // Browse search - real-time search as user types
-            const browseSearchInput = document.getElementById('browseSearchInput');
-            if (browseSearchInput) {
-                browseSearchInput.addEventListener('input', performBrowseSearch);
-                console.log('Browse search input listener added');
-            } else {
-                console.error('Browse search input not found!');
-            }
+            document.getElementById('browseSearchInput').addEventListener('input', performBrowseSearch);
             
             // Category filter - apply filters when changed
-            const categoryFilter = document.getElementById('categoryFilter');
-            if (categoryFilter) {
-                console.log('Category filter element found, adding listeners');
-                categoryFilter.addEventListener('change', function(e) {
-                    console.log('Category filter changed to:', e.target.value);
-                    applyFilters();
-                });
-                
-                // Also add input event for better compatibility
-                categoryFilter.addEventListener('input', function(e) {
-                    console.log('Category filter input event:', e.target.value);
-                    applyFilters();
-                });
-                
-                // Add click event as well
-                categoryFilter.addEventListener('click', function(e) {
-                    console.log('Category filter clicked');
-                });
-            } else {
-                console.error('Category filter element not found!');
-            }
+            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
 
             // Forms
             const loginForm = document.getElementById('loginForm');
@@ -5542,32 +5515,45 @@
 
         async function performBrowseSearch() {
             resetPagination();
-            await applyFilters();
+            await renderAllItems();
         }
 
         function filterByCategory(category) {
-            if (!items || items.length === 0) return;
-            let filtered = [...items];
-            if (category) {
-                filtered = filtered.filter(item => item.category === category);
-            }
-            const container = document.getElementById('allItems');
-            if (container) {
-                renderItemsInContainer(filtered, container);
-            }
+            document.getElementById('categoryFilter').value = category;
+            showPage('browse');
+            applyFilters();
         }
 
         async function applyFilters() {
             // Get current filter values
             const category = document.getElementById('categoryFilter').value;
             const search = document.getElementById('browseSearchInput').value;
+            const city = '';
             
             // Apply filters
             filteredItems = [...items];
             
             if (category) {
-                // Filter directly by category slug provided by API
-                filteredItems = filteredItems.filter(item => item.category === category);
+                // Map category slug to full category name
+                const categoryMapping = {
+                    'formal': 'Formal Wear',
+                    'casual': 'Casual Wear',
+                    'party': 'Party Outfits',
+                    'traditional': 'Traditional',
+                    'accessories': 'Accessories',
+                    'designer': 'Designer'
+                };
+                const categoryName = categoryMapping[category];
+                if (categoryName) {
+                    filteredItems = filteredItems.filter(item => item.category === categoryName);
+                }
+            }
+            
+            if (city) {
+                filteredItems = filteredItems.filter(item => 
+                    item.owner && item.owner.city && 
+                    item.owner.city.toLowerCase().includes(city.toLowerCase())
+                );
             }
             
             if (search) {
@@ -5595,72 +5581,6 @@
             await renderAllItems();
         }
 
-        // removed temporary test helpers
-
-        function handleCategoryChange(value) {
-            console.log('Category changed to:', value);
-            alert(`Category changed to: ${value}`);
-            
-            if (!items || items.length === 0) {
-                console.log('No items loaded yet');
-                return;
-            }
-            
-            // Map category slug to category name
-            const categoryMapping = {
-                'formal': 'Formal Wear',
-                'casual': 'Casual Wear', 
-                'party': 'Party Outfits',
-                'traditional': 'Traditional',
-                'accessories': 'Accessories',
-                'designer': 'Designer'
-            };
-            
-            let filtered = [...items];
-            
-            if (value) {
-                const categoryName = categoryMapping[value];
-                if (categoryName) {
-                    filtered = filtered.filter(item => item.category === categoryName);
-                    console.log(`Filtered to ${filtered.length} items for category: ${categoryName}`);
-                }
-            }
-            
-            // Update the display
-            const container = document.getElementById('allItems');
-            if (container) {
-                renderItemsInContainer(filtered, container);
-            }
-        }
-
-        function setupBrowseEventListeners() {
-            console.log('Setting up browse event listeners...');
-            
-            // Category filter - apply filters when changed
-            const categoryFilter = document.getElementById('categoryFilter');
-            if (categoryFilter) {
-                console.log('Category filter element found in delayed setup, adding listeners');
-                
-                // Remove any existing listeners first
-                categoryFilter.removeEventListener('change', applyFilters);
-                categoryFilter.removeEventListener('input', applyFilters);
-                
-                categoryFilter.addEventListener('change', function(e) {
-                    console.log('Category filter changed to:', e.target.value);
-                    applyFilters();
-                });
-                
-                categoryFilter.addEventListener('input', function(e) {
-                    console.log('Category filter input event:', e.target.value);
-                    applyFilters();
-                });
-                
-                console.log('Category filter listeners added successfully');
-            } else {
-                console.error('Category filter element not found in delayed setup!');
-            }
-        }
-
         // Rendering functions
         function renderFeaturedItems() {
             const container = document.getElementById('featuredItems');
@@ -5675,17 +5595,39 @@
         async function renderAllItems() {
             const container = document.getElementById('allItems');
             
-            // Use the already loaded items from the global arrays
-            if (filteredItems && filteredItems.length > 0) {
-                // Apply sorting to filtered items before rendering
-                const sortedItems = sortItems(filteredItems);
-                renderItemsInContainer(sortedItems, container);
-            } else if (items && items.length > 0) {
-                // Apply sorting to all items before rendering
-                const sortedItems = sortItems(items);
-                renderItemsInContainer(sortedItems, container);
-            } else {
-                container.innerHTML = '<p style="text-align: center; color: var(--gray-600); grid-column: 1/-1;">No items available.</p>';
+            // Show loading state
+            container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--theme-accent);">Loading items...</div>';
+            
+            try {
+                // Get current filters
+                const filters = getCurrentFilters();
+                
+                // Load items with pagination from backend
+                const result = await loadItemsWithPagination(currentPage, filters);
+                
+                // Update global pagination variables
+                totalPages = result.pagination.pages;
+                
+                // Render items
+                renderItemsInContainer(result.items, container);
+                
+                // Update pagination controls with backend data
+                updatePaginationControlsWithBackendData(result.pagination);
+                
+            } catch (error) {
+                console.error('Error loading items:', error);
+                // Fallback to simple rendering with filteredItems
+                if (filteredItems && filteredItems.length > 0) {
+                    // Apply sorting to filtered items before rendering
+                    const sortedItems = sortItems(filteredItems);
+                    renderItemsInContainer(sortedItems, container);
+                } else if (items && items.length > 0) {
+                    // Apply sorting to all items before rendering
+                    const sortedItems = sortItems(items);
+                    renderItemsInContainer(sortedItems, container);
+                } else {
+                    container.innerHTML = '<p style="text-align: center; color: var(--gray-600); grid-column: 1/-1;">No items available.</p>';
+                }
             }
         }
 

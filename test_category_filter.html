@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Category Filter</title>
+</head>
+<body>
+    <h1>Test Category Filter</h1>
+    
+    <div>
+        <label>Category Filter:</label>
+        <select id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="formal">Formal Wear</option>
+            <option value="casual">Casual Wear</option>
+            <option value="party">Party Outfits</option>
+            <option value="traditional">Traditional</option>
+            <option value="designer">Designer</option>
+        </select>
+    </div>
+    
+    <div>
+        <button onclick="testFilter()">Test Filter</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        // Test data
+        const items = [
+            { id: 1, title: "Black Evening Gown", category: "Formal Wear" },
+            { id: 2, title: "Blue Jeans", category: "Casual Wear" },
+            { id: 3, title: "Party Dress", category: "Party Outfits" },
+            { id: 4, title: "Sari", category: "Traditional" },
+            { id: 5, title: "Designer Suit", category: "Designer" }
+        ];
+
+        function testFilter() {
+            const category = document.getElementById('categoryFilter').value;
+            console.log('Selected category:', category);
+            
+            const categoryMapping = {
+                'formal': 'Formal Wear',
+                'casual': 'Casual Wear', 
+                'party': 'Party Outfits',
+                'traditional': 'Traditional',
+                'accessories': 'Accessories',
+                'designer': 'Designer'
+            };
+            
+            let filteredItems = [...items];
+            
+            if (category) {
+                const categoryName = categoryMapping[category];
+                console.log('Category mapping:', category, '->', categoryName);
+                
+                if (categoryName) {
+                    filteredItems = filteredItems.filter(item => item.category === categoryName);
+                    console.log('Filtered items:', filteredItems);
+                }
+            }
+            
+            document.getElementById('results').innerHTML = `
+                <h3>Results (${filteredItems.length} items):</h3>
+                <ul>
+                    ${filteredItems.map(item => `<li>${item.title} - ${item.category}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        // Add event listener
+        document.getElementById('categoryFilter').addEventListener('change', function(e) {
+            console.log('Category filter changed to:', e.target.value);
+            testFilter();
+        });
+    </script>
+</body>
+</html>
+

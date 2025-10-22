@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .result { margin: 10px 0; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; }
+    </style>
+</head>
+<body>
+    <h1>Debug Test Page</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Basic JavaScript</h3>
+        <button onclick="testBasicJS()">Test Basic JS</button>
+        <div id="result1" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: Category Filter</h3>
+        <select id="testCategoryFilter" onchange="testCategoryChange(this.value)">
+            <option value="">All Categories</option>
+            <option value="formal">Formal Wear</option>
+            <option value="casual">Casual Wear</option>
+        </select>
+        <div id="result2" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 3: API Call</h3>
+        <button onclick="testAPICall()">Test API Call</button>
+        <div id="result3" class="result"></div>
+    </div>
+
+    <script>
+        console.log('Debug test page loaded');
+        
+        function testBasicJS() {
+            console.log('Basic JS test triggered');
+            document.getElementById('result1').innerHTML = 'Basic JavaScript is working!';
+        }
+        
+        function testCategoryChange(value) {
+            console.log('Category changed to:', value);
+            document.getElementById('result2').innerHTML = `Category selected: ${value}`;
+        }
+        
+        async function testAPICall() {
+            try {
+                console.log('Testing API call...');
+                const response = await fetch('/api/items?per_page=5');
+                const data = await response.json();
+                console.log('API response:', data);
+                document.getElementById('result3').innerHTML = `API call successful! Got ${data.items ? data.items.length : 0} items`;
+            } catch (error) {
+                console.error('API call failed:', error);
+                document.getElementById('result3').innerHTML = `API call failed: ${error.message}`;
+            }
+        }
+        
+        // Test if elements exist
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            const categoryFilter = document.getElementById('testCategoryFilter');
+            if (categoryFilter) {
+                console.log('Category filter element found');
+            } else {
+                console.error('Category filter element not found');
+            }
+        });
+    </script>
+</body>
+</html>
+

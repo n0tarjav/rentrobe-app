@@ -338,6 +338,7 @@ def api_items():
         max_price = request.args.get('max_price', type=int)
         city = request.args.get('city')
         search = request.args.get('search')
+        sort = request.args.get('sort', 'newest')
         
         query = Item.query.filter(Item.is_active == True)
         
@@ -365,8 +366,19 @@ def api_items():
                 Item.description.ilike(f"%{search}%")
             ))
         
-        # Order by date added (newest first)
-        query = query.order_by(Item.date_added.desc())
+        # Apply sorting
+        if sort == 'price-low':
+            query = query.order_by(Item.price_per_day.asc())
+        elif sort == 'price-high':
+            query = query.order_by(Item.price_per_day.desc())
+        elif sort == 'name-asc':
+            query = query.order_by(Item.title.asc())
+        elif sort == 'name-desc':
+            query = query.order_by(Item.title.desc())
+        elif sort == 'oldest':
+            query = query.order_by(Item.date_added.asc())
+        else:  # default to newest
+            query = query.order_by(Item.date_added.desc())
         
         # Paginate
         pagination = query.paginate(
