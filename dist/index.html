@@ -744,20 +744,23 @@
         /* Categories */
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .category-card {
-            background: var(--white);
-            border: 1px solid var(--gray-200);
-            padding: 40px 24px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e2e8f0;
+            padding: 48px 32px;
             text-align: center;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 8px;
+            border-radius: 16px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .category-card::before {
@@ -786,21 +789,23 @@
         }
 
         .category-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
+            font-size: 40px;
+            margin-bottom: 20px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-block;
         }
 
         .category-card h3 {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 8px;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a202c;
         }
 
         .category-card p {
-            color: var(--gray-600);
-            font-size: 14px;
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         /* Items Grid */
