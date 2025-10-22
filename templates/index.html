@@ -1578,6 +1578,119 @@
             position: relative;
         }
 
+        /* New How It Works Design */
+        .how-it-works-new {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .workflow-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            align-items: start;
+            position: relative;
+            padding: 40px 20px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(47, 82, 73, 0.02), rgba(74, 124, 89, 0.02));
+        }
+
+        .workflow-step {
+            text-align: center;
+            position: relative;
+            padding: 30px 20px;
+            border-radius: 16px;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-100);
+        }
+
+        .workflow-step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--theme-primary);
+        }
+
+        .workflow-step:hover h3 {
+            color: var(--theme-primary);
+        }
+
+        .workflow-step:hover p {
+            color: var(--gray-700);
+        }
+
+        .step-icon-pink {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border: 3px solid var(--theme-primary);
+            border-radius: 50%;
+            font-size: 36px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(47, 82, 73, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-icon-pink svg {
+            color: var(--theme-primary);
+            transition: all 0.3s ease;
+            opacity: 1;
+            visibility: visible;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .workflow-step:hover .step-icon-pink {
+            background: var(--white);
+            border-color: var(--theme-primary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(47, 82, 73, 0.4);
+        }
+
+        .workflow-step:hover .step-icon-pink svg {
+            color: var(--theme-primary);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .workflow-step h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--black);
+            letter-spacing: -0.5px;
+        }
+
+        .workflow-step p {
+            color: var(--gray-600);
+            line-height: 1.7;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .lister-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gray-100);
+        }
+
+        .lister-title {
+            grid-column: 1 / -1;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--black);
+        }
+
         .how-it-works::before {
             content: '';
             position: absolute;
@@ -1757,6 +1870,43 @@
             .progress-line {
                 left: 10%;
                 right: 10%;
+            }
+
+            /* New How It Works Mobile Styles */
+            .workflow-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .how-it-works-new {
+                gap: 40px;
+            }
+
+            .lister-section {
+                margin-top: 30px;
+                padding-top: 30px;
+            }
+
+            .lister-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .step-icon-pink {
+                width: 60px;
+                height: 60px;
+            }
+
+            .workflow-step {
+                padding: 20px 15px;
+            }
+
+            .workflow-step h3 {
+                font-size: 18px;
+            }
+
+            .workflow-step p {
+                font-size: 14px;
             }
         }
 
@@ -2975,56 +3125,83 @@
             <!-- How It Works Section -->
             <div class="container section">
                 <h2 class="section-title rentrobe-text">How Rentrobe Works</h2>
-                <div class="how-it-works">
-                    <div class="step">
-                        <div class="step-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
-                                <path d="M12 9v4"/>
-                                <path d="M8 9v4"/>
-                                <path d="M16 9v4"/>
-                            </svg>
+                <div class="how-it-works-new">
+                    <!-- For Renters -->
+                    <div class="workflow-section">
+                        <div class="workflow-step">
+                            <div class="step-icon-pink">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                                </svg>
+                            </div>
+                            <h3>Browse Outfits</h3>
+                            <p>Discover stylish outfits for every occasion</p>
                         </div>
-                        <h3>Select a Style</h3>
-                        <p>Pick your perfect style from our collection of designer outfits and accessories.</p>
+                        
+                        <div class="workflow-step">
+                            <div class="step-icon-pink">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1"/>
+                                    <circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                                </svg>
+                            </div>
+                            <h3>Add to Cart</h3>
+                            <p>Pick your favorite look and add it to cart</p>
+                        </div>
+                        
+                        <div class="workflow-step">
+                            <div class="step-icon-pink">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                    <path d="M9 16l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <h3>Confirm & Rent</h3>
+                            <p>Choose rental duration & confirm booking.</p>
+                        </div>
                     </div>
                     
-                    <div class="step">
-                        <div class="step-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="16" y1="2" x2="16" y2="6"/>
-                                <line x1="8" y1="2" x2="8" y2="6"/>
-                                <line x1="3" y1="10" x2="21" y2="10"/>
-                            </svg>
+                    <!-- For Listers -->
+                    <div class="workflow-section lister-section">
+                        <h3 class="lister-title">For Listers — Earn Through Your Closet</h3>
+                        <div class="workflow-step">
+                            <div class="step-icon-pink">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <h3>Create an Account</h3>
+                            <p>Join RentRobe as a verified lister</p>
                         </div>
-                        <h3>Book your Outfit</h3>
-                        <p>Book your look for 3, 5, 7 or 10 days. Outfit will be altered to your size and dry cleaned before delivery.</p>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
-                            </svg>
+                        
+                        <div class="workflow-step">
+                            <div class="step-icon-pink">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                    <circle cx="12" cy="13" r="4"/>
+                                </svg>
+                            </div>
+                            <h3>Upload Outfit</h3>
+                            <p>Add outfit photos and set your rent price</p>
                         </div>
-                        <h3>Flaunt It</h3>
-                        <p>Flaunt your look with that perfect outfit chosen by you and enjoy the compliments</p>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                                <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
-                                <line x1="12" y1="22.08" x2="12" y2="12"/>
-                            </svg>
+                        
+                        <div class="workflow-step">
+                            <div class="step-icon-pink">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 1v22"/>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                            </div>
+                            <h3>Get Rented</h3>
+                            <p>Your outfit gets booked by renters</p>
                         </div>
-                        <h3>Return It</h3>
-                        <p>Pack the outfit and we'll pick it up a day after your occasion or the dates chosen by you.</p>
                     </div>
                 </div>
-                
             </div>
 
             <div class="container section">
@@ -5104,8 +5281,8 @@
                 // Check against hardcoded users first
                 const hardcodedUsers = {
                     'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav Jain', id: 2, phone: '+91 8319337033', city: 'Bhilai' },
-                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3, phone: '+91 9770961933', city: 'Delhi' },
-                    'demo@rentrobe.com': { password: 'rentrobe123', name: 'Demo Rentrobe', id: 4, phone: '91 9770961933', city: 'Bhilai' }
+                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'A Ankita Rao', id: 3, phone: '+91 9770961933', city: 'Bhilai' },
+                    'demo@rentrobe.com': { password: 'rentrobe123', name: 'Rentrobe Demo User', id: 4, phone: '91 9770961933', city: 'Bhilai' }
                 };
                 
                 const normalizedEmail = email.toLowerCase().trim();
