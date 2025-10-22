@@ -5097,81 +5097,52 @@
             showSpinner('loginSpinner');
 
             try {
-                console.log('Attempting login API call...');
-                // Try API first
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password }),
-                    credentials: 'include'
-                });
-
-                console.log('Login response status:', response.status);
-                console.log('Login response ok:', response.ok);
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Login response data:', data);
+                console.log('Attempting login...');
+                
+                // Check against hardcoded users for now (since Netlify functions aren't working)
+                const users = {
+                    'demo@wearhouse.com': { password: 'password123', name: 'Demo User', id: 1 },
+                    'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav', id: 2 },
+                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3 }
+                };
+                
+                const normalizedEmail = email.toLowerCase().trim();
+                
+                if (users[normalizedEmail] && users[normalizedEmail].password === password) {
+                    console.log('Login successful with hardcoded check');
                     
-                    if (data.user) {
-                        // Check if we have updated profile data in localStorage
-                        const savedUser = localStorage.getItem('rentrobe_user');
-                        if (savedUser) {
-                            try {
-                                const localUser = JSON.parse(savedUser);
-                                // If the email matches, merge the data (localStorage has priority for profile fields)
-                                if (localUser.email === data.user.email) {
-                                    console.log('Merging user data from localStorage with server data');
-                                    currentUser = {
-                                        ...data.user, // Server data (has correct ID, password, etc.)
-                                        name: localUser.name, // Local profile updates take priority
-                                        phone: localUser.phone,
-                                        city: localUser.city
-                                    };
-                                    console.log('Merged user data:', currentUser);
-                                } else {
-                                    currentUser = data.user;
-                                }
-                            } catch (e) {
-                                console.error('Error parsing saved user during login:', e);
-                                currentUser = data.user;
-                            }
-                        } else {
-                            currentUser = data.user;
-                        }
-                        
-                        console.log('Current user set to:', currentUser);
-                        localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
-                        console.log('User saved to localStorage');
-                        
-                        updateAuthUI();
-                        console.log('Auth UI updated');
-                        
-                        hideModal('loginModal');
-                        hideSpinner('loginSpinner');
-                        console.log('Login successful - modal closed');
-                        
-                        // Update UI immediately since we're using localStorage
-                        updateAuthUI();
-                        
-                        // Redirect to intended page if user was trying to access protected page
-                        if (attemptedProtectedPage) {
-                            showPage(attemptedProtectedPage);
-                            attemptedProtectedPage = null;
-                        }
-                    } else {
-                        console.error('No user data in response:', data);
-                        showAlert('loginError');
-                        hideSpinner('loginSpinner');
+                    currentUser = {
+                        id: users[normalizedEmail].id,
+                        name: users[normalizedEmail].name,
+                        email: normalizedEmail
+                    };
+                    
+                    console.log('Current user set to:', currentUser);
+                    localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                    console.log('User saved to localStorage');
+                    
+                    updateAuthUI();
+                    console.log('Auth UI updated');
+                    
+                    hideModal('loginModal');
+                    hideSpinner('loginSpinner');
+                    console.log('Login successful - modal closed');
+                    
+                    // Update UI immediately since we're using localStorage
+                    updateAuthUI();
+                    
+                    // Redirect to intended page if user was trying to access protected page
+                    if (attemptedProtectedPage) {
+                        showPage(attemptedProtectedPage);
+                        attemptedProtectedPage = null;
                     }
                 } else {
-                    const errorData = await response.json();
-                    console.error('Login API error:', errorData);
+                    console.error('Invalid credentials');
                     showAlert('loginError');
                     hideSpinner('loginSpinner');
                 }
             } catch (error) {
-                console.error('Login network error:', error);
+                console.error('Login error:', error);
                 showAlert('loginError');
                 hideSpinner('loginSpinner');
             }
@@ -5198,46 +5169,53 @@
             showSpinner('signupSpinner');
 
             try {
-                // Try API first
-                const response = await fetch('/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password, phone, city }),
-                    credentials: 'include'
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Signup response data:', data);
-                    currentUser = data.user;
-                    console.log('Current user set to:', currentUser);
-                    localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
-                    console.log('User saved to localStorage');
-                    updateAuthUI();
-                    console.log('Auth UI updated');
-                    hideModal('signupModal');
-                    hideSpinner('signupSpinner');
-                    console.log('Registration completed successfully');
-                    
-                    // Update UI immediately since we're using localStorage
-                    updateAuthUI();
-                    
-                    // Redirect to intended page if user was trying to access protected page
-                    if (attemptedProtectedPage) {
-                        showPage(attemptedProtectedPage);
-                        attemptedProtectedPage = null;
-                    }
-                } else {
-                    const errorData = await response.json().catch(() => ({}));
+                // For now, just create a local user (since Netlify functions aren't working)
+                console.log('Creating local user account...');
+                
+                const normalizedEmail = email.toLowerCase().trim();
+                
+                // Check if email already exists in our hardcoded users
+                const existingUsers = {
+                    'demo@wearhouse.com': { password: 'password123', name: 'Demo User', id: 1 },
+                    'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav', id: 2 },
+                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3 }
+                };
+                
+                if (existingUsers[normalizedEmail]) {
+                    console.error('Email already exists');
                     showAlert('signupError');
-                    if (errorData && errorData.error) {
-                        const el = document.getElementById('signupError');
-                        if (el) el.textContent = errorData.error;
-                    }
                     hideSpinner('signupSpinner');
                     return;
                 }
+                
+                // Create new user
+                currentUser = {
+                    id: Date.now(), // Simple ID generation
+                    name: name,
+                    email: normalizedEmail,
+                    phone: phone,
+                    city: city
+                };
+                
+                console.log('New user created:', currentUser);
+                localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                console.log('User saved to localStorage');
+                updateAuthUI();
+                console.log('Auth UI updated');
+                hideModal('signupModal');
+                hideSpinner('signupSpinner');
+                console.log('Registration completed successfully');
+                
+                // Update UI immediately since we're using localStorage
+                updateAuthUI();
+                
+                // Redirect to intended page if user was trying to access protected page
+                if (attemptedProtectedPage) {
+                    showPage(attemptedProtectedPage);
+                    attemptedProtectedPage = null;
+                }
             } catch (error) {
+                console.error('Signup error:', error);
                 showAlert('signupError');
                 hideSpinner('signupSpinner');
                 return;
