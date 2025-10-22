@@ -6,7 +6,7 @@ from pathlib import Path
 
 def handler(event, context):
     """
-    Netlify serverless function handler for API
+    Working API handler for Netlify functions
     """
     print(f"Function called with event: {event}")
     
@@ -42,7 +42,7 @@ def handler(event, context):
                 
                 print(f"Login attempt: {email}")
                 
-                # Check against hardcoded users
+                # Check against hardcoded users for now
                 users = {
                     'demo@wearhouse.com': {'password': 'password123', 'name': 'Demo User', 'id': 1},
                     'arjav@rentrobe.com': {'password': 'arjav0302', 'name': 'Arjav', 'id': 2},
