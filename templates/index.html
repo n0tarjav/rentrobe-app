@@ -2897,8 +2897,8 @@
                 <li><a href="#" onclick="showPage('cart')" id="cartLink">My Cart</a></li>
             </ul>
             <div class="auth-buttons" id="authButtons">
-                <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
-                <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join</a>
+                <a href="#" class="btn" onclick="showModal('loginModal')">Log In</a>
+                <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Sign Up</a>
             </div>
             <div class="user-menu" id="userMenu">
                 <div class="user-avatar" onclick="toggleUserMenu()">
@@ -3159,8 +3159,8 @@
                     <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to List Items</h3>
                     <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to list your items for rent</p>
                     <div style="display: flex; gap: 12px; justify-content: center;">
-                        <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
-                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join Now</a>
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Log In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Sign Up Now</a>
                     </div>
                 </div>
                 
@@ -3287,8 +3287,8 @@
                     <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to View Your Cart</h3>
                     <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to view and manage your cart</p>
                     <div style="display: flex; gap: 12px; justify-content: center;">
-                        <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
-                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join Now</a>
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Log In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Sign Up Now</a>
                     </div>
                 </div>
                 
@@ -3700,7 +3700,7 @@
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="hideModal('loginModal')">&times;</span>
-            <h2 class="modal-title">Sign In</h2>
+            <h2 class="modal-title">Log In</h2>
             <div class="alert alert-error" id="loginError">Invalid credentials.</div>
             <form id="loginForm">
                 <div class="form-group">
@@ -3720,7 +3720,7 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <span class="spinner" id="loginSpinner"></span>Sign In
+                    <span class="spinner" id="loginSpinner"></span>Log In
                 </button>
             </form>
             <div style="text-align: center; margin-top: 16px;">
@@ -3728,7 +3728,7 @@
                     Don't have an account? 
                     <a href="#" onclick="hideModal('loginModal'); showModal('signupModal');" 
                        style="color: var(--theme-accent); text-decoration: none; font-weight: 500;">
-                        Create Account
+                        Sign Up
                     </a>
                 </p>
             </div>
@@ -3738,7 +3738,7 @@
     <div id="signupModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="hideModal('signupModal')">&times;</span>
-            <h2 class="modal-title">Join Rentrobe</h2>
+            <h2 class="modal-title">Sign Up Rentrobe</h2>
             <div class="alert alert-error" id="signupError">Please fill all fields correctly.</div>
             <form id="signupForm">
                 <div class="form-group">
@@ -3770,7 +3770,7 @@
                     <input type="text" class="form-input" id="signupCity" required>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <span class="spinner" id="signupSpinner"></span>Create Account
+                    <span class="spinner" id="signupSpinner"></span>Sign Up
                 </button>
             </form>
             <div style="text-align: center; margin-top: 16px;">
@@ -3778,7 +3778,7 @@
                     Already have an account? 
                     <a href="#" onclick="hideModal('signupModal'); showModal('loginModal');" 
                        style="color: var(--theme-accent); text-decoration: none; font-weight: 500;">
-                        Sign In
+                        Log In
                     </a>
                 </p>
             </div>
@@ -6007,7 +6007,7 @@
                         </button>
                     ` : item.status === 'available' && !currentUser ? `
                         <div style=\"display: flex; gap: 12px; margin-bottom: 12px;\">
-                            <button class=\"btn btn-primary\" style=\"flex: 1;\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Sign In to Rent</button>
+                            <button class=\"btn btn-primary\" style=\"flex: 1;\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Log In to Rent</button>
                             <button class=\"btn\" style=\"flex: 1; border-color: var(--theme-accent); color: var(--theme-accent);\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Add to Cart</button>
                         </div>
                     ` : `
