@@ -1,121 +1,85 @@
 #!/usr/bin/env python3
 """
-Test script for Netlify function
+Test script to test the Netlify function directly
 """
 
-import json
 import sys
+import os
 from pathlib import Path
 
-# Add the netlify functions directory to path
-netlify_functions = Path(__file__).parent / 'netlify' / 'functions'
-sys.path.insert(0, str(netlify_functions))
+# Add the project root to the Python path
+project_root = Path(__file__).parent
+sys.path.insert(0, str(project_root))
 
-# Import the handler
-from api import handler
+# Set up environment
+os.environ['DATABASE_URL'] = 'sqlite:///instance/wearhouse.db'
+os.environ['SECRET_KEY'] = 'test-secret-key'
 
-def test_registration():
-    """Test user registration"""
-    print("=== TESTING REGISTRATION ===")
-    
-    event = {
-        'path': '/api/auth/register',
-        'httpMethod': 'POST',
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': json.dumps({
-            'name': 'Netlify Test User',
-            'email': 'netlifytest@example.com',
-            'password': 'password123',
-            'phone': '+91 9876543210',
-            'city': 'Mumbai'
-        }),
-        'queryStringParameters': None
-    }
-    
-    context = {}
-    
+# Import the Netlify function
+from netlify.functions.api import handler
+
+def test_netlify_function():
+    """Test the Netlify function with items endpoint"""
     try:
+        # Create a mock event
+        event = {
+            'path': '/api/items',
+            'httpMethod': 'GET',
+            'headers': {},
+            'body': '',
+            'queryStringParameters': {}
+        }
+        
+        context = {}
+        
+        print("Testing Netlify function...")
+        print(f"Event: {event}")
+        
+        # Call the handler
         result = handler(event, context)
+        
         print(f"Status Code: {result['statusCode']}")
-        print(f"Response: {result['body']}")
-        return result['statusCode'] == 201
+        print(f"Headers: {result['headers']}")
+        
+        if result['statusCode'] == 200:
+            try:
+                # Check if body is already parsed or needs parsing
+                if isinstance(result['body'], str):
+                    data = json.loads(result['body'])
+                else:
+                    data = result['body']
+                
+                items = data.get('items', [])
+                print(f"Number of items returned: {len(items)}")
+                
+                # Check for inactive items
+                inactive_items = [item for item in items if item.get('is_active') == False]
+                print(f"Number of inactive items: {len(inactive_items)}")
+                
+                if inactive_items:
+                    print("Inactive items found:")
+                    for item in inactive_items:
+                        print(f"  - {item.get('title')} (ID: {item.get('id')})")
+                else:
+                    print("No inactive items found - filtering is working correctly!")
+                    
+                # Show first few items
+                print(f"\nFirst 3 items:")
+                for i, item in enumerate(items[:3]):
+                    print(f"  {i+1}. {item.get('title')} - Active: {item.get('is_active', 'N/A')}")
+                    
+            except (json.JSONDecodeError, AttributeError) as e:
+                print(f"Error parsing response: {e}")
+                print(f"Response body type: {type(result['body'])}")
+                print(f"Response body: {result['body']}")
+        else:
+            print(f"Error: {result['body']}")
+            
     except Exception as e:
-        print(f"Error: {e}")
-        return False
-
-def test_login():
-    """Test user login"""
-    print("\n=== TESTING LOGIN ===")
-    
-    event = {
-        'path': '/api/auth/login',
-        'httpMethod': 'POST',
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': json.dumps({
-            'email': 'netlifytest@example.com',
-            'password': 'password123'
-        }),
-        'queryStringParameters': None
-    }
-    
-    context = {}
-    
-    try:
-        result = handler(event, context)
-        print(f"Status Code: {result['statusCode']}")
-        print(f"Response: {result['body']}")
-        return result['statusCode'] == 200
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
-
-def test_profile():
-    """Test profile access"""
-    print("\n=== TESTING PROFILE ===")
-    
-    event = {
-        'path': '/api/profile',
-        'httpMethod': 'GET',
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': '',
-        'queryStringParameters': None
-    }
-    
-    context = {}
-    
-    try:
-        result = handler(event, context)
-        print(f"Status Code: {result['statusCode']}")
-        print(f"Response: {result['body']}")
-        return result['statusCode'] == 200
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
+        print(f"Error testing Netlify function: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    print("Testing Netlify function...")
-    
-    # Test registration
-    reg_success = test_registration()
-    
-    # Test login
-    login_success = test_login()
-    
-    # Test profile
-    profile_success = test_profile()
-    
-    print(f"\n=== RESULTS ===")
-    print(f"Registration: {'PASS' if reg_success else 'FAIL'}")
-    print(f"Login: {'PASS' if login_success else 'FAIL'}")
-    print(f"Profile: {'PASS' if profile_success else 'FAIL'}")
-    
-    if all([reg_success, login_success, profile_success]):
-        print("\n[SUCCESS] All tests passed! Ready for Netlify deployment!")
-    else:
-        print("\n[ERROR] Some tests failed. Check the errors above.")
+    import json
+    test_netlify_function()

@@ -44,6 +44,9 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() == 'true'
 app.config['SESSION_COOKIE_HTTPONLY'] = os.environ.get('SESSION_COOKIE_HTTPONLY', 'True').lower() == 'true'
 app.config['SESSION_COOKIE_SAMESITE'] = os.environ.get('SESSION_COOKIE_SAMESITE', 'Lax')
+app.config['SESSION_COOKIE_DOMAIN'] = os.environ.get('SESSION_COOKIE_DOMAIN', None)
+app.config['SESSION_PERMANENT'] = True
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
 # Ensure upload directory exists
 Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
@@ -312,12 +315,6 @@ def uploaded_file(filename):
     """Serve uploaded files"""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-# SPA routes
-@app.route('/<path:path>')
-def spa_routes(path):
-    """Single Page Application routes"""
-    return render_template('index.html')
-
 # API Routes
 @app.route('/api/categories')
 def api_categories():
@@ -396,6 +393,7 @@ def api_items():
         return jsonify({'error': 'Failed to fetch items'}), 500
 
 @app.route('/api/items/<int:item_id>')
+@login_required
 def api_item_detail(item_id):
     """Get item details"""
     try:
@@ -453,6 +451,7 @@ def api_register():
         db.session.commit()
         
         login_user(user)
+        session.permanent = True
         
         logger.info(f"New user registered: {email}, session: {session}")
         return jsonify({
@@ -482,6 +481,7 @@ def api_login():
         
         if user and bcrypt.check_password_hash(user.password_hash, data['password']):
             login_user(user, remember=True)
+            session.permanent = True
             logger.info(f"User logged in: {email}, session: {session}")
             return jsonify({
                 'message': 'Login successful',
@@ -655,6 +655,29 @@ def api_user_items():
     except Exception as e:
         logger.error(f"Error fetching user items: {e}")
         return jsonify({'error': 'Failed to fetch items'}), 500
+
+@app.route('/api/items/<int:item_id>', methods=['DELETE'])
+@login_required
+def api_delete_item(item_id):
+    """Delete an item (soft delete by setting is_active=False)"""
+    try:
+        item = Item.query.get_or_404(item_id)
+        
+        # Check if user owns the item
+        if item.owner_id != current_user.id:
+            return jsonify({'error': 'You can only delete your own items'}), 403
+        
+        # Soft delete by setting is_active to False
+        item.is_active = False
+        db.session.commit()
+        
+        logger.info(f"Item {item_id} deleted by user {current_user.id}")
+        return jsonify({'message': 'Item deleted successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error deleting item {item_id}: {e}")
+        return jsonify({'error': 'Failed to delete item'}), 500
 
 
 @app.route('/api/rentals', methods=['POST'])
@@ -903,6 +926,7 @@ def api_test():
         })
 
 @app.route('/api/search')
+@login_required
 def api_search():
     """Advanced search with suggestions"""
     try:
@@ -965,18 +989,46 @@ def init_db():
                 category = Category(**cat_data)
                 db.session.add(category)
         
-        # Create demo user if it doesn't exist
-        if not User.query.filter_by(email='demo@wearhouse.com').first():
-            demo_user = User(
-                name='Demo User',
-                email='demo@wearhouse.com',
-                password_hash=bcrypt.generate_password_hash('password123').decode('utf-8'),
-                phone='+91 9876543210',
-                city='Mumbai',
-                address='123 Fashion Street, Mumbai',
-                is_verified=True
-            )
-            db.session.add(demo_user)
+        # Create demo users if they don't exist
+        demo_users = [
+            {
+                'name': 'Demo User',
+                'email': 'demo@wearhouse.com',
+                'password': 'password123',
+                'phone': '+91 9876543210',
+                'city': 'Mumbai',
+                'address': '123 Fashion Street, Mumbai'
+            },
+            {
+                'name': 'Arjav',
+                'email': 'arjav@rentrobe.com',
+                'password': 'arjav0302',
+                'phone': '+91 8319337033',
+                'city': 'Bhilai',
+                'address': 'Bhilai, Chhattisgarh'
+            },
+            {
+                'name': 'Ankita',
+                'email': 'ankita@rentrobe.com',
+                'password': 'ankita1001',
+                'phone': '+91 9876543211',
+                'city': 'Delhi',
+                'address': 'Delhi, India'
+            }
+        ]
+        
+        for user_data in demo_users:
+            if not User.query.filter_by(email=user_data['email']).first():
+                demo_user = User(
+                    name=user_data['name'],
+                    email=user_data['email'],
+                    password_hash=bcrypt.generate_password_hash(user_data['password']).decode('utf-8'),
+                    phone=user_data['phone'],
+                    city=user_data['city'],
+                    address=user_data['address'],
+                    is_verified=True
+                )
+                db.session.add(demo_user)
         
         db.session.commit()
         logger.info("Database initialized successfully!")
@@ -1055,6 +1107,12 @@ def create_sample_data():
     except Exception as e:
         logger.error(f"Sample data creation error: {e}")
         db.session.rollback()
+
+# SPA routes - must be after all API routes
+@app.route('/<path:path>')
+def spa_routes(path):
+    """Single Page Application routes"""
+    return render_template('index.html')
 
 # CLI Commands
 @app.cli.command()

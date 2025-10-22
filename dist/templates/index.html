@@ -47,7 +47,7 @@
 
         .nav-links a:hover {
             color: var(--theme-accent);
-            background: rgba(70, 79, 80, 0.05);
+            background: transparent;
         }
 
         .nav-links a::after,
@@ -165,7 +165,6 @@
         /* Header */
         header {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             position: fixed;
             top: 0;
@@ -175,63 +174,6 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        header.hero-glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        header.hero-glass .logo {
-            color: white;
-        }
-
-        header.hero-glass .logo img {
-            content: url('static/LOGO_W.png');
-        }
-
-        header.hero-glass .nav-links a {
-            color: white;
-        }
-
-        header.hero-glass .nav-links a:hover {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        header.hero-glass .nav-links a::after {
-            background-color: white;
-        }
-
-        header.hero-glass .auth-buttons .btn {
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        header.hero-glass .auth-buttons .btn::before {
-            background: white !important;
-        }
-
-        header.hero-glass .auth-buttons .btn:hover {
-            background: transparent !important;
-            border-color: white !important;
-            color: var(--black) !important;
-        }
-
-        header.hero-glass .auth-buttons .btn-primary {
-            background: transparent;
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        header.hero-glass .auth-buttons .btn-primary::before {
-            background: white !important;
-        }
-
-        header.hero-glass .auth-buttons .btn-primary:hover {
-            background: transparent !important;
-            border-color: white !important;
-            color: var(--black) !important;
-        }
 
         header.scrolled {
             background: rgba(255, 255, 255, 0.98);
@@ -289,7 +231,7 @@
 
         .nav-links a:hover {
             color: var(--black);
-            background: rgba(0, 0, 0, 0.05);
+            background: transparent;
             transform: translateY(-2px);
         }
 
@@ -298,14 +240,18 @@
             position: absolute;
             bottom: -4px;
             left: 0;
-            width: 0;
             height: 2px;
+            width: 100%;
             background: var(--black);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: right center; /* collapse toward right by default */
+            transition: transform 0.3s ease;
+            will-change: transform;
         }
 
         .nav-links a:hover::after {
-            width: 100%;
+            transform: scaleX(1);
+            transform-origin: left center; /* expand from left on hover */
         }
 
         .nav-links a.active {
@@ -314,7 +260,8 @@
         }
 
         .nav-links a.active::after {
-            width: 100%;
+            transform: scaleX(1);
+            transform-origin: left center;
         }
 
         .btn {
@@ -346,7 +293,7 @@
         }
 
         .btn:hover {
-            color: var(--white);
+            color: var(--white) !important;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
@@ -378,10 +325,13 @@
             align-items: center;
         }
 
+
         /* User Menu */
         .user-menu {
             position: relative;
-            display: none;
+            display: none; /* shown as flex when logged in */
+            align-items: center;
+            gap: 12px;
         }
 
         .user-avatar {
@@ -677,85 +627,70 @@
             }
         }
 
-        .search-container {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 18px 24px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-weight: 400;
-            backdrop-filter: blur(10px);
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .search-input:focus {
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .search-input:focus + .search-btn {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transform-origin: center;
-            right: 0;
-        }
-
-        .search-input:hover {
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 4px;
-            top: 4px;
-            bottom: 4px;
-            background: white;
-            color: #464F50;
-            border: none;
-            padding: 0 28px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 14px;
-            border-radius: 50px;
-        }
-
-        .search-btn:hover {
-            background: #464F50;
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .search-btn:active {
-            transform: scale(0.95);
-        }
 
         /* Sections */
         .section {
             padding: 60px 0;
         }
 
+        /* Reduce padding for How It Works section */
+        .section:has(.how-it-works) {
+            padding-bottom: 40px;
+        }
+
         .section-title {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 36px;
+            font-weight: 800;
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 60px;
             color: var(--black);
+            letter-spacing: -1px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--theme-primary), #4a7c59);
+            border-radius: 2px;
+        }
+
+        /* Rentrobe text hover animation - More specific and direct */
+        h2.section-title .rentrobe-text {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        h2.section-title .rentrobe-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background: #2F5249;
+            transform: scaleX(0);
+            transform-origin: right center;
+            transition: transform 0.3s ease;
+        }
+
+        h2.section-title .rentrobe-text:hover {
+            color: #2F5249 !important;
+            background-color: rgba(47, 82, 73, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        h2.section-title .rentrobe-text:hover::after {
+            transform: scaleX(1) !important;
+            transform-origin: left center;
         }
 
         .legal-content {
@@ -1064,6 +999,8 @@
             object-fit: cover;
             transition: transform 0.3s ease;
         }
+
+        /* (removed) compact add-to-cart control */
 
         .image-fallback {
             display: flex;
@@ -1498,9 +1435,201 @@
         /* Add extra space for all main pages */
         #browse .section,
         #list .section,
+        #cart .section,
         #my-items .section,
         #rentals .section {
             padding-top: 100px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: linear-gradient(135deg, rgba(47, 82, 73, 0.02), rgba(74, 124, 89, 0.02));
+            border-radius: 24px;
+            z-index: -1;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            padding: 30px 20px;
+            border-radius: 16px;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-100);
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--theme-primary);
+        }
+
+        .step:hover h3 {
+            color: var(--theme-primary);
+        }
+
+        .step:hover p {
+            color: var(--gray-700);
+        }
+
+        .step-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            border: 3px solid var(--theme-primary);
+            border-radius: 50%;
+            font-size: 36px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(47, 82, 73, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-icon svg {
+            color: var(--theme-primary);
+            transition: all 0.3s ease;
+            opacity: 1;
+            visibility: visible;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step:hover .step-icon {
+            background: var(--white);
+            border-color: var(--theme-primary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(47, 82, 73, 0.4);
+        }
+
+        .step:hover .step-icon svg {
+            color: var(--theme-primary);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--black);
+            letter-spacing: -0.5px;
+        }
+
+        .step p {
+            color: var(--gray-600);
+            line-height: 1.7;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        /* Progress Indicators */
+        .progress-indicators {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 60px;
+            padding: 0 20px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            right: 15%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--gray-200), var(--theme-primary), var(--gray-200));
+            border-radius: 3px;
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .progress-dot {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--theme-primary), #4a7c59);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            position: relative;
+            z-index: 2;
+            margin: 0 15px;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(47, 82, 73, 0.3);
+            border: 3px solid var(--white);
+        }
+
+        .progress-dot:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(47, 82, 73, 0.4);
+        }
+
+        .progress-dot::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--theme-primary), #4a7c59);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .progress-dot:hover::before {
+            opacity: 1;
+        }
+
+        /* Responsive Design for How It Works */
+        @media (max-width: 768px) {
+            .how-it-works {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .progress-dot {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                margin: 0 8px;
+            }
+            
+            .progress-line {
+                left: 10%;
+                right: 10%;
+            }
         }
 
         /* Pagination Styles */
@@ -1856,20 +1985,6 @@
                 display: none;
             }
             
-            .search-container {
-                max-width: 350px;
-                margin: 0 auto;
-            }
-            
-            .search-input {
-                padding: 14px 18px;
-                font-size: 15px;
-            }
-            
-            .search-btn {
-                padding: 0 20px;
-                font-size: 13px;
-            }
             
             .carousel-nav {
                 padding: 0 10px;
@@ -1930,19 +2045,6 @@
                 gap: 8px;
             }
             
-            .search-container {
-                max-width: 300px;
-            }
-            
-            .search-input {
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-            
-            .search-btn {
-                padding: 0 16px;
-                font-size: 12px;
-            }
             
             .categories-grid {
                 grid-template-columns: 1fr;
@@ -1951,6 +2053,17 @@
             
             .category-card {
                 padding: 24px 16px;
+            }
+            
+            .browse-container {
+                flex-direction: column;
+                padding: 20px 15px;
+            }
+            
+            .browse-sidebar {
+                width: 100%;
+                position: static;
+                margin-bottom: 20px;
             }
         }
 
@@ -2448,6 +2561,188 @@
                 font-size: 16px;
             }
         }
+
+        /* Browse Page Sidebar Layout */
+        .browse-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 20px 40px 20px;
+        }
+
+        .browse-sidebar {
+            width: 320px;
+            background: linear-gradient(135deg, var(--white) 0%, #f8fffe 100%);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(47, 82, 73, 0.12);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            border: 1px solid rgba(47, 82, 73, 0.1);
+        }
+
+        .sidebar-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--theme-primary);
+            margin-bottom: 32px;
+            text-align: center;
+            position: relative;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--theme-primary), #4a7c59);
+            border-radius: 2px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 28px;
+            padding: 20px;
+            background: rgba(47, 82, 73, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(47, 82, 73, 0.08);
+        }
+
+        .sidebar-section .form-group {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-section .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .sidebar-section .form-label {
+            font-weight: 600;
+            color: var(--theme-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-section .form-input {
+            border: 2px solid rgba(47, 82, 73, 0.15);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .sidebar-section .form-input:focus {
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 0 3px rgba(47, 82, 73, 0.1);
+            outline: none;
+        }
+
+        .sidebar-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .sidebar-actions .btn {
+            width: 100%;
+            text-align: center;
+            padding: 14px 20px;
+            font-weight: 600;
+            border-radius: 10px;
+            font-size: 15px;
+            background: var(--white);
+            border: 2px solid rgba(47, 82, 73, 0.2);
+            color: var(--theme-primary);
+        }
+
+        .browse-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .browse-main .section-title {
+            margin-bottom: 30px;
+            text-transform: none !important;
+        }
+
+        /* Loading optimization */
+        .items-grid {
+            min-height: 400px;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 18px;
+            color: var(--theme-primary);
+        }
+
+        .loading-spinner::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--theme-primary);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Force Rentrobe hover animation - Highest priority */
+        .section-title.rentrobe-text {
+            position: relative !important;
+            display: inline-block !important;
+            cursor: pointer !important;
+            transition: color 0.3s ease !important;
+            text-align: center !important;
+            margin: 0 auto 60px auto !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+        }
+
+        .section-title.rentrobe-text::after {
+            content: '' !important;
+            position: absolute !important;
+            bottom: -15px !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 4px !important;
+            background: #2F5249 !important;
+            border-radius: 2px !important;
+            transform: scaleX(0) !important;
+            transform-origin: left center !important;
+            transition: transform 0.3s ease !important;
+        }
+
+        .section-title.rentrobe-text:hover {
+            color: #2F5249 !important;
+        }
+
+        .section-title.rentrobe-text:hover::after {
+            transform: scaleX(1) !important;
+            transform-origin: left center !important;
+        }
+
+        .section-title.rentrobe-text:not(:hover)::after {
+            transform: scaleX(0) !important;
+            transform-origin: right center !important;
+        }
     </style>
 </head>
 <body>
@@ -2459,9 +2754,8 @@
             <ul class="nav-links">
                 <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse')">Browse</a></li>
-                <li><a href="#" onclick="showPage('list')">List Item</a></li>
-                <li><a href="#" onclick="showPage('my-items')">My Items</a></li>
-                <li><a href="#" onclick="showPage('rentals')">Requests</a></li>
+                <li><a href="#" onclick="showPage('list')" id="listItemLink">List Item</a></li>
+                <li><a href="#" onclick="showPage('cart')" id="cartLink">My Cart</a></li>
             </ul>
             <div class="auth-buttons" id="authButtons">
                 <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
@@ -2474,7 +2768,6 @@
                 <div class="dropdown" id="userDropdown">
                     <a href="#" onclick="showPage('profile')">Profile</a>
                     <a href="#" onclick="showPage('my-items')">My Items</a>
-                    <a href="#" onclick="showPage('rentals')">Requests</a>
                     <a href="#" onclick="logout()">Sign Out</a>
                 </div>
             </div>
@@ -2500,10 +2793,10 @@
             <ul class="mobile-nav-links">
                 <li><a href="#" onclick="showPage('home'); closeMobileMenu();" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('browse'); closeMobileMenu();">Browse</a></li>
-                <li><a href="#" onclick="showPage('list'); closeMobileMenu();">List Item</a></li>
-                <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();">My Items</a></li>
-                <li><a href="#" onclick="showPage('rentals'); closeMobileMenu();">Requests</a></li>
+                <li><a href="#" onclick="showPage('list'); closeMobileMenu();" id="mobileListItemLink">List Item</a></li>
+                <li><a href="#" onclick="showPage('cart'); closeMobileMenu();" id="mobileCartLink">My Cart</a></li>
                 <li><a href="#" onclick="showPage('profile'); closeMobileMenu();" id="mobileProfileLink" style="display: none;">Profile</a></li>
+                <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();" id="mobileMyItemsLink" style="display: none;">My Items</a></li>
                 <li><a href="#" onclick="logout(); closeMobileMenu();" id="mobileLogoutLink" style="display: none;">Sign Out</a></li>
             </ul>
         </div>
@@ -2536,44 +2829,89 @@
                     <div class="hero-text">
                         <h1>Fashion Rental</h1>
                         <p>Discover designer pieces from your community. Sustainable, affordable, and effortlessly stylish.</p>
-                        
-                        <div class="search-container">
-                            <input type="text" class="search-input" id="searchInput" placeholder="Search designer pieces...">
-                            <button class="search-btn" onclick="performSearch()">Search</button>
-                        </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="container section">
+                <h2 class="section-title rentrobe-text">How Rentrobe Works</h2>
+                <div class="how-it-works">
+                    <div class="step">
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                                <path d="M12 9v4"/>
+                                <path d="M8 9v4"/>
+                                <path d="M16 9v4"/>
+                            </svg>
+                        </div>
+                        <h3>Select a Style</h3>
+                        <p>Pick your perfect style from our collection of designer outfits and accessories.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <h3>Book your Outfit</h3>
+                        <p>Book your look for 3, 5, 7 or 10 days. Outfit will be altered to your size and dry cleaned before delivery.</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                            </svg>
+                        </div>
+                        <h3>Flaunt It</h3>
+                        <p>Flaunt your look with that perfect outfit chosen by you and enjoy the compliments</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </div>
+                        <h3>Return It</h3>
+                        <p>Pack the outfit and we'll pick it up a day after your occasion or the dates chosen by you.</p>
+                    </div>
+                </div>
+                
             </div>
 
             <div class="container section">
                 <h2 class="section-title">Categories</h2>
                 <div class="categories-grid" id="categoriesGrid">
-                    <div class="category-card" onclick="filterByCategory('formal')">
+                    <div class="category-card">
                         <div class="category-icon">👔</div>
                         <h3>Formal Wear</h3>
                         <p>Suits & Evening Dresses</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('casual')">
+                    <div class="category-card">
                         <div class="category-icon">👕</div>
                         <h3>Casual Wear</h3>
                         <p>Everyday Fashion</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('party')">
+                    <div class="category-card">
                         <div class="category-icon">✨</div>
                         <h3>Party Outfits</h3>
                         <p>Cocktail & Party Wear</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('traditional')">
+                    <div class="category-card">
                         <div class="category-icon">👘</div>
                         <h3>Traditional</h3>
                         <p>Ethnic & Cultural</p>
                     </div>
-                    <div class="category-card" onclick="filterByCategory('accessories')">
-                        <div class="category-icon">👜</div>
-                        <h3>Accessories</h3>
-                        <p>Bags, Jewelry & More</p>
-                    </div>
-                    <div class="category-card" onclick="filterByCategory('designer')">
+                    <div class="category-card">
                         <div class="category-icon">💎</div>
                         <h3>Designer</h3>
                         <p>Luxury Brands</p>
@@ -2596,18 +2934,19 @@
 
         <!-- Browse Page -->
         <div id="browse" class="page">
-            <div class="container section">
-                <h2 class="section-title">Browse All Items</h2>
-                
-                <!-- Search Bar -->
-                <div style="max-width: 600px; margin: 0 auto 30px auto;">
-                    <div class="form-group">
-                        <input type="text" class="form-input" id="browseSearchInput" placeholder="Search items by name, brand, or description..." style="padding: 15px 20px; font-size: 16px; border-radius: 8px;">
+            <div class="browse-container">
+                <!-- Sidebar -->
+                <div class="browse-sidebar">
+                    <h3 class="sidebar-title">Filters</h3>
+                    
+                    <!-- Search Bar -->
+                    <div class="sidebar-section">
+                        <label class="form-label">Search</label>
+                        <input type="text" class="form-input" id="browseSearchInput" placeholder="Search items...">
                     </div>
-                </div>
-                
-                <div class="filters">
-                    <div class="filters-grid">
+                    
+                    <!-- Filters -->
+                    <div class="sidebar-section">
                         <div class="form-group">
                             <label class="form-label">Category</label>
                             <select class="form-input" id="categoryFilter">
@@ -2616,51 +2955,36 @@
                                 <option value="casual">Casual Wear</option>
                                 <option value="party">Party Outfits</option>
                                 <option value="traditional">Traditional</option>
-                                <option value="accessories">Accessories</option>
                                 <option value="designer">Designer</option>
                             </select>
                         </div>
+                        
+                        
+                        
                         <div class="form-group">
-                            <label class="form-label">Size</label>
-                            <select class="form-input" id="sizeFilter">
-                                <option value="">All Sizes</option>
-                                <option value="XS">XS</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="XXL">XXL</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">City</label>
-                            <input type="text" class="form-input" id="cityFilter" placeholder="Enter city">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Sort By</label>
+                            <label class="form-label">Sort By Price</label>
                             <select class="form-input" id="sortFilter" onchange="applySorting()">
-                                <option value="newest">Newest First</option>
-                                <option value="oldest">Oldest First</option>
                                 <option value="price-low">Price: Low to High</option>
                                 <option value="price-high">Price: High to Low</option>
-                                <option value="name-asc">Name: A to Z</option>
-                                <option value="name-desc">Name: Z to A</option>
-                                <option value="rating">Highest Rated</option>
-                                <option value="views">Most Viewed</option>
                             </select>
                         </div>
                     </div>
-                    <div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="sidebar-actions">
                         <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
                         <button class="btn" onclick="clearFilters()">Clear</button>
                     </div>
                 </div>
-
-                <div class="items-grid" id="allItems">
-                    <!-- Items will be loaded here -->
-                </div>
                 
-                <!-- Pagination Controls -->
+                <!-- Main Content -->
+                <div class="browse-main">
+                    <h2 class="section-title">Browse All Items</h2>
+                    <div class="items-grid" id="allItems">
+                        <div class="loading-spinner">Loading items...</div>
+                    </div>
+                    
+                    <!-- Pagination Controls -->
                 <div class="pagination-container" id="paginationContainer" style="display: none;">
                     <div class="pagination">
                         <button class="pagination-btn pagination-prev" id="prevBtn" onclick="changePage(currentPage - 1)">
@@ -2677,6 +3001,7 @@
                         <!-- Pagination info will be displayed here -->
                     </div>
                 </div>
+                </div>
             </div>
         </div>
 
@@ -2685,7 +3010,19 @@
             <div class="container section">
                 <h2 class="section-title">List Your Item</h2>
                 
-                <div style="max-width: 500px; margin: 0 auto;">
+                <!-- Login Prompt for List Item -->
+                <div id="listLoginPrompt" style="display: none; text-align: center; padding: 60px 20px; max-width: 500px; margin: 0 auto;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">📝</div>
+                    <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to List Items</h3>
+                    <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to list your items for rent</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join Now</a>
+                    </div>
+                </div>
+                
+                <!-- List Item Form (shown when logged in) -->
+                <div id="listFormContainer" style="max-width: 500px; margin: 0 auto;">
                     <div class="alert alert-success" id="listSuccess">Item listed successfully!</div>
                     <div class="alert alert-error" id="listError">Please fill all required fields.</div>
 
@@ -2708,7 +3045,6 @@
                                 <option value="casual">Casual Wear</option>
                                 <option value="party">Party Outfits</option>
                                 <option value="traditional">Traditional</option>
-                                <option value="accessories">Accessories</option>
                                 <option value="designer">Designer</option>
                             </select>
                         </div>
@@ -2793,6 +3129,34 @@
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">Update Profile</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page -->
+        <div id="cart" class="page">
+            <div class="container section">
+                <h2 class="section-title">My Cart</h2>
+                
+                <!-- Login Prompt for My Cart -->
+                <div id="cartLoginPrompt" style="display: none; text-align: center; padding: 60px 20px; max-width: 500px; margin: 0 auto;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                    <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to View Your Cart</h3>
+                    <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to view and manage your cart</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Sign In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Join Now</a>
+                    </div>
+                </div>
+                
+                <!-- Cart Content (shown when logged in) -->
+                <div id="cartContainer">
+                    <div class="empty-cart" style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                        <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
+                        <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
+                        <a href="#" class="btn btn-primary" onclick="showPage('browse')">Browse Items</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3135,7 +3499,7 @@
                         <li>Request a copy of your data</li>
                     </ul>
                     
-                    <p><strong>Last updated:</strong> December 2024</p>
+                    <p><strong>Last updated:</strong> October 2025</p>
                 </div>
             </div>
         </div>
@@ -3183,7 +3547,7 @@
                     <h3>5. Third-Party Cookies</h3>
                     <p>Some cookies on our site are set by third-party services that appear on our pages. We do not control these cookies and recommend checking the third-party websites for more information about their cookies.</p>
                     
-                    <p><strong>Last updated:</strong> December 2024</p>
+                    <p><strong>Last updated:</strong> October 2025</p>
                 </div>
             </div>
         </div>
@@ -3216,6 +3580,15 @@
                     <span class="spinner" id="loginSpinner"></span>Sign In
                 </button>
             </form>
+            <div style="text-align: center; margin-top: 16px;">
+                <p style="color: var(--text-secondary); font-size: 14px;">
+                    Don't have an account? 
+                    <a href="#" onclick="hideModal('loginModal'); showModal('signupModal');" 
+                       style="color: var(--theme-accent); text-decoration: none; font-weight: 500;">
+                        Create Account
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 
@@ -3257,6 +3630,15 @@
                     <span class="spinner" id="signupSpinner"></span>Create Account
                 </button>
             </form>
+            <div style="text-align: center; margin-top: 16px;">
+                <p style="color: var(--text-secondary); font-size: 14px;">
+                    Already have an account? 
+                    <a href="#" onclick="hideModal('signupModal'); showModal('loginModal');" 
+                       style="color: var(--theme-accent); text-decoration: none; font-weight: 500;">
+                        Sign In
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 
@@ -3358,7 +3740,7 @@
         <div class="footer-bottom">
             <div class="footer-content">
                 <div class="footer-bottom-text">
-                    <p>Made by A Ankita Rao</p>
+                    <p>--------</p>
                     <p>&copy; 2025 Rentrobe. All rights reserved.</p>
                 </div>
             </div>
@@ -3375,11 +3757,14 @@
         
         // Pagination variables
         let currentPage = 1;
-        let itemsPerPage = 16;
+        let itemsPerPage = 12;
         let totalPages = 1;
         
         // Sorting variables
-        let currentSort = 'newest';
+        let currentSort = 'price-low';
+        
+        // Track protected page access
+        let attemptedProtectedPage = null;
 
 
         // Enhanced Sample Data - Comprehensive Fashion Rental Items
@@ -3399,8 +3784,8 @@
                 reviews: 12,
                 views: 145,
                 images: [
-                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1657023799657-df1cee617db5?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=300&h=400&fit=crop&crop=center&q=80',
+                    'https://images.unsplash.com/photo-1657023799657-df1cee617db5?w=300&h=400&fit=crop&crop=center&q=80'
                 ]
             },
             {
@@ -3417,8 +3802,8 @@
                 reviews: 8,
                 views: 89,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1679440413349-556c1366112f?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1679440413349-556c1366112f?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3435,8 +3820,8 @@
                 reviews: 15,
                 views: 234,
                 images: [
-                    'https://images.unsplash.com/photo-1678831165438-e2bb89db82d9?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1678830795557-d7886693c9ee?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1678831165438-e2bb89db82d9?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1678830795557-d7886693c9ee?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3453,8 +3838,8 @@
                 reviews: 6,
                 views: 67,
                 images: [
-                    'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1585412459212-8def26f7e84c?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1598808503746-f34c53b9323e?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1585412459212-8def26f7e84c?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3471,8 +3856,8 @@
                 reviews: 9,
                 views: 78,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1682430740985-acbce7ec295e?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1682430700877-d85b273bc253?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1682430740985-acbce7ec295e?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1682430700877-d85b273bc253?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3489,8 +3874,8 @@
                 reviews: 7,
                 views: 56,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1730828573906-f44ac401de96?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1730828573973-cf4e4ecc2950?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1730828573906-f44ac401de96?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1730828573973-cf4e4ecc2950?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -3509,8 +3894,8 @@
                 reviews: 11,
                 views: 123,
                 images: [
-                    'https://images.unsplash.com/photo-1721182421063-19a6c711b719?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1721182420935-29bfb69dd26c?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1721182421063-19a6c711b719?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1721182420935-29bfb69dd26c?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3527,8 +3912,8 @@
                 reviews: 8,
                 views: 92,
                 images: [
-                    'https://images.unsplash.com/photo-1708121691161-b8b11bebc761?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1708121691158-270470206446?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1708121691161-b8b11bebc761?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1708121691158-270470206446?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3545,7 +3930,7 @@
                 reviews: 5,
                 views: 73,
                 images: [
-                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3562,7 +3947,7 @@
                 reviews: 13,
                 views: 156,
                 images: [
-                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3579,7 +3964,7 @@
                 reviews: 10,
                 views: 134,
                 images: [
-                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3596,7 +3981,7 @@
                 reviews: 9,
                 views: 87,
                 images: [
-                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1566479179817-c0c8e5c7b7b8?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -3615,8 +4000,8 @@
                 reviews: 14,
                 views: 189,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1682096032284-0b2ab20b65dd?w=400&h=600&fit=crop&crop=center',
-                    'https://plus.unsplash.com/premium_photo-1682096067532-3e89ab323ebf?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1682096032284-0b2ab20b65dd?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://plus.unsplash.com/premium_photo-1682096067532-3e89ab323ebf?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3633,7 +4018,7 @@
                 reviews: 11,
                 views: 145,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3650,7 +4035,7 @@
                 reviews: 6,
                 views: 67,
                 images: [
-                    'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1622470953794-aa9c70b0fb9d?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3667,7 +4052,7 @@
                 reviews: 8,
                 views: 54,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3684,7 +4069,7 @@
                 reviews: 16,
                 views: 201,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3701,7 +4086,7 @@
                 reviews: 9,
                 views: 98,
                 images: [
-                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
@@ -3720,8 +4105,8 @@
                 reviews: 7,
                 views: 76,
                 images: [
-                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1520423465871-0866049020b7?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=400&q=80&fit=crop&crop=center',
+                    'https://images.unsplash.com/photo-1520423465871-0866049020b7?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3738,7 +4123,7 @@
                 reviews: 5,
                 views: 45,
                 images: [
-                    'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3755,7 +4140,7 @@
                 reviews: 8,
                 views: 67,
                 images: [
-                    'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=300&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3772,7 +4157,7 @@
                 reviews: 6,
                 views: 43,
                 images: [
-                    'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1542272604-787c3835535d?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3789,7 +4174,7 @@
                 reviews: 4,
                 views: 32,
                 images: [
-                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3806,114 +4191,10 @@
                 reviews: 9,
                 views: 89,
                 images: [
-                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
 
-            // ACCESSORIES
-            {
-                id: 25,
-                title: 'Luxury Handbag',
-                description: 'Luxury handbag in pristine condition. Perfect for formal and casual occasions.',
-                category: 'accessories',
-                size: 'One Size',
-                price: 500,
-                deposit: 1200,
-                owner: { name: 'Sneha Gupta', city: 'Chennai', initial: 'S', rating: 4.8 },
-                status: 'available',
-                rating: 4.7,
-                reviews: 12,
-                views: 134,
-                images: [
-                    'https://images.unsplash.com/photo-1652427019217-3ded1a356f10?w=400&h=600&fit=crop&crop=center',
-                    'https://images.unsplash.com/photo-1652427019219-0be0fb8855c1?w=400&h=600&fit=crop&crop=center'
-                ]
-            },
-            {
-                id: 26,
-                title: 'Luxury Watch',
-                description: 'Luxury watch in excellent condition. Perfect accessory for formal occasions.',
-                category: 'accessories',
-                size: 'One Size',
-                price: 800,
-                deposit: 2000,
-                owner: { name: 'Vikram Shah', city: 'Mumbai', initial: 'V', rating: 4.5 },
-                status: 'available',
-                rating: 4.8,
-                reviews: 10,
-                views: 123,
-                images: [
-                    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center'
-                ]
-            },
-            {
-                id: 27,
-                title: 'Pearl Necklace',
-                description: 'Elegant pearl necklace for special occasions and formal events.',
-                category: 'accessories',
-                size: 'One Size',
-                price: 600,
-                deposit: 1500,
-                owner: { name: 'Divya Rao', city: 'Bangalore', initial: 'D', rating: 4.8 },
-                status: 'available',
-                rating: 4.9,
-                reviews: 14,
-                views: 167,
-                images: [
-                    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center'
-                ]
-            },
-            {
-                id: 28,
-                title: 'Premium Sunglasses',
-                description: 'Stylish sunglasses with UV protection. Perfect for outdoor events and travel.',
-                category: 'accessories',
-                size: 'One Size',
-                price: 350,
-                deposit: 800,
-                owner: { name: 'Rahul Khanna', city: 'Mumbai', initial: 'R', rating: 4.9 },
-                status: 'available',
-                rating: 4.5,
-                reviews: 7,
-                views: 78,
-                images: [
-                    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop&crop=center'
-                ]
-            },
-            {
-                id: 29,
-                title: 'Designer Clutch',
-                description: 'Elegant designer clutch perfect for evening parties and formal events.',
-                category: 'accessories',
-                size: 'One Size',
-                price: 400,
-                deposit: 950,
-                owner: { name: 'Ritu Singh', city: 'Lucknow', initial: 'R', rating: 4.8 },
-                status: 'available',
-                rating: 4.6,
-                reviews: 8,
-                views: 92,
-                images: [
-                    'https://images.unsplash.com/photo-1652427019217-3ded1a356f10?w=400&h=600&fit=crop&crop=center'
-                ]
-            },
-            {
-                id: 30,
-                title: 'Statement Earrings',
-                description: 'Bold statement earrings perfect for parties and special occasions.',
-                category: 'accessories',
-                size: 'One Size',
-                price: 250,
-                deposit: 600,
-                owner: { name: 'Deepika Nair', city: 'Kochi', initial: 'D', rating: 4.7 },
-                status: 'available',
-                rating: 4.4,
-                reviews: 6,
-                views: 54,
-                images: [
-                    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center'
-                ]
-            },
 
             // DESIGNER ITEMS
             {
@@ -3930,7 +4211,7 @@
                 reviews: 18,
                 views: 289,
                 images: [
-                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3947,7 +4228,7 @@
                 reviews: 15,
                 views: 234,
                 images: [
-                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3964,7 +4245,7 @@
                 reviews: 12,
                 views: 178,
                 images: [
-                    'https://images.unsplash.com/photo-1652427019217-3ded1a356f10?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1652427019217-3ded1a356f10?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3981,7 +4262,7 @@
                 reviews: 16,
                 views: 267,
                 images: [
-                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=400&h=600&fit=crop&crop=center'
+                    'https://plus.unsplash.com/premium_photo-1679440414275-f9950b562c7f?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             },
             {
@@ -3998,7 +4279,7 @@
                 reviews: 20,
                 views: 345,
                 images: [
-                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=400&h=600&fit=crop&crop=center'
+                    'https://images.unsplash.com/photo-1657023855158-3878cac29205?w=300&h=400&q=80&fit=crop&crop=center'
                 ]
             }
         ];
@@ -4018,13 +4299,22 @@
             // Clear localStorage completely for fresh start (remove this after testing)
             // localStorage.clear();
             
-            loadUserFromStorage();
+            const hasValidUserFromStorage = loadUserFromStorage();
             initializeItems();
             setupEventListeners();
-            // Check server session and then update UI
-            fetchCurrentUser().finally(() => {
+            
+            // Only fetch from server if we don't have a valid user from localStorage
+            // For Netlify deployment, we rely primarily on localStorage
+            if (!hasValidUserFromStorage) {
+                console.log('No valid user from storage, checking server...');
+                fetchCurrentUser().finally(() => {
+                    updateAuthUI();
+                });
+            } else {
+                console.log('Using user from localStorage, skipping server fetch');
                 updateAuthUI();
-            });
+            }
+            
             initializeCarousel();
             initializeHeaderScroll();
             // Rental form listeners
@@ -4040,14 +4330,56 @@
 
         async function fetchCurrentUser() {
             try {
-                console.log('Fetching current user from server...');
+                console.log('Checking user authentication...');
+                
+                // For Netlify deployment, we rely primarily on localStorage
+                // since serverless functions don't maintain sessions
+                const savedUser = localStorage.getItem('rentrobe_user');
+                if (savedUser) {
+                    try {
+                        currentUser = JSON.parse(savedUser);
+                        console.log('User loaded from localStorage:', currentUser);
+                        return;
+                    } catch (e) {
+                        console.error('Error parsing saved user:', e);
+                        localStorage.removeItem('rentrobe_user');
+                    }
+                }
+                
+                // If no saved user, try to fetch from server (for development)
                 const response = await fetch('/api/profile', { credentials: 'include' });
                 console.log('Profile response status:', response.status);
                 
                 if (response.ok) {
                     const user = await response.json();
                     console.log('Profile response data:', user);
-                    currentUser = user;
+                    
+                    // Check if we have updated profile data in localStorage
+                    const savedUser = localStorage.getItem('rentrobe_user');
+                    if (savedUser) {
+                        try {
+                            const localUser = JSON.parse(savedUser);
+                            // If the email matches, merge the data (localStorage has priority for profile fields)
+                            if (localUser.email === user.email) {
+                                console.log('Merging user data from localStorage with server data in fetchCurrentUser');
+                                currentUser = {
+                                    ...user, // Server data (has correct ID, password, etc.)
+                                    name: localUser.name, // Local profile updates take priority
+                                    phone: localUser.phone,
+                                    city: localUser.city
+                                };
+                                console.log('Merged user data in fetchCurrentUser:', currentUser);
+                            } else {
+                                currentUser = user;
+                            }
+                        } catch (e) {
+                            console.error('Error parsing saved user in fetchCurrentUser:', e);
+                            currentUser = user;
+                        }
+                    } else {
+                        currentUser = user;
+                    }
+                    
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                 } else if (response.status === 401) {
                     console.log('Not authenticated (401)');
@@ -4061,6 +4393,17 @@
             } catch (e) {
                 console.error('Profile fetch error:', e);
                 // Network error: keep local state
+                const savedUser = localStorage.getItem('rentrobe_user');
+                if (savedUser) {
+                    try {
+                        currentUser = JSON.parse(savedUser);
+                        console.log('Using cached user due to network error');
+                    } catch (parseError) {
+                        console.error('Error parsing cached user:', parseError);
+                        localStorage.removeItem('rentrobe_user');
+                        currentUser = null;
+                    }
+                }
             }
         }
 
@@ -4128,29 +4471,16 @@
         // Header scroll effect
         function initializeHeaderScroll() {
             const header = document.querySelector('header');
-            const hero = document.querySelector('.hero');
             
             function updateHeaderStyle() {
                 // Remove all classes first
-                header.classList.remove('scrolled', 'hero-glass');
+                header.classList.remove('scrolled');
                 
                 const scrollY = window.scrollY;
-                const currentPage = document.querySelector('.page.active')?.id || 'home';
                 
-                // Only apply hero-glass effect on home page
-                if (currentPage === 'home' && hero) {
-                    if (scrollY < 900) {
-                        // At the very top on home page - apply glass effect
-                        header.classList.add('hero-glass');
-                    } else if (scrollY > 900) {
-                        // Scrolled down on home page - apply scrolled effect
-                        header.classList.add('scrolled');
-                    }
-                } else {
-                    // Not on home page or no hero section - apply scrolled effect if scrolled
-                    if (scrollY > 100) {
-                        header.classList.add('scrolled');
-                    }
+                // Apply scrolled effect if scrolled
+                if (scrollY > 100) {
+                    header.classList.add('scrolled');
                 }
             }
             
@@ -4180,6 +4510,9 @@
                     if (user && user.id && user.name && user.email) {
                         currentUser = user;
                         console.log('Loaded user from storage:', user);
+                        // For Netlify deployment, we rely on localStorage primarily
+                        // Don't overwrite with server data unless necessary
+                        return true; // Indicate we have a valid user from storage
                     } else {
                         console.log('Invalid user data in storage, clearing...');
                         localStorage.removeItem('rentrobe_user');
@@ -4193,6 +4526,7 @@
             } else {
                 currentUser = null;
             }
+            return false; // No valid user from storage
         }
 
         function initializeItems() {
@@ -4289,9 +4623,6 @@
 
         function setupEventListeners() {
             // Navigation
-            document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') performSearch();
-            });
             
             // Browse search - real-time search as user types
             document.getElementById('browseSearchInput').addEventListener('input', performBrowseSearch);
@@ -4364,38 +4695,31 @@
             // Update header style when switching pages
             setTimeout(() => {
                 const header = document.querySelector('header');
-                const hero = document.querySelector('.hero');
                 
                 // Remove all classes first
-                header.classList.remove('scrolled', 'hero-glass');
+                header.classList.remove('scrolled');
                 
                 const scrollY = window.scrollY;
                 
-                // Only apply hero-glass effect on home page
-                if (pageId === 'home' && hero) {
-                    if (scrollY < 900) {
-                        // At the very top on home page - apply glass effect
-                        header.classList.add('hero-glass');
-                    } else if (scrollY > 900) {
-                        // Scrolled down on home page - apply scrolled effect
-                        header.classList.add('scrolled');
-                    }
-                } else {
-                    // Not on home page or no hero section - apply scrolled effect if scrolled
-                    if (scrollY > 100) {
-                        header.classList.add('scrolled');
-                    }
+                // Apply scrolled effect if scrolled
+                if (scrollY > 100) {
+                    header.classList.add('scrolled');
                 }
             }, 100);
             
             // Update content based on page
             if (pageId === 'browse') {
                 renderAllItems();
+            } else if (pageId === 'cart') {
+                renderCart();
+            } else if (pageId === 'list') {
+                // List item page is always accessible, content will show login prompt if needed
             } else if (pageId === 'my-items' && currentUser) {
                 loadMyItems();
             } else if (pageId === 'profile' && currentUser) {
                 loadProfile();
             } else if ((pageId === 'my-items' || pageId === 'rentals' || pageId === 'profile') && !currentUser) {
+                attemptedProtectedPage = pageId;
                 showModal('loginModal');
                 return;
             }
@@ -4444,6 +4768,13 @@
             const modal = document.getElementById(modalId);
             const alerts = modal.querySelectorAll('.alert');
             alerts.forEach(alert => alert.style.display = 'none');
+            
+            // If login modal was closed without successful login and user was trying to access protected page
+            if (modalId === 'loginModal' && attemptedProtectedPage && !currentUser) {
+                // Redirect to home page
+                showPage('home');
+                attemptedProtectedPage = null;
+            }
         }
 
         // User menu
@@ -4640,7 +4971,32 @@
                     console.log('Login response data:', data);
                     
                     if (data.user) {
-                        currentUser = data.user;
+                        // Check if we have updated profile data in localStorage
+                        const savedUser = localStorage.getItem('rentrobe_user');
+                        if (savedUser) {
+                            try {
+                                const localUser = JSON.parse(savedUser);
+                                // If the email matches, merge the data (localStorage has priority for profile fields)
+                                if (localUser.email === data.user.email) {
+                                    console.log('Merging user data from localStorage with server data');
+                                    currentUser = {
+                                        ...data.user, // Server data (has correct ID, password, etc.)
+                                        name: localUser.name, // Local profile updates take priority
+                                        phone: localUser.phone,
+                                        city: localUser.city
+                                    };
+                                    console.log('Merged user data:', currentUser);
+                                } else {
+                                    currentUser = data.user;
+                                }
+                            } catch (e) {
+                                console.error('Error parsing saved user during login:', e);
+                                currentUser = data.user;
+                            }
+                        } else {
+                            currentUser = data.user;
+                        }
+                        
                         console.log('Current user set to:', currentUser);
                         localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                         console.log('User saved to localStorage');
@@ -4652,13 +5008,14 @@
                         hideSpinner('loginSpinner');
                         console.log('Login successful - modal closed');
                         
-                        // For Netlify deployment, we need to check session after a delay
-                        // instead of refreshing the page
-                        setTimeout(async () => {
-                            console.log('Checking session after login...');
-                            await fetchCurrentUser();
-                            updateAuthUI();
-                        }, 1000);
+                        // Update UI immediately since we're using localStorage
+                        updateAuthUI();
+                        
+                        // Redirect to intended page if user was trying to access protected page
+                        if (attemptedProtectedPage) {
+                            showPage(attemptedProtectedPage);
+                            attemptedProtectedPage = null;
+                        }
                     } else {
                         console.error('No user data in response:', data);
                         showAlert('loginError');
@@ -4719,13 +5076,14 @@
                     hideSpinner('signupSpinner');
                     console.log('Registration completed successfully');
                     
-                    // For Netlify deployment, we need to check session after a delay
-                    // instead of refreshing the page
-                    setTimeout(async () => {
-                        console.log('Checking session after registration...');
-                        await fetchCurrentUser();
-                        updateAuthUI();
-                    }, 1000);
+                    // Update UI immediately since we're using localStorage
+                    updateAuthUI();
+                    
+                    // Redirect to intended page if user was trying to access protected page
+                    if (attemptedProtectedPage) {
+                        showPage(attemptedProtectedPage);
+                        attemptedProtectedPage = null;
+                    }
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     showAlert('signupError');
@@ -4763,6 +5121,13 @@
             const mobileUserSection = document.getElementById('mobileUserSection');
             const mobileProfileLink = document.getElementById('mobileProfileLink');
             const mobileLogoutLink = document.getElementById('mobileLogoutLink');
+            const mobileMyItemsLink = document.getElementById('mobileMyItemsLink');
+            
+            // Login prompts for protected pages
+            const listLoginPrompt = document.getElementById('listLoginPrompt');
+            const listFormContainer = document.getElementById('listFormContainer');
+            const cartLoginPrompt = document.getElementById('cartLoginPrompt');
+            const cartContainer = document.getElementById('cartContainer');
             
             console.log('authButtons element:', authButtons);
             console.log('userMenu element:', userMenu);
@@ -4771,10 +5136,17 @@
             if (currentUser && currentUser.id && currentUser.name && currentUser.email) {
                 console.log('Setting logged in state');
                 authButtons.style.display = 'none';
-                userMenu.style.display = 'block';
+                userMenu.style.display = 'flex';
                 if (mobileUserSection) mobileUserSection.style.display = 'block';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
+                if (mobileMyItemsLink) mobileMyItemsLink.style.display = 'block';
+                
+                // Show form content, hide login prompts
+                if (listLoginPrompt) listLoginPrompt.style.display = 'none';
+                if (listFormContainer) listFormContainer.style.display = 'block';
+                if (cartLoginPrompt) cartLoginPrompt.style.display = 'none';
+                if (cartContainer) cartContainer.style.display = 'block';
                 
                 const userInitial = document.getElementById('userInitial');
                 if (userInitial && currentUser.name) {
@@ -4808,8 +5180,94 @@
                 if (mobileUserSection) mobileUserSection.style.display = 'none';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
+                if (mobileMyItemsLink) mobileMyItemsLink.style.display = 'none';
+                
+                // Show login prompts, hide form content
+                if (listLoginPrompt) listLoginPrompt.style.display = 'block';
+                if (listFormContainer) listFormContainer.style.display = 'none';
+                if (cartLoginPrompt) cartLoginPrompt.style.display = 'block';
+                if (cartContainer) cartContainer.style.display = 'none';
             }
         }
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('rentrobe_cart') || '[]');
+
+
+        function addToCart(item) {
+            if (!currentUser) {
+                showModal('loginModal');
+                return;
+            }
+            
+            // Check if item is already in cart
+            const existingItem = cart.find(cartItem => cartItem.id === item.id);
+            if (existingItem) {
+                showAlert('Item already in cart');
+                return;
+            }
+            
+            cart.push(item);
+            localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
+            showAlert('Item added to cart');
+        }
+
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartContainer');
+            if (!container) return;
+            
+            // If user is not logged in, don't render cart content
+            if (!currentUser) {
+                return;
+            }
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+<div class="empty-cart" style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                        <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
+                        <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
+                        <a href="#" class="btn btn-primary" onclick="showPage('browse')">Browse Items</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="cart-items">
+                    ${cart.map(item => `
+                        <div class="cart-item" style="display: flex; align-items: center; padding: 20px; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 16px;">
+                            <img src="${item.image}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 8px 0; color: var(--black);">${item.title}</h4>
+                                <p style="margin: 0 0 8px 0; color: var(--gray-600);">${item.description}</p>
+                                <p style="margin: 0; font-weight: 600; color: var(--black);">$${item.price}/day</p>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="btn" style="background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Remove</button>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="proceedToCheckout()" style="padding: 12px 24px; font-size: 16px;">Proceed to Checkout</button>
+                </div>
+            `;
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showAlert('Your cart is empty');
+                return;
+            }
+            // For now, just show an alert. In a real app, this would redirect to checkout
+            showAlert('Checkout functionality coming soon!');
+        }
+
 
         // Item management
         async function handleListItem(e) {
@@ -4908,19 +5366,6 @@
         }
 
         // Search and filter
-        function performSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            if (query) {
-                filteredItems = items.filter(item => 
-                    item.title.toLowerCase().includes(query) ||
-                    item.description.toLowerCase().includes(query) ||
-                    item.category.toLowerCase().includes(query)
-                );
-                resetPagination();
-                showPage('browse');
-                renderAllItems();
-            }
-        }
 
         async function performBrowseSearch() {
             resetPagination();
@@ -4936,8 +5381,6 @@
         async function applyFilters() {
             // Get current filter values
             const category = document.getElementById('categoryFilter').value;
-            const size = document.getElementById('sizeFilter').value;
-            const city = document.getElementById('cityFilter').value;
             const search = document.getElementById('browseSearchInput').value;
             
             // Apply filters
@@ -4975,11 +5418,9 @@
 
         async function clearFilters() {
             document.getElementById('categoryFilter').value = '';
-            document.getElementById('sizeFilter').value = '';
-            document.getElementById('cityFilter').value = '';
             document.getElementById('browseSearchInput').value = '';
-            document.getElementById('sortFilter').value = 'newest';
-            currentSort = 'newest';
+            document.getElementById('sortFilter').value = 'price-low';
+            currentSort = 'price-low';
             filteredItems = [...items];
             resetPagination();
             await renderAllItems();
@@ -5144,14 +5585,10 @@
 
         function getCurrentFilters() {
             const category = document.getElementById('categoryFilter').value;
-            const size = document.getElementById('sizeFilter').value;
-            const city = document.getElementById('cityFilter').value;
             const search = document.getElementById('browseSearchInput').value;
             
             const filters = {};
             if (category) filters.category = category;
-            if (size) filters.size = size;
-            if (city) filters.city = city;
             if (search) filters.search = search;
             
             return filters;
@@ -5260,7 +5697,7 @@
         }
 
 
-        function renderItemsInContainer(itemsToRender, container) {
+        function renderItemsInContainer(itemsToRender, container, isMyItems = false) {
             if (itemsToRender.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: var(--gray-600); grid-column: 1/-1;">No items found.</p>';
                 return;
@@ -5283,12 +5720,25 @@
                     source: sampleItems.find(i => i.id === item.id) ? 'sampleItems' : 'items'
                 });
                 
+                // Add delete button for My Items section
+                const deleteButton = isMyItems ? `
+                    <div class="item-actions" style="position: absolute; top: 8px; right: 8px; z-index: 10;">
+                        <button onclick="event.stopPropagation(); deleteItem(${originalItem.id})" 
+                                class="btn" 
+                                style="background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer;"
+                                title="Delete item">
+                            Delete
+                        </button>
+                    </div>
+                ` : '';
+                
                 return `
-                <div class="item-card" onclick="showItemModal(${originalItem.id})">
+                <div class="item-card" onclick="${isMyItems ? '' : `showItemModal(${originalItem.id})`}" style="position: relative;">
+                    ${deleteButton}
                     <div class="item-image">
                         ${hasImages ? 
-                            `<img src="${firstImageUrl}" alt="${originalItem.title}" class="default-image" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                             ${secondImageUrl ? `<img src="${secondImageUrl}" alt="${originalItem.title}" class="hover-image" loading="lazy" onerror="this.style.display='none';">` : ''}
+                            `<img src="${firstImageUrl}" alt="${originalItem.title}" class="default-image" loading="lazy" decoding="async" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                             ${secondImageUrl ? `<img src="${secondImageUrl}" alt="${originalItem.title}" class="hover-image" loading="lazy" decoding="async" onerror="this.style.display='none';">` : ''}
                              <div class="image-fallback" style="display: none;">👗</div>` : 
                             '<div class="image-fallback">👗</div>'
                         }
@@ -5366,17 +5816,19 @@
                     <div style="margin-bottom: 20px;"><strong>Owner:</strong> ${item.owner.name} (${item.owner.city})</div>
                     
                     ${item.status === 'available' && currentUser && !isOwner ? `
-                        <button class="btn btn-primary" style="width: 100%;" onclick="openRentalModal(${item.id})">
-                            Request Rental
-                        </button>
+                        <div style=\"display: flex; gap: 12px; margin-bottom: 12px;\">
+                            <button class=\"btn btn-primary\" style=\"flex: 1;\" onclick=\"openRentalModal(${item.id})\">Request Rental</button>
+                            <button class=\"btn\" style=\"flex: 1; border-color: var(--theme-accent); color: var(--theme-accent);\" onclick=\"addToCart(${JSON.stringify(item).replace(/\\\"/g, '&quot;')}); hideModal('itemModal');\">Add to Cart</button>
+                        </div>
                     ` : item.status === 'available' && isOwner ? `
                         <button class="btn" disabled style="width: 100%;">
                             Your Item
                         </button>
                     ` : item.status === 'available' && !currentUser ? `
-                        <button class="btn btn-primary" style="width: 100%;" onclick="hideModal('itemModal'); showModal('loginModal');">
-                            Sign In to Rent
-                        </button>
+                        <div style=\"display: flex; gap: 12px; margin-bottom: 12px;\">
+                            <button class=\"btn btn-primary\" style=\"flex: 1;\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Sign In to Rent</button>
+                            <button class=\"btn\" style=\"flex: 1; border-color: var(--theme-accent); color: var(--theme-accent);\" onclick=\"hideModal('itemModal'); showModal('loginModal');\">Add to Cart</button>
+                        </div>
                     ` : `
                         <button class="btn" disabled style="width: 100%;">
                             Currently Rented
@@ -5479,7 +5931,6 @@
                 casual: 'Casual Wear',
                 party: 'Party Outfits',
                 traditional: 'Traditional',
-                accessories: 'Accessories',
                 designer: 'Designer'
             };
             return categoryNames[category] || category;
@@ -5572,13 +6023,44 @@
             document.getElementById('profileCity').value = currentUser.city || '';
         }
 
-        function handleProfileUpdate(e) {
+        async function handleProfileUpdate(e) {
             e.preventDefault();
             
-            currentUser.name = document.getElementById('profileName').value;
-            currentUser.phone = document.getElementById('profilePhone').value;
-            currentUser.city = document.getElementById('profileCity').value;
+            const updatedData = {
+                name: document.getElementById('profileName').value,
+                phone: document.getElementById('profilePhone').value,
+                city: document.getElementById('profileCity').value
+            };
             
+            try {
+                // Try to update on server first (for development)
+                const response = await fetch('/api/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData),
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    console.log('Profile updated on server');
+                    const updatedUser = await response.json();
+                    currentUser = { ...currentUser, ...updatedUser };
+                } else {
+                    console.log('Server update failed, updating locally only');
+                    // Update locally even if server fails
+                    currentUser.name = updatedData.name;
+                    currentUser.phone = updatedData.phone;
+                    currentUser.city = updatedData.city;
+                }
+            } catch (error) {
+                console.error('Profile update error:', error);
+                // Update locally even if server fails
+                currentUser.name = updatedData.name;
+                currentUser.phone = updatedData.phone;
+                currentUser.city = updatedData.city;
+            }
+            
+            // Always update localStorage
             localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
             showAlert('profileSuccess');
             updateAuthUI();
@@ -5594,7 +6076,50 @@
                 container.innerHTML = '<p style="text-align: center; color: var(--gray-600);">You haven\'t listed any items yet.</p>';
             } else {
                 container.innerHTML = '<div class="items-grid"></div>';
-                renderItemsInContainer(myItems, container.querySelector('.items-grid'));
+                renderItemsInContainer(myItems, container.querySelector('.items-grid'), true);
+            }
+        }
+
+        async function deleteItem(itemId) {
+            if (!currentUser) {
+                showAlert('Please log in to delete items');
+                return;
+            }
+
+            // Confirm deletion
+            if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/items/${itemId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (response.ok) {
+                    // Remove item from local arrays
+                    items = items.filter(item => item.id !== itemId);
+                    filteredItems = filteredItems.filter(item => item.id !== itemId);
+                    
+                    // Reload the My Items section
+                    loadMyItems();
+                    
+                    // Reload browse section to reflect changes
+                    if (document.getElementById('browse').classList.contains('active')) {
+                        renderAllItems();
+                    }
+                    
+                    showAlert('Item deleted successfully');
+                } else {
+                    const errorData = await response.json();
+                    showAlert(errorData.error || 'Failed to delete item');
+                }
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                showAlert('Failed to delete item. Please try again.');
             }
         }
 

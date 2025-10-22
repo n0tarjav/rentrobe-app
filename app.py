@@ -315,15 +315,8 @@ def uploaded_file(filename):
     """Serve uploaded files"""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-# SPA routes
-@app.route('/<path:path>')
-def spa_routes(path):
-    """Single Page Application routes"""
-    return render_template('index.html')
-
 # API Routes
 @app.route('/api/categories')
-@login_required
 def api_categories():
     """Get all categories"""
     try:
@@ -334,7 +327,6 @@ def api_categories():
         return jsonify({'error': 'Failed to fetch categories'}), 500
 
 @app.route('/api/items')
-@login_required
 def api_items():
     """Get items with filtering"""
     try:
@@ -663,6 +655,29 @@ def api_user_items():
     except Exception as e:
         logger.error(f"Error fetching user items: {e}")
         return jsonify({'error': 'Failed to fetch items'}), 500
+
+@app.route('/api/items/<int:item_id>', methods=['DELETE'])
+@login_required
+def api_delete_item(item_id):
+    """Delete an item (soft delete by setting is_active=False)"""
+    try:
+        item = Item.query.get_or_404(item_id)
+        
+        # Check if user owns the item
+        if item.owner_id != current_user.id:
+            return jsonify({'error': 'You can only delete your own items'}), 403
+        
+        # Soft delete by setting is_active to False
+        item.is_active = False
+        db.session.commit()
+        
+        logger.info(f"Item {item_id} deleted by user {current_user.id}")
+        return jsonify({'message': 'Item deleted successfully'})
+        
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error deleting item {item_id}: {e}")
+        return jsonify({'error': 'Failed to delete item'}), 500
 
 
 @app.route('/api/rentals', methods=['POST'])
@@ -1092,6 +1107,12 @@ def create_sample_data():
     except Exception as e:
         logger.error(f"Sample data creation error: {e}")
         db.session.rollback()
+
+# SPA routes - must be after all API routes
+@app.route('/<path:path>')
+def spa_routes(path):
+    """Single Page Application routes"""
+    return render_template('index.html')
 
 # CLI Commands
 @app.cli.command()
