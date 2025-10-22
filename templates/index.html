@@ -5099,24 +5099,80 @@
             try {
                 console.log('Attempting login...');
                 
-                // Check against hardcoded users for now (since Netlify functions aren't working)
-                const users = {
+                // Check against hardcoded users first
+                const hardcodedUsers = {
                     'demo@wearhouse.com': { password: 'password123', name: 'Demo User', id: 1 },
                     'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav', id: 2 },
                     'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3 }
                 };
                 
                 const normalizedEmail = email.toLowerCase().trim();
+                let userFound = false;
                 
-                if (users[normalizedEmail] && users[normalizedEmail].password === password) {
-                    console.log('Login successful with hardcoded check');
+                // Check hardcoded users first
+                if (hardcodedUsers[normalizedEmail] && hardcodedUsers[normalizedEmail].password === password) {
+                    console.log('Login successful with hardcoded user');
                     
                     currentUser = {
-                        id: users[normalizedEmail].id,
-                        name: users[normalizedEmail].name,
+                        id: hardcodedUsers[normalizedEmail].id,
+                        name: hardcodedUsers[normalizedEmail].name,
                         email: normalizedEmail
                     };
+                    userFound = true;
+                } else {
+                    // Check localStorage for newly created accounts
+                    console.log('Checking localStorage for user accounts...');
                     
+                    // Get all stored users from localStorage
+                    const storedUsers = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && key.startsWith('rentrobe_user_')) {
+                            try {
+                                const userData = JSON.parse(localStorage.getItem(key));
+                                if (userData && userData.email) {
+                                    storedUsers.push(userData);
+                                }
+                            } catch (e) {
+                                console.error('Error parsing stored user:', e);
+                            }
+                        }
+                    }
+                    
+                    // Also check the main user storage
+                    const mainUser = localStorage.getItem('rentrobe_user');
+                    if (mainUser) {
+                        try {
+                            const userData = JSON.parse(mainUser);
+                            if (userData && userData.email) {
+                                storedUsers.push(userData);
+                            }
+                        } catch (e) {
+                            console.error('Error parsing main user:', e);
+                        }
+                    }
+                    
+                    console.log('Found stored users:', storedUsers);
+                    
+                    // Find matching user
+                    const matchingUser = storedUsers.find(user => 
+                        user.email === normalizedEmail && user.password === password
+                    );
+                    
+                    if (matchingUser) {
+                        console.log('Login successful with stored user');
+                        currentUser = {
+                            id: matchingUser.id,
+                            name: matchingUser.name,
+                            email: matchingUser.email,
+                            phone: matchingUser.phone,
+                            city: matchingUser.city
+                        };
+                        userFound = true;
+                    }
+                }
+                
+                if (userFound) {
                     console.log('Current user set to:', currentUser);
                     localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
                     console.log('User saved to localStorage');
@@ -5137,7 +5193,7 @@
                         attemptedProtectedPage = null;
                     }
                 } else {
-                    console.error('Invalid credentials');
+                    console.error('Invalid credentials - user not found');
                     showAlert('loginError');
                     hideSpinner('loginSpinner');
                 }
@@ -5188,17 +5244,20 @@
                     return;
                 }
                 
-                // Create new user
+                // Create new user with password
                 currentUser = {
                     id: Date.now(), // Simple ID generation
                     name: name,
                     email: normalizedEmail,
+                    password: password, // Store password for login validation
                     phone: phone,
                     city: city
                 };
                 
                 console.log('New user created:', currentUser);
                 localStorage.setItem('rentrobe_user', JSON.stringify(currentUser));
+                // Also store with a unique key for user lookup
+                localStorage.setItem(`rentrobe_user_${normalizedEmail}`, JSON.stringify(currentUser));
                 console.log('User saved to localStorage');
                 updateAuthUI();
                 console.log('Auth UI updated');
