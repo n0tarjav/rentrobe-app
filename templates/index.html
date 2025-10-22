@@ -5103,9 +5103,9 @@
                 
                 // Check against hardcoded users first
                 const hardcodedUsers = {
-                    'demo@wearhouse.com': { password: 'password123', name: 'Demo User', id: 1 },
-                    'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav', id: 2 },
-                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3 }
+                    'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav Jain', id: 2, phone: '+91 8319337033', city: 'Bhilai' },
+                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3, phone: '+91 9770961933', city: 'Delhi' },
+                    'demo@rentrobe.com': { password: 'rentrobe123', name: 'Demo Rentrobe', id: 4, phone: '91 9770961933', city: 'Bhilai' }
                 };
                 
                 const normalizedEmail = email.toLowerCase().trim();
@@ -5118,7 +5118,9 @@
                     currentUser = {
                         id: hardcodedUsers[normalizedEmail].id,
                         name: hardcodedUsers[normalizedEmail].name,
-                        email: normalizedEmail
+                        email: normalizedEmail,
+                        phone: hardcodedUsers[normalizedEmail].phone,
+                        city: hardcodedUsers[normalizedEmail].city
                     };
                     userFound = true;
                 } else {
@@ -5234,9 +5236,9 @@
                 
                 // Check if email already exists in our hardcoded users
                 const existingUsers = {
-                    'demo@wearhouse.com': { password: 'password123', name: 'Demo User', id: 1 },
                     'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav', id: 2 },
-                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3 }
+                    'ankita@rentrobe.com': { password: 'ankita1001', name: 'Ankita', id: 3 },
+                    'demo@rentrobe.com': { password: 'rentrobe123', name: 'Demo Rentrobe', id: 4 }
                 };
                 
                 if (existingUsers[normalizedEmail]) {
