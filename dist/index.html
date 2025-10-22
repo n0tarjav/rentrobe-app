@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGO_W_TITLE.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -150,7 +150,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             color: var(--black);
             background: var(--white);
@@ -744,23 +744,20 @@
         /* Categories */
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 32px;
-            max-width: 1000px;
-            margin: 0 auto;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
 
         .category-card {
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            border: 2px solid #e2e8f0;
-            padding: 48px 32px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            padding: 40px 24px;
             text-align: center;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 16px;
+            border-radius: 8px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .category-card::before {
@@ -789,23 +786,21 @@
         }
 
         .category-icon {
-            font-size: 40px;
-            margin-bottom: 20px;
+            font-size: 32px;
+            margin-bottom: 16px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-block;
         }
 
         .category-card h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #1a202c;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
         }
 
         .category-card p {
-            color: #64748b;
-            font-size: 15px;
-            font-weight: 500;
+            color: var(--gray-600);
+            font-size: 14px;
         }
 
         /* Items Grid */
@@ -1215,6 +1210,134 @@
             gap: 20px;
             margin-bottom: 20px;
         }
+
+        /* Custom Select Dropdown Styles */
+        .custom-select {
+            position: relative;
+            display: block;
+        }
+
+        .custom-select-input {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+            border: 2px solid rgba(47, 82, 73, 0.15);
+            border-radius: 12px;
+            padding: 14px 45px 14px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--theme-accent);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(47, 82, 73, 0.08);
+            width: 100%;
+            outline: none;
+        }
+
+        .custom-select-input:hover {
+            border-color: var(--theme-border);
+            box-shadow: 0 4px 16px rgba(47, 82, 73, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .custom-select-input:focus {
+            border-color: var(--theme-accent);
+            box-shadow: 0 0 0 3px rgba(47, 82, 73, 0.1);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .custom-select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--theme-accent);
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .custom-select-input:focus + .custom-select-arrow {
+            transform: translateY(-50%) rotate(180deg);
+            color: var(--theme-accent);
+        }
+
+        /* Override any browser default blue colors in select elements */
+        .custom-select-input::-webkit-calendar-picker-indicator,
+        .custom-select-input::-webkit-inner-spin-button,
+        .custom-select-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-select-input::-ms-expand {
+            display: none;
+        }
+
+        /* Ensure no blue colors in any state */
+        .custom-select-input:focus-visible {
+            outline: none !important;
+            border-color: var(--theme-accent) !important;
+        }
+
+        /* Enhanced Form Labels */
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--theme-accent);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form Group Spacing */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Sidebar Section Enhancements */
+        .sidebar-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 255, 254, 0.9) 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(47, 82, 73, 0.1);
+            box-shadow: 0 4px 20px rgba(47, 82, 73, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section:hover {
+            box-shadow: 0 8px 32px rgba(47, 82, 73, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar Title */
+        .sidebar-title {
+            color: var(--theme-accent);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .sidebar-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--theme-accent), rgba(47, 82, 73, 0.3));
+            border-radius: 2px;
+        }
+
 
         /* Alerts */
         .alert {
@@ -2748,6 +2871,17 @@
             transform: scaleX(0) !important;
             transform-origin: right center !important;
         }
+
+        /* FINAL OVERRIDE - Remove ALL blue colors from dropdowns */
+        .custom-select-input, .custom-select-input:focus, .custom-select-input:hover, .custom-select-input:active {
+            color: var(--theme-accent) !important;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%) !important;
+            border-color: rgba(47, 82, 73, 0.15) !important;
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-focus-ring-color: transparent !important;
+            box-shadow: 0 2px 8px rgba(47, 82, 73, 0.08) !important;
+        }
     </style>
 </head>
 <body>
@@ -2954,7 +3088,7 @@
                     <div class="sidebar-section">
                         <div class="form-group">
                             <label class="form-label">Category</label>
-                            <select class="form-input" id="categoryFilter">
+                            <select class="form-input" id="categoryFilter" onchange="applyFilters()">
                                 <option value="">All Categories</option>
                                 <option value="formal">Formal Wear</option>
                                 <option value="casual">Casual Wear</option>
@@ -2964,15 +3098,17 @@
                             </select>
                         </div>
                         
-                        
-                        
                         <div class="form-group">
                             <label class="form-label">Sort By Price</label>
-                            <select class="form-input" id="sortFilter" onchange="applySorting()">
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                            </select>
+                            <div class="custom-select">
+                                <select class="form-input custom-select-input" id="sortFilter" onchange="applySorting()">
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                </select>
+                                <div class="custom-select-arrow">▼</div>
+                            </div>
                         </div>
+                        
                     </div>
                     
                     <!-- Action Buttons -->
@@ -4308,6 +4444,11 @@
             initializeItems();
             setupEventListeners();
             
+            // Setup delayed event listeners for browse page elements
+            setTimeout(() => {
+                setupBrowseEventListeners();
+            }, 1000);
+            
             // Only fetch from server if we don't have a valid user from localStorage
             // For Netlify deployment, we rely primarily on localStorage
             if (!hasValidUserFromStorage) {
@@ -4540,7 +4681,8 @@
 
         async function loadItems() {
             try {
-                const resp = await fetch('/api/items');
+                // Load all items by requesting a large page size
+                const resp = await fetch('/api/items?per_page=100');
                 if (resp.ok) {
                     const data = await resp.json();
                     items = data.items || data;
@@ -4630,7 +4772,36 @@
             // Navigation
             
             // Browse search - real-time search as user types
-            document.getElementById('browseSearchInput').addEventListener('input', performBrowseSearch);
+            const browseSearchInput = document.getElementById('browseSearchInput');
+            if (browseSearchInput) {
+                browseSearchInput.addEventListener('input', performBrowseSearch);
+                console.log('Browse search input listener added');
+            } else {
+                console.error('Browse search input not found!');
+            }
+            
+            // Category filter - apply filters when changed
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter) {
+                console.log('Category filter element found, adding listeners');
+                categoryFilter.addEventListener('change', function(e) {
+                    console.log('Category filter changed to:', e.target.value);
+                    applyFilters();
+                });
+                
+                // Also add input event for better compatibility
+                categoryFilter.addEventListener('input', function(e) {
+                    console.log('Category filter input event:', e.target.value);
+                    applyFilters();
+                });
+                
+                // Add click event as well
+                categoryFilter.addEventListener('click', function(e) {
+                    console.log('Category filter clicked');
+                });
+            } else {
+                console.error('Category filter element not found!');
+            }
 
             // Forms
             const loginForm = document.getElementById('loginForm');
@@ -5374,13 +5545,19 @@
 
         async function performBrowseSearch() {
             resetPagination();
-            await renderAllItems();
+            await applyFilters();
         }
 
         function filterByCategory(category) {
-            document.getElementById('categoryFilter').value = category;
-            showPage('browse');
-            applyFilters();
+            if (!items || items.length === 0) return;
+            let filtered = [...items];
+            if (category) {
+                filtered = filtered.filter(item => item.category === category);
+            }
+            const container = document.getElementById('allItems');
+            if (container) {
+                renderItemsInContainer(filtered, container);
+            }
         }
 
         async function applyFilters() {
@@ -5392,18 +5569,8 @@
             filteredItems = [...items];
             
             if (category) {
+                // Filter directly by category slug provided by API
                 filteredItems = filteredItems.filter(item => item.category === category);
-            }
-            
-            if (size) {
-                filteredItems = filteredItems.filter(item => item.size === size);
-            }
-            
-            if (city) {
-                filteredItems = filteredItems.filter(item => 
-                    item.owner && item.owner.city && 
-                    item.owner.city.toLowerCase().includes(city.toLowerCase())
-                );
             }
             
             if (search) {
@@ -5431,6 +5598,72 @@
             await renderAllItems();
         }
 
+        // removed temporary test helpers
+
+        function handleCategoryChange(value) {
+            console.log('Category changed to:', value);
+            alert(`Category changed to: ${value}`);
+            
+            if (!items || items.length === 0) {
+                console.log('No items loaded yet');
+                return;
+            }
+            
+            // Map category slug to category name
+            const categoryMapping = {
+                'formal': 'Formal Wear',
+                'casual': 'Casual Wear', 
+                'party': 'Party Outfits',
+                'traditional': 'Traditional',
+                'accessories': 'Accessories',
+                'designer': 'Designer'
+            };
+            
+            let filtered = [...items];
+            
+            if (value) {
+                const categoryName = categoryMapping[value];
+                if (categoryName) {
+                    filtered = filtered.filter(item => item.category === categoryName);
+                    console.log(`Filtered to ${filtered.length} items for category: ${categoryName}`);
+                }
+            }
+            
+            // Update the display
+            const container = document.getElementById('allItems');
+            if (container) {
+                renderItemsInContainer(filtered, container);
+            }
+        }
+
+        function setupBrowseEventListeners() {
+            console.log('Setting up browse event listeners...');
+            
+            // Category filter - apply filters when changed
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter) {
+                console.log('Category filter element found in delayed setup, adding listeners');
+                
+                // Remove any existing listeners first
+                categoryFilter.removeEventListener('change', applyFilters);
+                categoryFilter.removeEventListener('input', applyFilters);
+                
+                categoryFilter.addEventListener('change', function(e) {
+                    console.log('Category filter changed to:', e.target.value);
+                    applyFilters();
+                });
+                
+                categoryFilter.addEventListener('input', function(e) {
+                    console.log('Category filter input event:', e.target.value);
+                    applyFilters();
+                });
+                
+                console.log('Category filter listeners added successfully');
+            } else {
+                console.error('Category filter element not found in delayed setup!');
+            }
+        }
+
         // Rendering functions
         function renderFeaturedItems() {
             const container = document.getElementById('featuredItems');
@@ -5445,39 +5678,17 @@
         async function renderAllItems() {
             const container = document.getElementById('allItems');
             
-            // Show loading state
-            container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--theme-accent);">Loading items...</div>';
-            
-            try {
-                // Get current filters
-                const filters = getCurrentFilters();
-                
-                // Load items with pagination from backend
-                const result = await loadItemsWithPagination(currentPage, filters);
-                
-                // Update global pagination variables
-                totalPages = result.pagination.pages;
-                
-                // Render items
-                renderItemsInContainer(result.items, container);
-                
-                // Update pagination controls with backend data
-                updatePaginationControlsWithBackendData(result.pagination);
-                
-            } catch (error) {
-                console.error('Error loading items:', error);
-                // Fallback to simple rendering with filteredItems
-                if (filteredItems && filteredItems.length > 0) {
-                    // Apply sorting to filtered items before rendering
-                    const sortedItems = sortItems(filteredItems);
-                    renderItemsInContainer(sortedItems, container);
-                } else if (items && items.length > 0) {
-                    // Apply sorting to all items before rendering
-                    const sortedItems = sortItems(items);
-                    renderItemsInContainer(sortedItems, container);
-                } else {
-                    container.innerHTML = '<p style="text-align: center; color: var(--gray-600); grid-column: 1/-1;">No items available.</p>';
-                }
+            // Use the already loaded items from the global arrays
+            if (filteredItems && filteredItems.length > 0) {
+                // Apply sorting to filtered items before rendering
+                const sortedItems = sortItems(filteredItems);
+                renderItemsInContainer(sortedItems, container);
+            } else if (items && items.length > 0) {
+                // Apply sorting to all items before rendering
+                const sortedItems = sortItems(items);
+                renderItemsInContainer(sortedItems, container);
+            } else {
+                container.innerHTML = '<p style="text-align: center; color: var(--gray-600); grid-column: 1/-1;">No items available.</p>';
             }
         }
 
