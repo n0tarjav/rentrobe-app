@@ -630,7 +630,7 @@
 
         /* Sections */
         .section {
-            padding: 60px 0;
+            padding: 40px 0;
         }
 
         /* Reduce padding for How It Works section */
@@ -642,7 +642,7 @@
             font-size: 36px;
             font-weight: 800;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             color: var(--black);
             letter-spacing: -1px;
             position: relative;
@@ -794,7 +794,7 @@
 
         .category-card h3 {
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 700;
             margin-bottom: 8px;
         }
 
@@ -1585,6 +1585,23 @@
             gap: 30px;
         }
 
+        @keyframes appear {
+        from {
+          opacity: 0;
+          clip-path: inset(100% 100% 0 0);
+        }
+        to {
+          opacity: 1;
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      .block {
+        animation: appear linear;
+        animation-timeline: view();
+        animation-range: entry 0% cover 40%;
+      }
+
         .workflow-section {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -2050,7 +2067,7 @@
             cursor: pointer;
             color: var(--black);
             padding: 8px;
-            z-index: 1001;
+            z-index: 1110;
             position: relative;
             min-width: 40px;
             min-height: 40px;
@@ -2073,13 +2090,13 @@
             backdrop-filter: blur(15px);
             border-top: 1px solid var(--gray-200);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+            z-index: 1100;
             overflow-y: auto;
             transform: translateY(-100%);
             transition: transform 0.3s ease, opacity 0.3s ease;
             opacity: 0;
             visibility: hidden;
-            padding-top: 50px;
+            padding-top: 60px;
         }
 
         .mobile-nav.active {
@@ -2087,6 +2104,30 @@
             opacity: 1 !important;
             visibility: visible !important;
             display: block !important;
+        }
+
+        .mobile-nav-close {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--black);
+            padding: 8px;
+            z-index: 1111;
+            min-width: 40px;
+            min-height: 40px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-nav-close:hover {
+            background: var(--gray-100);
+            border-radius: 4px;
         }
 
         .mobile-nav-links {
@@ -2121,31 +2162,50 @@
             font-weight: 600;
         }
 
+        .mobile-auth-buttons {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-top: 1px solid var(--gray-200);
+            margin-top: 20px;
+        }
+
+        .btn-mobile {
+            width: 100%;
+            text-align: center;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
 
         .mobile-user-section {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--gray-200);
-            background: var(--gray-100);
+            padding: 24px;
+            border-bottom: 2px solid var(--gray-200);
+            background: linear-gradient(135deg, rgba(47, 82, 73, 0.05) 0%, rgba(47, 82, 73, 0.02) 100%);
         }
 
         .mobile-user-info {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 16px;
         }
 
         .mobile-user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: var(--gray-600);
+            background: var(--theme-accent);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(47, 82, 73, 0.2);
         }
 
         .mobile-user-details {
@@ -2153,14 +2213,15 @@
         }
 
         .mobile-user-name {
-            font-weight: 600;
-            color: var(--black);
-            font-size: 16px;
+            font-weight: 700;
+            color: var(--theme-accent);
+            font-size: 17px;
+            margin-bottom: 4px;
         }
 
         .mobile-user-email {
             color: var(--gray-600);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .mobile-user-menu {
@@ -2195,43 +2256,40 @@
             }
             
             .user-menu {
-                display: none;
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+
+            .auth-buttons {
+                display: none !important;
             }
             
             .btn {
-                padding: 8px 12px;
-                font-size: 12px;
+                padding: 6px 10px;
+                font-size: 11px;
             }
 
             nav {
-                padding: 8px 0;
+                padding: 8px 16px;
                 min-height: 50px;
                 position: relative;
-                z-index: 1002;
+                z-index: 1050;
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: center;
             }
 
             .logo {
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
-                z-index: 1003;
+                z-index: 1051;
             }
 
             .logo img {
-                height: 30px;
-            }
-
-            .auth-buttons {
-                display: flex;
-                gap: 8px;
-                position: absolute;
-                left: 16px;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 1004;
+                height: 32px;
             }
 
             .mobile-menu-toggle {
@@ -2239,11 +2297,57 @@
                 right: 16px;
                 top: 50%;
                 transform: translateY(-50%);
-                z-index: 1005;
+                z-index: 1110;
+                font-size: 24px;
+                padding: 8px;
             }
             
             .hero-content {
                 text-align: center;
+            }
+
+            .browse-container {
+                flex-direction: column;
+                padding: 80px 20px 30px 20px;
+            }
+            
+            .browse-sidebar {
+                display: none !important;
+            }
+
+            .mobile-filter-btn {
+                display: flex !important;
+            }
+            
+            .browse-main {
+                width: 100%;
+                position: relative;
+                z-index: 1;
+            }
+
+            .browse-main .section-title {
+                margin-top: 0;
+            }
+        }
+
+        /* Extra small devices (phones < 375px) */
+        @media (max-width: 374px) {
+            .logo img {
+                height: 28px;
+            }
+
+            nav {
+                padding: 8px 12px;
+            }
+
+            .mobile-menu-toggle {
+                font-size: 22px;
+                padding: 6px;
+            }
+
+            .user-menu {
+                display: none !important;
+                visibility: hidden !important;
             }
             
             .hero-text h1 {
@@ -2293,6 +2397,27 @@
                 gap: 16px;
             }
             
+            .browse-container {
+                padding: 80px 12px 20px 12px;
+            }
+            
+            .browse-sidebar {
+                display: none !important;
+            }
+
+            .mobile-filter-btn {
+                display: flex !important;
+            }
+
+            .browse-main .section-title {
+                margin-top: 0;
+            }
+
+            .user-menu {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            
             .modal-content {
                 margin: 5% 20px;
                 padding: 24px;
@@ -2335,13 +2460,29 @@
             
             .browse-container {
                 flex-direction: column;
-                padding: 20px 15px;
+                padding: 80px 15px 20px 15px;
             }
             
             .browse-sidebar {
-                width: 100%;
-                position: static;
-                margin-bottom: 20px;
+                display: none !important;
+            }
+
+            .mobile-filter-btn {
+                display: flex !important;
+            }
+
+            .browse-main .section-title {
+                margin-top: 0;
+            }
+
+            .user-menu {
+                display: none !important;
+                visibility: hidden !important;
+            }
+
+            .items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 16px;
             }
         }
 
@@ -2982,6 +3123,232 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Scroll Animation Styles */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .scroll-reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger animation delays for items */
+        .scroll-reveal:nth-child(1) { transition-delay: 0.1s; }
+        .scroll-reveal:nth-child(2) { transition-delay: 0.2s; }
+        .scroll-reveal:nth-child(3) { transition-delay: 0.3s; }
+        .scroll-reveal:nth-child(4) { transition-delay: 0.4s; }
+        .scroll-reveal:nth-child(5) { transition-delay: 0.5s; }
+        .scroll-reveal:nth-child(6) { transition-delay: 0.6s; }
+
+        /* Ensure all category cards are visible and animate */
+        .categories-grid .category-card.scroll-reveal {
+            will-change: opacity, transform;
+        }
+
+        /* Mobile Filter Button (hidden by default) */
+        .mobile-filter-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--theme-accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(47, 82, 73, 0.25);
+            cursor: pointer;
+            z-index: 100;
+            gap: 8px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-filter-btn:hover {
+            background: #25433c;
+            box-shadow: 0 6px 20px rgba(47, 82, 73, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .mobile-filter-btn:active {
+            transform: translateY(0);
+        }
+
+        .mobile-filter-btn svg {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Mobile Filter Modal */
+        .mobile-filter-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-filter-modal.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-filter-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        .mobile-filter-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-filter-modal.active .mobile-filter-content {
+            transform: translateY(0);
+        }
+
+        .mobile-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .mobile-filter-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--theme-accent);
+            margin: 0;
+        }
+
+        .mobile-filter-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--gray-600);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-filter-close:hover {
+            background: var(--gray-100);
+        }
+
+        .mobile-filter-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .filter-section {
+            margin-bottom: 24px;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-300);
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--black);
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--theme-accent);
+            box-shadow: 0 0 0 3px rgba(47, 82, 73, 0.1);
+        }
+
+        .mobile-filter-footer {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-200);
+            background: var(--gray-50);
+        }
+
+        .mobile-filter-footer .btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
         /* Force Rentrobe hover animation - Highest priority */
         .section-title.rentrobe-text {
             position: relative !important;
@@ -3060,11 +3427,12 @@
                     <a href="#" onclick="logout()">Sign Out</a>
                 </div>
             </div>
-            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-menu-toggle">☰</button>
         </nav>
         
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobileNav">
+            <button class="mobile-nav-close" onclick="closeMobileMenu()">✕</button>
             <!-- User Section -->
             <div class="mobile-user-section" id="mobileUserSection" style="display: none;">
                 <div class="mobile-user-info">
@@ -3088,6 +3456,12 @@
                 <li><a href="#" onclick="showPage('my-items'); closeMobileMenu();" id="mobileMyItemsLink" style="display: none;">My Items</a></li>
                 <li><a href="#" onclick="logout(); closeMobileMenu();" id="mobileLogoutLink" style="display: none;">Sign Out</a></li>
             </ul>
+            
+            <!-- Auth Buttons for Mobile -->
+            <div class="mobile-auth-buttons" id="mobileAuthButtons">
+                <a href="#" class="btn btn-mobile" onclick="showModal('loginModal'); closeMobileMenu();">Log In</a>
+                <a href="#" class="btn btn-primary btn-mobile" onclick="showModal('signupModal'); closeMobileMenu();">Sign Up</a>
+            </div>
         </div>
     </header>
 
@@ -3124,11 +3498,11 @@
 
             <!-- How It Works Section -->
             <div class="container section">
-                <h2 class="section-title rentrobe-text">How Rentrobe Works</h2>
+                <h2 class="section-title rentrobe-text scroll-reveal">How Rentrobe Works</h2>
                 <div class="how-it-works-new">
                     <!-- For Renters -->
                     <div class="workflow-section">
-                        <div class="workflow-step">
+                        <div class="workflow-step scroll-reveal">
                             <div class="step-icon-pink">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
@@ -3138,7 +3512,7 @@
                             <p>Discover stylish outfits for every occasion</p>
                         </div>
                         
-                        <div class="workflow-step">
+                        <div class="workflow-step scroll-reveal">
                             <div class="step-icon-pink">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="9" cy="21" r="1"/>
@@ -3150,7 +3524,7 @@
                             <p>Pick your favorite look and add it to cart</p>
                         </div>
                         
-                        <div class="workflow-step">
+                        <div class="workflow-step scroll-reveal">
                             <div class="step-icon-pink">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -3167,8 +3541,8 @@
                     
                     <!-- For Listers -->
                     <div class="workflow-section lister-section">
-                        <h3 class="lister-title">For Listers — Earn Through Your Closet</h3>
-                        <div class="workflow-step">
+                        <h3 class="lister-title scroll-reveal">For Listers — Earn Through Your Closet</h3>
+                        <div class="workflow-step scroll-reveal">
                             <div class="step-icon-pink">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -3179,7 +3553,7 @@
                             <p>Join RentRobe as a verified lister</p>
                         </div>
                         
-                        <div class="workflow-step">
+                        <div class="workflow-step scroll-reveal">
                             <div class="step-icon-pink">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -3190,7 +3564,7 @@
                             <p>Add outfit photos and set your rent price</p>
                         </div>
                         
-                        <div class="workflow-step">
+                        <div class="workflow-step scroll-reveal">
                             <div class="step-icon-pink">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 1v22"/>
@@ -3205,29 +3579,29 @@
             </div>
 
             <div class="container section">
-                <h2 class="section-title">Categories</h2>
+                <h2 class="section-title scroll-reveal">Categories</h2>
                 <div class="categories-grid" id="categoriesGrid">
-                    <div class="category-card">
+                    <div class="category-card scroll-reveal">
                         <div class="category-icon">👔</div>
                         <h3>Formal Wear</h3>
                         <p>Suits & Evening Dresses</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card scroll-reveal">
                         <div class="category-icon">👕</div>
                         <h3>Casual Wear</h3>
                         <p>Everyday Fashion</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card scroll-reveal">
                         <div class="category-icon">✨</div>
                         <h3>Party Outfits</h3>
                         <p>Cocktail & Party Wear</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card scroll-reveal">
                         <div class="category-icon">👘</div>
                         <h3>Traditional</h3>
                         <p>Ethnic & Cultural</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card scroll-reveal">
                         <div class="category-icon">💎</div>
                         <h3>Designer</h3>
                         <p>Luxury Brands</p>
@@ -3236,7 +3610,7 @@
             </div>
 
             <div class="container section">
-                <h2 class="section-title">Featured Items</h2>
+                <h2 class="section-title scroll-reveal">Featured Items</h2>
                 <div class="items-grid" id="featuredItems">
                     <!-- Items will be loaded here -->
                 </div>
@@ -3281,7 +3655,7 @@
                         <div class="form-group">
                             <label class="form-label">Sort By Price</label>
                             <div class="custom-select">
-                                <select class="form-input custom-select-input" id="sortFilter" onchange="applySorting()">
+                                <select class="form-input custom-select-input" id="sortFilter">
                                     <option value="price-low">Price: Low to High</option>
                                     <option value="price-high">Price: High to Low</option>
                                 </select>
@@ -3294,6 +3668,65 @@
                     <div class="sidebar-actions">
                         <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
                         <button class="btn" onclick="clearFilters()">Clear</button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Filter Button -->
+                <button class="mobile-filter-btn" onclick="openMobileFilters()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                        <circle cx="8" cy="6" r="2" fill="currentColor"></circle>
+                        <circle cx="16" cy="12" r="2" fill="currentColor"></circle>
+                        <circle cx="12" cy="18" r="2" fill="currentColor"></circle>
+                    </svg>
+                    <span>Filters</span>
+                </button>
+
+                <!-- Mobile Filter Modal -->
+                <div class="mobile-filter-modal" id="mobileFilterModal">
+                    <div class="mobile-filter-overlay" onclick="closeMobileFilters()"></div>
+                    <div class="mobile-filter-content">
+                        <div class="mobile-filter-header">
+                            <h3>Filters</h3>
+                            <button class="mobile-filter-close" onclick="closeMobileFilters()">✕</button>
+                        </div>
+                        
+                        <div class="mobile-filter-body">
+                            <!-- Search Bar -->
+                            <div class="filter-section">
+                                <label class="filter-label">Search</label>
+                                <input type="text" class="filter-input" id="mobileSearchInput" placeholder="Search items...">
+                            </div>
+                            
+                            <!-- Category Filter -->
+                            <div class="filter-section">
+                                <label class="filter-label">Category</label>
+                                <select class="filter-input" id="mobileCategoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="formal">Formal Wear</option>
+                                    <option value="casual">Casual Wear</option>
+                                    <option value="party">Party Outfits</option>
+                                    <option value="traditional">Traditional</option>
+                                    <option value="designer">Designer</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Sort Filter -->
+                            <div class="filter-section">
+                                <label class="filter-label">Sort By Price</label>
+                                <select class="filter-input" id="mobileSortFilter">
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mobile-filter-footer">
+                            <button class="btn" onclick="clearMobileFilters()">Clear All</button>
+                            <button class="btn btn-primary" onclick="applyMobileFilters()">Apply Filters</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -5007,6 +5440,16 @@
                 currentMobileLink.classList.add('active');
             }
             
+            // Show/hide mobile filter button based on page (only on mobile)
+            const mobileFilterBtn = document.querySelector('.mobile-filter-btn');
+            if (mobileFilterBtn) {
+                if (pageId === 'browse' && window.innerWidth <= 768) {
+                    mobileFilterBtn.style.display = 'flex';
+                } else {
+                    mobileFilterBtn.style.display = 'none';
+                }
+            }
+            
             // Reset scroll to top
             window.scrollTo({
                 top: 0,
@@ -5190,7 +5633,7 @@
         };
 
         // Test function for login API
-        window.testLogin = async function(email = 'demo@wearhouse.com', password = 'password123') {
+        window.testLogin = async function(email = 'demo@rentrobe.com', password = 'password123') {
             console.log('=== TESTING LOGIN API ===');
             console.log('Testing with:', { email, password: password ? '***' : 'empty' });
             
@@ -5238,6 +5681,21 @@
             }
         });
 
+        // Handle mobile filter button visibility on window resize
+        window.addEventListener('resize', function() {
+            const mobileFilterBtn = document.querySelector('.mobile-filter-btn');
+            const currentPage = document.querySelector('.page.active');
+            
+            if (mobileFilterBtn && currentPage) {
+                const pageId = currentPage.id;
+                if (pageId === 'browse' && window.innerWidth <= 768) {
+                    mobileFilterBtn.style.display = 'flex';
+                } else {
+                    mobileFilterBtn.style.display = 'none';
+                }
+            }
+        });
+
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const mobileNav = document.getElementById('mobileNav');
@@ -5282,7 +5740,7 @@
                 const hardcodedUsers = {
                     'arjav@rentrobe.com': { password: 'arjav0302', name: 'Arjav Jain', id: 2, phone: '+91 8319337033', city: 'Bhilai' },
                     'ankita@rentrobe.com': { password: 'ankita1001', name: 'A Ankita Rao', id: 3, phone: '+91 9770961933', city: 'Bhilai' },
-                    'demo@rentrobe.com': { password: 'rentrobe123', name: 'Rentrobe Demo User', id: 4, phone: '91 9770961933', city: 'Bhilai' }
+                    'demo@rentrobe.com': { password: 'rentrobe123', name: 'Rentrobe Demo User', id: 4, phone: '+91 9770961933', city: 'Bhilai' }
                 };
                 
                 const normalizedEmail = email.toLowerCase().trim();
@@ -5498,6 +5956,8 @@
                 console.log('Setting logged in state');
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'flex';
+                const mobileAuthButtons = document.getElementById('mobileAuthButtons');
+                if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
                 if (mobileUserSection) mobileUserSection.style.display = 'block';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'block';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'block';
@@ -5538,6 +5998,8 @@
                 }
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
+                const mobileAuthButtons = document.getElementById('mobileAuthButtons');
+                if (mobileAuthButtons) mobileAuthButtons.style.display = 'flex';
                 if (mobileUserSection) mobileUserSection.style.display = 'none';
                 if (mobileProfileLink) mobileProfileLink.style.display = 'none';
                 if (mobileLogoutLink) mobileLogoutLink.style.display = 'none';
@@ -5590,7 +6052,7 @@
             
             if (cart.length === 0) {
                 container.innerHTML = `
-<div class="empty-cart" style="text-align: center; padding: 60px 20px;">
+                        <div class="empty-cart" style="text-align: center; padding: 60px 20px;">
                         <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
                         <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
                         <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
@@ -5746,6 +6208,10 @@
             const cityInput = document.getElementById('cityFilter');
             const city = cityInput ? cityInput.value : '';
             
+            // Get current sort value from dropdown
+            const sortValue = document.getElementById('sortFilter').value;
+            currentSort = sortValue;
+            
             // Apply filters
             filteredItems = [...items];
             
@@ -5785,6 +6251,53 @@
             await renderAllItems();
         }
 
+        // Mobile Filter Functions
+        function openMobileFilters() {
+            const modal = document.getElementById('mobileFilterModal');
+            
+            // Sync mobile filters with desktop filters
+            const desktopSearch = document.getElementById('browseSearchInput').value;
+            const desktopCategory = document.getElementById('categoryFilter').value;
+            const desktopSort = document.getElementById('sortFilter').value;
+            
+            document.getElementById('mobileSearchInput').value = desktopSearch;
+            document.getElementById('mobileCategoryFilter').value = desktopCategory;
+            document.getElementById('mobileSortFilter').value = desktopSort;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileFilters() {
+            const modal = document.getElementById('mobileFilterModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        async function applyMobileFilters() {
+            // Get mobile filter values
+            const search = document.getElementById('mobileSearchInput').value;
+            const category = document.getElementById('mobileCategoryFilter').value;
+            const sort = document.getElementById('mobileSortFilter').value;
+            
+            // Sync with desktop filters
+            document.getElementById('browseSearchInput').value = search;
+            document.getElementById('categoryFilter').value = category;
+            document.getElementById('sortFilter').value = sort;
+            
+            // Close modal
+            closeMobileFilters();
+            
+            // Apply filters using existing function logic
+            await applyFilters();
+        }
+
+        function clearMobileFilters() {
+            document.getElementById('mobileSearchInput').value = '';
+            document.getElementById('mobileCategoryFilter').value = '';
+            document.getElementById('mobileSortFilter').value = 'price-low';
+        }
+
         // Rendering functions
         function renderFeaturedItems() {
             const container = document.getElementById('featuredItems');
@@ -5794,6 +6307,11 @@
             const featured = shuffled.slice(0, 4);
             
             renderItemsInContainer(featured, container);
+            
+            // Re-initialize scroll animations for dynamically added items
+            setTimeout(() => {
+                initScrollAnimations();
+            }, 100);
         }
 
         async function renderAllItems() {
@@ -5833,6 +6351,11 @@
                     container.innerHTML = '<p style="text-align: center; color: var(--gray-600); grid-column: 1/-1;">No items available.</p>';
                 }
             }
+            
+            // Re-initialize scroll animations for dynamically added items
+            setTimeout(() => {
+                initScrollAnimations();
+            }, 100);
         }
 
         function updatePaginationControlsWithBackendData(paginationData) {
@@ -6095,7 +6618,7 @@
                 ` : '';
                 
                 return `
-                <div class="item-card" onclick="${isMyItems ? '' : `showItemModal(${originalItem.id})`}" style="position: relative;">
+                <div class="item-card scroll-reveal" onclick="${isMyItems ? '' : `showItemModal(${originalItem.id})`}" style="position: relative;">
                     ${deleteButton}
                     <div class="item-image">
                         ${hasImages ? 
@@ -6659,6 +7182,62 @@
                 `;
             }
         }
+
+        // Scroll Animation - Intersection Observer
+        function initScrollAnimations() {
+            const scrollElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale');
+            
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.05,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            scrollElements.forEach(el => {
+                // Check if element is already in viewport and activate it immediately
+                const rect = el.getBoundingClientRect();
+                const isInViewport = rect.top < (window.innerHeight - 100) && rect.bottom >= 0;
+                
+                if (isInViewport) {
+                    el.classList.add('active');
+                } else {
+                    scrollObserver.observe(el);
+                }
+            });
+        }
+
+        // Reset scroll position on page load/refresh
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        
+        window.addEventListener('beforeunload', function() {
+            window.scrollTo(0, 0);
+        });
+
+        // Scroll to top immediately on page load
+        window.scrollTo(0, 0);
+
+        // Initialize scroll animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure we're at top
+            window.scrollTo(0, 0);
+            initScrollAnimations();
+        });
+
+        // Re-initialize scroll animations when switching pages
+        const originalShowPage = showPage;
+        showPage = function(pageId) {
+            originalShowPage(pageId);
+            setTimeout(() => {
+                initScrollAnimations();
+            }, 100);
+        };
 
         // Export for debugging
         window.RentrobeApp = {
