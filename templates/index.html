@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentrobe - Premium Fashion Rental</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGO_W_TITLE.png') }}">
+    <link rel="icon" type="image/png" href="/images/LOGO_W_TITLE.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1448,6 +1448,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            align-items: flex-start;
         }
 
         .footer-brand-logo {
@@ -1456,6 +1457,7 @@
             justify-content: flex-start;
             margin: 0;
             padding: 0;
+            width: fit-content;
         }
 
         .footer-brand-logo img {
@@ -1525,12 +1527,18 @@
 
         .footer-bottom {
             margin-top: 40px;
-            padding-top: 30px;
+            padding-top: 10px;
         }
 
         .footer-bottom .footer-content {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
+        }
+        
+        .footer-bottom .footer-brand-logo {
+            margin-top: 5px;
         }
 
         .footer-bottom-text {
@@ -1540,7 +1548,7 @@
 
         .footer-bottom-text p {
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         @media (max-width: 768px) {
@@ -1548,6 +1556,31 @@
                 grid-template-columns: 1fr;
                 gap: 30px;
                 text-align: center;
+            }
+            
+            .footer-brand {
+                align-items: center;
+            }
+            
+            .footer-brand-logo {
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .footer-column {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-bottom .footer-brand-logo {
+                justify-content: center;
             }
         }
 
@@ -3405,7 +3438,7 @@
     <header>
         <nav class="container">
             <a href="#" class="logo" onclick="showPage('home')">
-                <img src="/static/LOGO.png" alt="Rentrobe" style="height: 35px; width: auto;">
+                <img src="/images/LOGO.png" alt="Rentrobe" style="height: 35px; width: auto;">
             </a>
             <ul class="nav-links">
                 <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
@@ -3909,6 +3942,112 @@
                         <h3 style="color: var(--gray-600); margin-bottom: 10px;">Your cart is empty</h3>
                         <p style="color: var(--gray-500); margin-bottom: 30px;">Start browsing to add items to your cart</p>
                         <a href="#" class="btn btn-primary" onclick="showPage('browse')">Browse Items</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Page -->
+        <div id="checkout" class="page">
+            <div class="container section">
+                <h2 class="section-title">Checkout</h2>
+                
+                <!-- Login Prompt for Checkout -->
+                <div id="checkoutLoginPrompt" style="display: none; text-align: center; padding: 60px 20px; max-width: 500px; margin: 0 auto;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🔐</div>
+                    <h3 style="color: var(--gray-600); margin-bottom: 10px;">Login to Continue</h3>
+                    <p style="color: var(--gray-500); margin-bottom: 30px;">You need to be logged in to proceed with checkout</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <a href="#" class="btn" onclick="showModal('loginModal')">Log In</a>
+                        <a href="#" class="btn btn-primary" onclick="showModal('signupModal')">Sign Up Now</a>
+                    </div>
+                </div>
+                
+                <!-- Checkout Content -->
+                <div id="checkoutContainer" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 30px;">
+                        <!-- Left Column: Order Details & Payment -->
+                        <div>
+                            <!-- Rental Dates Section -->
+                            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 20px; color: var(--black);">Select Rental Dates</h3>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gray-700);">Start Date</label>
+                                        <input type="date" id="checkoutStartDate" class="form-input" style="width: 100%;" required>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gray-700);">End Date</label>
+                                        <input type="date" id="checkoutEndDate" class="form-input" style="width: 100%;" required>
+                                    </div>
+                                </div>
+                                <p style="color: var(--gray-500); font-size: 14px; margin-top: 10px;">Select your rental dates for all items in your cart</p>
+                            </div>
+                            
+                            <!-- Payment Method Section -->
+                            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 20px; color: var(--black);">Payment Method</h3>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div class="payment-method-div" style="padding: 16px; border: 2px solid var(--gray-200); border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectPaymentMethod('card')">
+                                        <div style="font-size: 32px; margin-bottom: 8px;">💳</div>
+                                        <div style="font-weight: 600;">Credit Card</div>
+                                    </div>
+                                    <div class="payment-method-div" style="padding: 16px; border: 2px solid var(--gray-200); border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.2s;" onclick="selectPaymentMethod('upi')">
+                                        <div style="font-size: 32px; margin-bottom: 8px;">📱</div>
+                                        <div style="font-weight: 600;">UPI</div>
+                                    </div>
+                                </div>
+                                <div id="paymentDetails" style="margin-top: 20px; display: none;">
+                                    <div style="padding: 20px; background: var(--gray-50); border-radius: 8px;">
+                                        <h4 style="margin-bottom: 15px; color: var(--black);">Payment Details</h4>
+                                        <div style="display: grid; gap: 15px;">
+                                            <div>
+                                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gray-700);">Card Number / UPI ID</label>
+                                                <input type="text" id="paymentNumber" class="form-input" placeholder="Enter details" required>
+                                            </div>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                                <div>
+                                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gray-700);">Expiry</label>
+                                                    <input type="text" id="paymentExpiry" class="form-input" placeholder="MM/YY" required>
+                                                </div>
+                                                <div>
+                                                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gray-700);">CVV</label>
+                                                    <input type="text" id="paymentCVV" class="form-input" placeholder="CVV" required>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--gray-700);">Cardholder Name</label>
+                                                <input type="text" id="paymentName" class="form-input" placeholder="Name on card" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Delivery Address -->
+                            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                                <h3 style="margin-bottom: 20px; color: var(--black);">Delivery Address</h3>
+                                <div id="checkoutDeliveryAddress" style="padding: 20px; background: var(--gray-50); border-radius: 8px;">
+                                    <p style="color: var(--gray-600); margin-bottom: 10px;">Loading address...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column: Order Summary -->
+                        <div>
+                            <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: sticky; top: 100px;">
+                                <h3 style="margin-bottom: 20px; color: var(--black);">Order Summary</h3>
+                                <div id="checkoutSummary">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                                <div style="border-top: 2px solid var(--gray-200); margin-top: 20px; padding-top: 20px;">
+                                    <div id="checkoutTotals">
+                                        <!-- Will be populated by JavaScript -->
+                                    </div>
+                                    <button onclick="completeCheckout()" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 16px; margin-top: 20px;">Complete Checkout</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4434,9 +4573,6 @@
         <div class="footer-content">
             <!-- Company Information Column -->
             <div class="footer-brand">
-                <div class="footer-brand-logo">
-                    <img src="static/LOGO_W.png" alt="Rentrobe">
-                </div>
                 <div class="footer-address">
                     <div>C Block, Rungta Educational Campus</div>
                     <div>Kurud Rd, Kohka</div>
@@ -4495,6 +4631,9 @@
                 <div class="footer-bottom-text">
                     <p>--------</p>
                     <p>&copy; 2025 Rentrobe. All rights reserved.</p>
+                </div>
+                <div class="footer-brand-logo">
+                    <img src="images/LOGO_W.png" alt="Rentrobe">
                 </div>
             </div>
         </div>
@@ -5056,6 +5195,9 @@
             initializeItems();
             setupEventListeners();
             
+            // Initialize cart badge
+            updateCartBadge();
+            
             // Only fetch from server if we don't have a valid user from localStorage
             // For Netlify deployment, we rely primarily on localStorage
             if (!hasValidUserFromStorage) {
@@ -5477,6 +5619,8 @@
                 renderAllItems();
             } else if (pageId === 'cart') {
                 renderCart();
+            } else if (pageId === 'checkout') {
+                renderCheckout();
             } else if (pageId === 'list') {
                 // List item page is always accessible, content will show login prompt if needed
             } else if (pageId === 'my-items' && currentUser) {
@@ -5988,6 +6132,9 @@
                 if (mobileUserEmail) {
                     mobileUserEmail.textContent = currentUser.email;
                 }
+                
+                // Update cart badge
+                updateCartBadge();
             } else {
                 console.log('Setting logged out state - invalid or missing user data');
                 // Clear invalid user data
@@ -6030,14 +6177,33 @@
                 return;
             }
             
-            cart.push(item);
+            // Format item for cart with proper image path
+            const cartItem = {
+                id: item.id,
+                title: item.title,
+                description: item.description,
+                price: item.price,
+                deposit: item.deposit,
+                size: item.size,
+                category: item.category,
+                status: item.status,
+                owner: item.owner ? item.owner.name : 'Unknown',
+                owner_city: item.owner ? item.owner.city : '',
+                image: item.images && item.images.length > 0 ? item.images[0] : null
+            };
+            
+            cart.push(cartItem);
             localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
             showAlert('Item added to cart');
+            
+            // Update cart badge if it exists
+            updateCartBadge();
         }
 
         function removeFromCart(itemId) {
             cart = cart.filter(item => item.id !== itemId);
             localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
+            updateCartBadge();
             renderCart();
         }
 
@@ -6062,24 +6228,50 @@
                 return;
             }
             
+            const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+            const totalDeposit = cart.reduce((sum, item) => sum + item.deposit, 0);
+            
             container.innerHTML = `
                 <div class="cart-items">
                     ${cart.map(item => `
                         <div class="cart-item" style="display: flex; align-items: center; padding: 20px; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 16px;">
-                            <img src="${item.image}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+                            <img src="${getImageUrl(item.image)}" alt="${item.title}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 16px;" onerror="this.src='images/LOGO.png';">
                             <div style="flex: 1;">
                                 <h4 style="margin: 0 0 8px 0; color: var(--black);">${item.title}</h4>
-                                <p style="margin: 0 0 8px 0; color: var(--gray-600);">${item.description}</p>
-                                <p style="margin: 0; font-weight: 600; color: var(--black);">$${item.price}/day</p>
+                                <p style="margin: 0 0 8px 0; color: var(--gray-600); font-size: 14px;">${item.category} • Size: ${item.size}</p>
+                                <p style="margin: 0 0 4px 0; font-weight: 600; color: var(--black);">₹${item.price}/day</p>
+                                <p style="margin: 0; color: var(--gray-500); font-size: 12px;">Deposit: ₹${item.deposit}</p>
                             </div>
                             <button onclick="removeFromCart(${item.id})" class="btn" style="background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Remove</button>
                         </div>
                     `).join('')}
                 </div>
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="proceedToCheckout()" style="padding: 12px 24px; font-size: 16px;">Proceed to Checkout</button>
+                <div style="background: var(--gray-50); padding: 20px; border-radius: 8px; margin-top: 30px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: var(--gray-600);">Subtotal (${cart.length} ${cart.length === 1 ? 'item' : 'items'}):</span>
+                        <span style="font-weight: 600; color: var(--black);">₹${totalAmount}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: var(--gray-600);">Total Deposit:</span>
+                        <span style="font-weight: 600; color: var(--black);">₹${totalDeposit}</span>
+                    </div>
+                    <div style="border-top: 1px solid var(--gray-200); padding-top: 12px; margin-top: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <span style="font-size: 18px; font-weight: 600; color: var(--black);">Estimated Total:</span>
+                            <span style="font-size: 18px; font-weight: 600; color: var(--theme-accent);">₹${totalAmount + totalDeposit}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="proceedToCheckout()" style="width: 100%; padding: 14px; font-size: 16px;">Proceed to Checkout</button>
                 </div>
             `;
+        }
+        
+        function updateCartBadge() {
+            const cartBadges = document.querySelectorAll('.cart-badge');
+            cartBadges.forEach(badge => {
+                badge.textContent = cart.length;
+                badge.style.display = cart.length > 0 ? 'block' : 'none';
+            });
         }
 
         function proceedToCheckout() {
@@ -6087,10 +6279,193 @@
                 showAlert('Your cart is empty');
                 return;
             }
-            // For now, just show an alert. In a real app, this would redirect to checkout
-            showAlert('Checkout functionality coming soon!');
+            showPage('checkout');
         }
-
+        
+        function renderCheckout() {
+            const checkoutLoginPrompt = document.getElementById('checkoutLoginPrompt');
+            const checkoutContainer = document.getElementById('checkoutContainer');
+            
+            if (!currentUser) {
+                if (checkoutLoginPrompt) checkoutLoginPrompt.style.display = 'block';
+                if (checkoutContainer) checkoutContainer.style.display = 'none';
+                return;
+            }
+            
+            if (checkoutLoginPrompt) checkoutLoginPrompt.style.display = 'none';
+            if (checkoutContainer) checkoutContainer.style.display = 'block';
+            
+            if (cart.length === 0) {
+                showAlert('Your cart is empty');
+                showPage('cart');
+                return;
+            }
+            
+            // Render cart items summary
+            renderCheckoutSummary();
+            
+            // Render delivery address
+            if (currentUser.address) {
+                document.getElementById('checkoutDeliveryAddress').innerHTML = `
+                    <p style="color: var(--black); font-weight: 600; margin-bottom: 8px;">${currentUser.name}</p>
+                    <p style="color: var(--gray-600); margin-bottom: 4px;">${currentUser.address}</p>
+                    <p style="color: var(--gray-600); margin: 0;">${currentUser.city}</p>
+                `;
+            } else {
+                document.getElementById('checkoutDeliveryAddress').innerHTML = `
+                    <p style="color: var(--gray-600); margin-bottom: 10px;">No address on file</p>
+                    <a href="#" class="btn" onclick="showPage('profile'); return false;">Update Profile</a>
+                `;
+            }
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('checkoutStartDate').min = today;
+            document.getElementById('checkoutEndDate').min = today;
+        }
+        
+        function renderCheckoutSummary() {
+            const summary = document.getElementById('checkoutSummary');
+            const totals = document.getElementById('checkoutTotals');
+            
+            let subtotal = 0;
+            let totalDeposit = 0;
+            let rentalDays = 0;
+            
+            // Calculate days if dates are set
+            const startDate = document.getElementById('checkoutStartDate').value;
+            const endDate = document.getElementById('checkoutEndDate').value;
+            
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                rentalDays = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+            }
+            
+            const summaryHTML = cart.map(item => {
+                const itemTotal = item.price * (rentalDays || 1);
+                subtotal += itemTotal;
+                totalDeposit += item.deposit;
+                
+                return `
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--gray-200);">
+                        <img src="${getImageUrl(item.image)}" alt="${item.title}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;" onerror="this.src='images/LOGO.png';">
+                        <div style="flex: 1;">
+                            <p style="margin: 0 0 4px 0; font-weight: 600; color: var(--black);">${item.title}</p>
+                            <p style="margin: 0 0 4px 0; color: var(--gray-600); font-size: 13px;">${item.size}</p>
+                            <p style="margin: 0; color: var(--gray-500); font-size: 13px;">₹${item.price}/day × ${rentalDays || 1} day${rentalDays !== 1 ? 's' : ''}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="margin: 0; font-weight: 600; color: var(--black);">₹${itemTotal}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            summary.innerHTML = summaryHTML || '<p>No items in cart</p>';
+            
+            const grandTotal = subtotal + totalDeposit;
+            
+            totals.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="color: var(--gray-600);">Subtotal:</span>
+                    <span style="font-weight: 600; color: var(--black);">₹${subtotal}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="color: var(--gray-600);">Security Deposit:</span>
+                    <span style="font-weight: 600; color: var(--black);">₹${totalDeposit}</span>
+                </div>
+                <div style="border-top: 1px solid var(--gray-200); padding-top: 12px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-size: 18px; font-weight: 600; color: var(--black);">Total:</span>
+                        <span style="font-size: 18px; font-weight: 600; color: var(--theme-accent);">₹${grandTotal}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function selectPaymentMethod(method) {
+            const paymentDetails = document.getElementById('paymentDetails');
+            const methodDivs = document.querySelectorAll('#checkoutContainer .payment-method-div');
+            
+            // Remove active state from all methods
+            methodDivs.forEach(div => {
+                div.style.borderColor = 'var(--gray-200)';
+                div.style.background = 'white';
+            });
+            
+            // Add active state to selected method
+            event.currentTarget.style.borderColor = 'var(--theme-accent)';
+            event.currentTarget.style.background = 'var(--gray-50)';
+            
+            // Show payment details
+            if (paymentDetails) {
+                paymentDetails.style.display = 'block';
+            }
+        }
+        
+        function completeCheckout() {
+            if (cart.length === 0) {
+                showAlert('Your cart is empty');
+                return;
+            }
+            
+            const startDate = document.getElementById('checkoutStartDate').value;
+            const endDate = document.getElementById('checkoutEndDate').value;
+            
+            if (!startDate || !endDate) {
+                showAlert('Please select rental dates');
+                return;
+            }
+            
+            const paymentNumber = document.getElementById('paymentNumber').value;
+            const paymentExpiry = document.getElementById('paymentExpiry').value;
+            const paymentCVV = document.getElementById('paymentCVV').value;
+            const paymentName = document.getElementById('paymentName').value;
+            
+            if (!paymentNumber || !paymentExpiry || !paymentCVV || !paymentName) {
+                showAlert('Please fill in all payment details');
+                return;
+            }
+            
+            // Show processing
+            showAlert('Processing your order...', 'info');
+            
+            // Simulate processing
+            setTimeout(() => {
+                // This is a dummy checkout - in a real app, this would make an API call
+                // For now, we'll just clear the cart and show a success message
+                cart = [];
+                localStorage.setItem('rentrobe_cart', JSON.stringify(cart));
+                updateCartBadge();
+                
+                showAlert('Order placed successfully! Your rental requests have been sent to the owners.', 'success');
+                
+                // Redirect to rentals page after a delay
+                setTimeout(() => {
+                    showPage('rentals');
+                }, 2000);
+            }, 1500);
+        }
+        
+        // Add event listener to recalculate summary when dates change
+        document.addEventListener('DOMContentLoaded', function() {
+            const startDateInput = document.getElementById('checkoutStartDate');
+            const endDateInput = document.getElementById('checkoutEndDate');
+            
+            if (startDateInput) {
+                startDateInput.addEventListener('change', function() {
+                    document.getElementById('checkoutEndDate').min = this.value;
+                    renderCheckoutSummary();
+                });
+            }
+            
+            if (endDateInput) {
+                endDateInput.addEventListener('change', function() {
+                    renderCheckoutSummary();
+                });
+            }
+        });
 
         // Item management
         async function handleListItem(e) {
@@ -6485,7 +6860,7 @@
             if (typeof imagePath === 'string' && (imagePath.startsWith('http://') || imagePath.startsWith('https://'))) {
                 return imagePath;
             }
-            return `/static/uploads/${imagePath}`;
+            return `/images/uploads/${imagePath}`;
         }
 
 
